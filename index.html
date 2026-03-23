@@ -11,37 +11,38 @@
         /* UI Theme Preference: Dark Mode (#323232) & Transparent Black Layout */
         :root {
             --bg-color: #323232; 
-            --glass-bg: rgba(0, 0, 0, 0.5); 
+            --glass-bg: rgba(0, 0, 0, 0.45); 
             --glass-border: rgba(255, 255, 255, 0.15); 
             --text-main: #f8f9fa; 
             --text-muted: #adb5bd; 
             --primary-brand: #4dabf7; 
             --primary-bg: #1976d2; 
             --secondary-bg: #1565c0; 
-            --reset-red: #e53935; 
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --reset-red: #e53935;
+            --accent-orange: #FE5721; /* Custom Override */
+            --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
             --white-text: #ffffff;
-            --box-bg: rgba(0, 0, 0, 0.3); /* Dynamic Box BG */
-            --input-bg: rgba(0, 0, 0, 0.3); /* Dynamic Input BG */
+            --box-bg: rgba(0, 0, 0, 0.35); 
+            --input-bg: rgba(0, 0, 0, 0.4); 
         }
 
-        /* Light Mode (Fallback & Fixes) */
+        /* Light Mode (Fallback & Fixes) - Default Mode */
         body.light-mode {
             --bg-color: #f4f7f6; 
-            --glass-bg: rgba(255, 255, 255, 0.95); 
-            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.85); 
+            --glass-border: rgba(255, 255, 255, 0.6);
             --text-main: #212529; 
             --text-muted: #6c757d; 
             --primary-brand: #1976d2; 
             --primary-bg: #1976d2;
             --secondary-bg: #1565c0;
-            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            --box-bg: rgba(240, 244, 248, 0.8);
+            --card-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            --box-bg: rgba(240, 244, 248, 0.7);
             --input-bg: rgba(255, 255, 255, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); scroll-behavior: smooth; }
-        html, body { overflow-x: hidden; width: 100%; max-width: 100vw; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        html, body { overflow-x: hidden; width: 100%; max-width: 100vw; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; transition: opacity 0.3s ease, background-color 0.4s ease; }
 
         h1, h2, h3, h4, h5, h6 { color: var(--primary-brand); font-weight: 700; }
 
@@ -54,7 +55,7 @@
         
         .chakra-img { width: 75px; height: 75px; animation: spin 4s linear infinite; margin-bottom: 8px;}
         .loader-text h2 { color: #000080; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; margin-bottom: 2px; font-size: 1.4rem; text-align: center;}
-        .loader-quote { color: #333; font-size: 0.85rem; font-weight: 700; text-align: center; }
+        .loader-quote { color: #333; font-size: 0.95rem; font-weight: 800; text-align: center; letter-spacing: 0.5px; }
         
         /* Modernized Skip Button */
         .skip-btn {
@@ -75,11 +76,11 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Notice Marquee */
-        .notice-board { background-color: var(--primary-bg); color: var(--white-text); display: flex; align-items: center; padding: 8px 5%; font-weight: 600; font-size: 0.9rem; width: 100%; }
+        .notice-board { background-color: var(--primary-bg); color: var(--white-text); display: flex; align-items: center; padding: 8px 5%; font-weight: 600; font-size: 0.9rem; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .notice-title { background-color: rgba(0,0,0,0.2); color: var(--white-text); padding: 4px 12px; border-radius: 4px; margin-right: 15px; white-space: nowrap; z-index: 2; font-size: 0.85rem; font-weight: bold;}
 
         /* Header */
-        header { background: var(--glass-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000; padding: 12px 5%; display: flex; align-items: center; justify-content: space-between; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.2);}
+        header { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000; padding: 12px 5%; display: flex; align-items: center; justify-content: space-between; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
         
         .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; font-weight: bold; }
         .theme-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
@@ -94,52 +95,61 @@
         .hero-title { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; text-transform: uppercase; color: var(--primary-brand); line-height: 1.2; margin-top: 10px; letter-spacing: 1px; }
         .hero-subtitle { font-size: clamp(1rem, 3vw, 1.25rem); color: var(--text-muted); font-weight: 600; margin-top: 10px; }
         
-        .glass-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: clamp(15px, 4vw, 30px); box-shadow: var(--card-shadow); margin-bottom: 25px; width: 100%; overflow: hidden;}
+        /* Enhanced Glass Card */
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: clamp(15px, 4vw, 30px); box-shadow: var(--card-shadow); margin-bottom: 25px; width: 100%; overflow: hidden;}
         
         /* Advanced AI Search Widget */
-        .ai-widget { width: 100%; max-width: 700px; margin: 10px auto; display: flex; align-items: center; background: var(--box-bg); border-radius: 8px; padding: 6px 12px; border: 1px solid var(--glass-border); }
+        .ai-widget { width: 100%; max-width: 700px; margin: 10px auto; display: flex; align-items: center; background: var(--box-bg); border-radius: 12px; padding: 6px 12px; border: 1px solid var(--glass-border); backdrop-filter: blur(8px); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
         .ai-widget i { font-size: 18px; color: var(--primary-brand); margin: 0 8px; }
         .ai-widget input { flex: 1; border: none; background: transparent; padding: 10px; font-size: 1rem; color: var(--text-main); outline: none; font-weight: 500; width: 100%; min-width: 0; }
-        .ai-widget button { background-color: var(--primary-bg); color: var(--white-text); border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.95rem; white-space: nowrap;}
-        .ai-widget button:hover { background-color: var(--secondary-bg); }
+        .ai-widget button { background-color: var(--primary-bg); color: var(--white-text); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; white-space: nowrap; box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);}
+        .ai-widget button:hover { background-color: var(--secondary-bg); transform: translateY(-2px); }
         
         .ai-suggestions-container { width: 100%; max-width: 700px; margin: 0 auto; min-height: 40px; }
         .ai-suggestions { display: none; opacity: 0; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; transition: 0.3s; padding: 0 10px; }
-        .ai-chip { background-color: transparent; border: 1px solid var(--primary-brand); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--primary-brand); transition: 0.2s; white-space: nowrap;}
-        .ai-chip:hover { background-color: var(--primary-bg); color: var(--white-text); }
+        .ai-chip { background-color: var(--box-bg); border: 1px solid var(--primary-brand); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--text-main); transition: 0.2s; white-space: nowrap; backdrop-filter: blur(5px);}
+        .ai-chip:hover { background-color: var(--primary-brand); color: #fff; }
 
         /* Custom Navigation */
         .custom-nav-layout { width: 100%; max-width: 900px; margin: 0 auto 30px; padding: 0 15px; display: flex; flex-direction: column; gap: 12px; }
-        .nav-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
-        .quick-card { background: var(--glass-bg); backdrop-filter: blur(5px); padding: 15px 5px; border-radius: 8px; box-shadow: var(--card-shadow); text-align: center; text-decoration: none; color: var(--text-main); border: 1px solid var(--glass-border); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: center; width: 100%;}
-        .quick-card:hover { transform: translateY(-3px); border-bottom: 3px solid var(--primary-brand); background: rgba(255,255,255,0.05);}
-        .quick-card i { font-size: clamp(20px, 5vw, 24px); color: var(--primary-brand); }
-        .quick-card span { font-size: clamp(0.75rem, 2.5vw, 0.9rem); font-weight: 600; white-space: nowrap; }
+        .nav-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; }
+        .quick-card { background: var(--glass-bg); backdrop-filter: blur(10px); padding: 18px 5px; border-radius: 12px; box-shadow: var(--card-shadow); text-align: center; text-decoration: none; color: var(--text-main); border: 1px solid var(--glass-border); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: center; width: 100%; position: relative; overflow: hidden;}
+        .quick-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-25deg); transition: 0.5s; }
+        .quick-card:hover::before { left: 150%; }
+        .quick-card:hover { transform: translateY(-5px); border-color: var(--primary-brand); background: rgba(25, 118, 210, 0.05); }
+        .quick-card i { font-size: clamp(22px, 5vw, 26px); color: var(--primary-brand); transition: 0.3s; }
+        .quick-card:hover i { transform: scale(1.1); }
+        .quick-card span { font-size: clamp(0.75rem, 2.5vw, 0.95rem); font-weight: 700; white-space: nowrap; }
 
-        .dynamic-sec { display: none; animation: fadeIn 0.3s ease; width: 100%; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .dynamic-sec { display: none; animation: fadeIn 0.4s ease-out; width: 100%; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         .container { width: 100%; max-width: 1300px; margin: auto; padding: 10px 15px 40px; }
-        .section-title { text-align: center; margin: 25px 0 20px; font-size: clamp(1.4rem, 5vw, 1.8rem); font-weight: 700; text-transform: uppercase; color: var(--text-main); }
-        .section-title::after { content: ''; width: 50px; height: 4px; background-color: var(--primary-brand); display: block; margin: 8px auto 0; border-radius: 2px; }
+        .section-title { text-align: center; margin: 25px 0 20px; font-size: clamp(1.4rem, 5vw, 1.8rem); font-weight: 800; text-transform: uppercase; color: var(--text-main); letter-spacing: 0.5px;}
+        .section-title::after { content: ''; width: 60px; height: 4px; background-color: var(--primary-brand); display: block; margin: 8px auto 0; border-radius: 2px; }
         
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center; color: var(--white-text); text-decoration: none; text-align: center; white-space: nowrap;}
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center; color: var(--white-text); text-decoration: none; text-align: center; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: 0.3s;}
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
         .btn-blue { background-color: var(--primary-bg); }
         .btn-blue:hover { background-color: var(--secondary-bg); }
         .btn-red { background-color: var(--reset-red); }
         .btn-red:hover { background-color: #c62828; }
-        .btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text-main); }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); color: var(--primary-brand); border-color: var(--primary-brand);}
-        body.light-mode .btn-outline:hover { background: rgba(0,0,0,0.05); }
+        .btn-accent { background-color: var(--accent-orange); }
+        .btn-accent:hover { background-color: #e64a19; }
+        .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #218838; }
+        .btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text-main); box-shadow: none; }
+        .btn-outline:hover { background: var(--box-bg); color: var(--primary-brand); border-color: var(--primary-brand);}
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .manager-card { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; text-align: left; }
-        .manager-img { width: 120px; height: 120px; border-radius: 50% !important; border: 3px solid var(--primary-brand); object-fit: cover; background-color: var(--box-bg); }
-        .progress-bg { background-color: var(--box-bg); width: 100%; height: 25px; border-radius: 4px; overflow: hidden; border: 1px solid var(--glass-border); margin: 15px 0;}
-        .progress-bar { background-color: var(--primary-bg); height: 100%; width: 0%; border-radius: 4px; transition: 1s linear;}
+        .manager-img { width: 120px; height: 120px; border-radius: 50% !important; border: 4px solid var(--primary-brand); object-fit: cover; background-color: var(--box-bg); padding: 2px;}
+        .progress-bg { background-color: var(--box-bg); width: 100%; height: 25px; border-radius: 8px; overflow: hidden; border: 1px solid var(--glass-border); margin: 15px 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);}
+        .progress-bar { background-color: var(--primary-bg); height: 100%; width: 0%; border-radius: 8px; transition: 1s linear;}
         
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; width: 100%; }
 
-        /* Learners - Fixed Alignment & Wrapped Text */
+        /* Learners Grid */
         .learner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; width: 100%; }
         .student-card { width: 55px; height: 55px; min-width: 55px; border-radius: 50% !important; border: 2px solid var(--primary-brand); display: flex; align-items: center; justify-content: center; background-color: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 20px; flex-shrink: 0;}
         body.light-mode .student-card { background-color: rgba(0,0,0,0.05); }
@@ -151,9 +161,9 @@
 
         /* Forms */
         .input-group { margin-bottom: 15px; width: 100%; text-align: left; }
-        .input-group label { font-weight: 600; display:block; margin-bottom: 5px; color: var(--text-main); font-size: 0.9rem;}
-        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px; border: 1px solid var(--glass-border); border-radius: 6px; background-color: var(--input-bg); color: var(--text-main); font-weight: 500; outline: none; font-size: 0.95rem;}
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-brand); background-color: var(--input-bg);}
+        .input-group label { font-weight: 700; display:block; margin-bottom: 6px; color: var(--text-main); font-size: 0.9rem; letter-spacing: 0.3px;}
+        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--glass-border); border-radius: 8px; background-color: var(--input-bg); color: var(--text-main); font-weight: 500; outline: none; font-size: 0.95rem; backdrop-filter: blur(5px);}
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-brand); box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2); }
 
         .upload-layout { border: 2px dashed var(--primary-brand); background-color: var(--box-bg); padding: 25px 15px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-bottom: 20px; width: 100%; }
         .upload-layout:hover { background-color: rgba(25, 118, 210, 0.15); }
@@ -162,7 +172,7 @@
 
         /* Payment Coupon Box */
         .coupon-box { display: flex; gap: 8px; justify-content: center; margin: 15px 0; width: 100%;}
-        .coupon-box input { width: 100%; max-width: 150px; padding: 10px; border-radius: 6px; border: 1px solid var(--primary-brand); background-color: var(--input-bg); color: var(--text-main); text-transform: uppercase; font-weight: bold; text-align: center; outline: none; font-size: 0.9rem;}
+        .coupon-box input { width: 100%; max-width: 150px; padding: 10px; border-radius: 8px; border: 1px solid var(--primary-brand); background-color: var(--input-bg); color: var(--text-main); text-transform: uppercase; font-weight: bold; text-align: center; outline: none; font-size: 0.9rem;}
         .coupon-badge { display: inline-block; background-color: rgba(25, 118, 210, 0.2); border: 1px solid var(--primary-brand); padding: 3px 8px; border-radius: 4px; cursor: pointer; color: var(--primary-brand); font-weight: bold; font-size: 0.8rem; }
 
         .tab-btn-group { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; width: 100%;}
@@ -173,9 +183,9 @@
             background: #ffffff !important; 
             background-image: radial-gradient(circle at 10% 20%, rgba(0,86,179,0.05) 0%, transparent 40%), repeating-linear-gradient(45deg, #f8f9fa 0px, #f8f9fa 2px, #ffffff 2px, #ffffff 8px) !important;
             width: 100%; max-width: 350px; 
-            border-radius: 20px !important; /* Made perfectly rounded */
+            border-radius: 20px !important; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
-            overflow: hidden !important; /* Critical to enforce rounded corners on child elements */
+            overflow: hidden !important; 
             color: #1a1a1a !important; border: 2px solid #0056b3; margin: auto; position: relative; 
         }
         .id-header { background: #0056b3 !important; color: #ffffff !important; padding: 15px; text-align: center; position: relative; z-index: 1; border-bottom: 2px solid #003d82;}
@@ -186,11 +196,13 @@
         .id-details span { color: #333 !important; font-weight: 500; font-size: 0.85rem;}
 
         /* AI Chat Box */
-        .chat-area { background-color: var(--box-bg); border-radius: 8px; padding: 15px; min-height: 120px; margin-top: 15px; font-weight: 500; text-align: left; border: 1px solid var(--glass-border); width: 100%;}
-        .chat-bubble { background-color: var(--primary-bg); color: var(--white-text); padding: 12px 16px; border-radius: 15px 15px 15px 0; margin-bottom: 12px; display: inline-block; max-width: 90%; line-height: 1.5; font-size: 0.95rem; font-weight: normal; animation: fadeIn 0.3s ease;}
-        .chat-bubble.bot { background-color: #2e3b4e; border: 1px solid rgba(255,255,255,0.1); }
-        .chat-bubble a { color: #FFDF00; font-weight: 700; text-decoration: underline; }
-        
+        .chat-area { background-color: var(--box-bg); border-radius: 12px; padding: 20px; min-height: 120px; margin-top: 15px; font-weight: 500; text-align: left; border: 1px solid var(--glass-border); width: 100%; backdrop-filter: blur(10px);}
+        .chat-bubble { background-color: var(--primary-bg); color: var(--white-text); padding: 12px 18px; border-radius: 18px 18px 18px 0; margin-bottom: 15px; display: inline-block; max-width: 90%; line-height: 1.5; font-size: 0.95rem; font-weight: normal; animation: fadeIn 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
+        .chat-bubble.bot { background-color: var(--accent-orange); color: #fff; border: 1px solid rgba(255,255,255,0.1); border-radius: 18px 18px 0 18px; float: right; }
+        body.light-mode .chat-bubble.bot { background-color: var(--accent-orange); }
+        .chat-bubble a { color: #fff; font-weight: 700; text-decoration: underline; }
+        .clearfix::after { content: ""; clear: both; display: table; }
+
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; width: 100%; }
         .gallery-img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border); }
 
@@ -210,16 +222,26 @@
         .holiday-toggle-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin: 0; cursor: pointer;}
         .admin-notice-item { display:flex; justify-content:space-between; align-items:center; background-color: var(--box-bg); padding:12px; border-radius:6px; margin-bottom:10px; font-weight:500; border:1px solid var(--glass-border); text-align: left; width: 100%;}
 
+        /* Poster Generator UI Components */
+        .controls-panel { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 15px; }
+        .grid-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        #canvas-wrapper { width: 100%; max-width: 500px; position: relative; border-radius: 20px; overflow: hidden; background: var(--box-bg); border: 1px solid var(--glass-border); margin: 0 auto; box-shadow: 0 20px 40px rgba(0,0,0,0.4);}
+        canvas { width: 100%; height: auto; display: none; }
+        
+        #empty-state { width: 100%; aspect-ratio: 4/5; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--text-muted); text-align: center; padding: 40px; font-size: 1.1rem; font-weight: 600; }
+        #loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 10; backdrop-filter: blur(10px); }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent-orange); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+
         /* Footer */
-        .premium-tick { display: inline-block; width: 16px; height: 16px; min-width: 16px; min-height: 16px; flex-shrink: 0; margin-left: 5px; vertical-align: middle; }
-        footer { background-color: rgba(0,0,0,0.8); color: #ffffff; padding: 30px 15px 20px; text-align: center; width: 100%; border-top: 4px solid var(--primary-brand);}
-        body.light-mode footer { background-color: #f8f9fa; color: #212529; border-top: 1px solid var(--glass-border); }
+        .premium-tick { display: inline-block; width: 18px; height: 18px; min-width: 18px; min-height: 18px; flex-shrink: 0; margin-left: 5px; vertical-align: middle; }
+        footer { background: var(--glass-bg); color: var(--text-main); padding: 30px 15px 20px; text-align: center; width: 100%; border-top: 4px solid var(--primary-brand); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
 
         @media (max-width: 480px) { 
-            .nav-row { gap: 8px; } 
-            .quick-card { padding: 12px 2px; border-radius: 6px;}
+            .nav-row { gap: 10px; } 
+            .quick-card { padding: 15px 5px; border-radius: 10px;}
             .learner-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .glass-card { padding: 20px 15px; border-radius: 8px; margin-bottom: 20px;}
+            .glass-card { padding: 20px 15px; border-radius: 12px; margin-bottom: 20px;}
             .manager-card { flex-direction: column; text-align: center; gap: 15px;}
             .quotes-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .quote-card { padding: 15px 10px; }
@@ -227,15 +249,13 @@
         }
     </style>
 </head>
-<body>
-
-    <div id="loader">
+<body class="light-mode"> <div id="loader">
         <div class="band saffron-band"></div>
         <div class="band white-band">
             <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Ashoka_Chakra.svg" alt="Chakra" class="chakra-img">
             <div class="loader-text">
                 <h2>National Library</h2>
-                <p class="loader-quote">Education is the most powerful weapon</p>
+                <p class="loader-quote">Educate, Agitate and Organize</p>
             </div>
         </div>
         <div class="band green-band"></div>
@@ -250,11 +270,11 @@
     </div>
 
     <header>
-        <div style="font-weight: 800; font-size: clamp(18px, 5vw, 22px); color: var(--primary-brand); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+        <div style="font-weight: 900; font-size: clamp(18px, 5vw, 22px); color: var(--primary-brand); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
             <i class="fa-solid fa-book-open"></i> N-Lib
         </div>
         <div class="theme-switch-wrapper">
-            <span style="font-size: 0.8rem; color:var(--text-main); font-weight: 600;">Mode</span>
+            <span style="font-size: 0.85rem; color:var(--text-main); font-weight: 700;">Mode</span>
             <label class="theme-switch" for="themeToggleCheckbox">
                 <input type="checkbox" id="themeToggleCheckbox" onchange="toggleThemeSwitch()">
                 <div class="slider"></div>
@@ -263,7 +283,7 @@
     </header>
 
     <div class="hero-section">
-        <i class="fa-solid fa-book-open-reader" style="font-size:clamp(40px, 10vw, 55px); color:var(--primary-brand);"></i>
+        <i class="fa-solid fa-book-open-reader" style="font-size:clamp(45px, 10vw, 60px); color:var(--primary-brand); text-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);"></i>
         <h1 class="hero-title">National Library</h1>
         <p class="hero-subtitle">Premium Digital Space & Study Center</p>
     </div>
@@ -271,7 +291,7 @@
     <div style="padding: 0 15px;">
         <div class="ai-widget">
             <i class="fa-solid fa-robot"></i>
-            <input type="text" id="aiInput" placeholder="Ask AI (Ex: 10th Mock Test, Library fees...)" onfocus="showAiSuggestions()" onblur="setTimeout(hideAiSuggestions, 200)" onkeypress="if(event.key === 'Enter') triggerAI()">
+            <input type="text" id="aiInput" placeholder="Ask Library AI (Ex: 10th Mock Test, fees...)" onfocus="showAiSuggestions()" onblur="setTimeout(hideAiSuggestions, 200)" onkeypress="if(event.key === 'Enter') triggerAI()">
             <button onclick="triggerAI()" class="btn-blue">Search</button>
         </div>
         <div class="ai-suggestions-container">
@@ -280,16 +300,14 @@
                 <span class="ai-chip" onclick="askAI('Fee')">Fee</span>
                 <span class="ai-chip" onclick="askAI('Location')">Location</span>
                 <span class="ai-chip" onclick="askAI('Manager')">Manager</span>
-                <span class="ai-chip" onclick="askAI('About')">About</span>
                 <span class="ai-chip" onclick="askAI('Facility')">Facility</span>
-                <span class="ai-chip" onclick="askAI('Learner')">Learner</span>
             </div>
         </div>
     </div>
 
     <div class="custom-nav-layout" id="gridNav">
         <div style="display:flex; justify-content:center; width: 100%;">
-            <div class="quick-card" style="width: 140px; padding:10px;" onclick="showSection('home')">
+            <div class="quick-card" style="width: 140px; padding:12px;" onclick="showSection('home')">
                 <i class="fa-solid fa-house"></i><span>Home</span>
             </div>
         </div>
@@ -306,11 +324,11 @@
         <div class="nav-row">
             <div class="quick-card" onclick="showSection('notice')"><i class="fa-solid fa-clipboard"></i><span>Notice</span></div>
             <div class="quick-card" onclick="showSection('gallery')"><i class="fa-solid fa-images"></i><span>Gallery</span></div>
-            <div class="quick-card" onclick="showSection('about')"><i class="fa-solid fa-circle-info"></i><span>About Us</span></div>
+            <div class="quick-card" onclick="openPosterGenerator()"><i class="fa-solid fa-image"></i><span>Poster Maker</span></div>
         </div>
         <div style="display:flex; width: 100%;">
-            <a href="https://sites.google.com/view/pdfly-tools/home" target="_blank" class="quick-card" style="flex-direction:row; padding:12px; justify-content: center; gap: 10px;">
-                <i class="fa-solid fa-file-pdf"></i><span style="font-size: 0.95rem;">PDFly Tools</span>
+            <a href="https://sites.google.com/view/pdfly-tools/home" target="_blank" class="quick-card" style="flex-direction:row; padding:15px; justify-content: center; gap: 10px;">
+                <i class="fa-solid fa-file-pdf"></i><span style="font-size: 1rem;">PDFly Tools</span>
             </a>
         </div>
     </div>
@@ -320,9 +338,9 @@
         <div id="sec-home">
             <h2 class="section-title">Library Status</h2>
             <div class="glass-card" style="text-align: center;">
-                <p style="font-weight:600; margin-bottom:15px; font-size:1rem; color: var(--text-main);"><i class="fa-solid fa-calendar-check" style="color:var(--primary-brand);"></i> Mon-Sat: 6 AM - 10 PM | Sun: 8 AM - 5 PM</p>
+                <p style="font-weight:700; margin-bottom:15px; font-size:1.05rem; color: var(--text-main);"><i class="fa-solid fa-calendar-check" style="color:var(--primary-brand);"></i> Mon-Sat: 6 AM - 10 PM | Sun: 8 AM - 5 PM</p>
                 <div class="progress-bg"><div class="progress-bar" id="timeProgress"></div></div>
-                <h3 id="timeStatusText" style="margin-top:12px; color:var(--primary-brand); font-size: 1.1rem;">Calculating...</h3>
+                <h3 id="timeStatusText" style="margin-top:12px; color:var(--primary-brand); font-size: 1.2rem; font-weight: 800;">Calculating...</h3>
             </div>
 
             <div class="glass-card" style="text-align: left; padding: 20px;">
@@ -338,6 +356,48 @@
                     <p style="color:var(--text-muted); font-weight:600; font-size: 0.9rem;"><i class="fa-solid fa-user-shield"></i> Chief Library Manager</p>
                     <p style="font-size: 0.95rem; margin-top: 5px; font-weight: 500;"><i class="fa-brands fa-whatsapp" style="color:#4CAF50; font-size:16px;"></i> +91 87950 11001</p>
                     <p style="margin-top: 10px; font-style: italic; color: var(--primary-brand); font-weight: 600; font-size: 0.9rem; line-height: 1.4;">"Humara lakshya aapko safalta ke liye ek shant aur behtar mahol dena hai."</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-ai" class="dynamic-sec">
+            <h2 class="section-title">Library AI Assistant</h2>
+            <div class="glass-card">
+                <h3 style="margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main);">Your Query: <span id="userQText" style="color:var(--text-muted); font-weight: 600;"></span></h3>
+                <div class="chat-area clearfix" id="aiResponseBox"></div>
+            </div>
+        </div>
+
+        <div id="sec-poster" class="dynamic-sec">
+            <h2 class="section-title">Pro Poster Maker</h2>
+            <div class="glass-card" style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-start;">
+                
+                <div class="controls-panel">
+                    <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-align: center;">Select Theme</div>
+                    
+                    <button class="btn btn-blue" onclick="generateSmartPoster('motivation')" style="padding: 16px; font-size: 1rem;"><i class="fa-solid fa-fire"></i> Study Motivation</button>
+                    
+                    <div class="grid-btns">
+                        <button class="btn btn-accent" onclick="generateSmartPoster('festival')" style="padding: 14px;"><i class="fa-solid fa-holly-berry"></i> Festival</button>
+                        <button class="btn btn-green" onclick="generateSmartPoster('tribute')" style="padding: 14px;"><i class="fa-solid fa-hands-praying"></i> Tribute</button>
+                    </div>
+                    
+                    <button class="btn" style="background-color: #444444; color: #fff; padding: 14px;" onclick="generateSmartPoster('random')"><i class="fa-solid fa-shuffle"></i> Random Mix</button>
+                </div>
+
+                <div style="flex: 2; min-width: 300px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <div id="canvas-wrapper">
+                        <div id="loading-overlay">
+                            <div class="spinner"></div>
+                            <span id="loading-text" style="color: white; font-weight: 600; font-size: 1.1rem; letter-spacing: 1px;">Crafting Design...</span>
+                        </div>
+                        <div id="empty-state">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.6; color: var(--primary-brand);"></i>
+                            Modern high-quality poster<br>yahan generate hoga
+                        </div>
+                        <canvas id="mainCanvas" width="1080" height="1350"></canvas>
+                    </div>
+                    <button class="btn btn-green" id="download-btn" onclick="savePoster()" style="display: none; margin-top: 25px; width: 100%; max-width: 500px; font-size: 1.1rem; padding: 14px;"><i class="fa-solid fa-download"></i> Download HD Poster</button>
                 </div>
             </div>
         </div>
@@ -406,33 +466,9 @@
             </div>
         </div>
 
-        <div id="sec-ai" class="dynamic-sec">
-            <h2 class="section-title">AI Engine Response</h2>
-            <div class="glass-card">
-                <h3 style="margin-bottom: 10px; font-size: 1.05rem; color: var(--text-main);">Your Query: <span id="userQText" style="color:var(--text-muted); font-weight: 500;"></span></h3>
-                <div class="chat-area" id="aiResponseBox"></div>
-            </div>
-        </div>
-
-        <div id="sec-learners" class="dynamic-sec">
-            <h2 class="section-title">Registered Learners</h2>
-            <div class="learner-grid">
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Ankit</h4><p>Government Exam</p></div></div>
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>G. Rao</h4><p>Government Exam</p></div></div>
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Prakhar Yadav</h4><p>Government Exam</p></div></div>
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Shavej</h4><p>Government Exam</p></div></div>
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Vikas Kumar</h4><p>Government Exam</p></div></div>
-                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Vikas Sharma</h4><p>Government Exam</p></div></div>
-                
-                <div class="loading-learners">
-                    <i class="fa-solid fa-circle-notch fa-spin" style="color: var(--primary-brand); margin-right: 8px;"></i> Loading more students...
-                </div>
-            </div>
-        </div>
-
         <div id="sec-tools" class="dynamic-sec">
-            <h2 class="section-title">Smart Library Tools</h2>
-            <div class="grid">
+             <h2 class="section-title">Smart Tools</h2>
+             <div class="grid">
                 <div class="glass-card">
                     <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fa-solid fa-magnifying-glass" style="color: var(--primary-brand);"></i> Advanced Material Search</h3>
                     <div class="input-group">
@@ -470,14 +506,51 @@
                 <div class="glass-card">
                     <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fa-solid fa-note-sticky" style="color: var(--primary-brand);"></i> My Digital Notepad</h3>
                     <textarea id="quickNotes" rows="4" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-weight: 500; outline: none; font-size:0.95rem;" placeholder="Jot down your daily study goals..."></textarea>
-                    <button class="btn btn-blue" onclick="saveNotes()" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-floppy-disk"></i> Save Data to Browser</button>
+                    <button class="btn btn-blue" onclick="saveNotes()" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-floppy-disk"></i> Save Data</button>
                 </div>
+            </div>
+        </div>
+
+        <div id="sec-learners" class="dynamic-sec">
+            <h2 class="section-title">Registered Learners</h2>
+            <div class="learner-grid">
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Ankit</h4><p>Government Exam</p></div></div>
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>G. Rao</h4><p>Government Exam</p></div></div>
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Prakhar Yadav</h4><p>Government Exam</p></div></div>
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Shavej</h4><p>Government Exam</p></div></div>
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Vikas Kumar</h4><p>Government Exam</p></div></div>
+                <div class="glass-card" style="display:flex; gap:12px; align-items:center; padding: 15px 12px;"><div class="student-card"><i class="fa-solid fa-user"></i></div><div class="learner-info"><h4>Vikas Sharma</h4><p>Government Exam</p></div></div>
                 
-                <div class="glass-card">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-main);"><i class="fa-solid fa-book-medical" style="color: var(--primary-brand);"></i> Request New Book</h3>
-                    <div class="input-group"><input type="text" id="reqBookName" placeholder="Book Name & Author"></div>
-                    <button class="btn btn-blue" onclick="requestBook()" style="width: 100%;"><i class="fa-brands fa-whatsapp"></i> Send Request</button>
+                <div class="loading-learners">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="color: var(--primary-brand); margin-right: 8px;"></i> Loading more students...
                 </div>
+            </div>
+        </div>
+
+        <div id="sec-admission" class="dynamic-sec">
+            <h2 class="section-title">Admission Form</h2>
+            <div class="glass-card">
+                <form onsubmit="submitAdmission(event)">
+                    <div class="grid" style="gap: 15px;">
+                        <div class="input-group"><label>Student Name</label><input type="text" id="aName" placeholder="Full Name" required></div>
+                        <div class="input-group"><label>Mobile Number</label><input type="tel" id="aMob" placeholder="10 Digits" maxlength="10" required></div>
+                        <div class="input-group" style="grid-column: 1/-1;">
+                            <label>Shift Preference</label>
+                            <select id="aShift">
+                                <option>Morning Shift (6 AM - 2 PM)</option>
+                                <option>Evening Shift (2 PM - 10 PM)</option>
+                                <option>Full Day (6 AM - 10 PM)</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="grid-column: 1/-1;"><label>Full Address</label><textarea id="aAdd" rows="2" placeholder="District, Pincode..." required></textarea></div>
+                    </div>
+                    
+                    <p style="color: var(--reset-red); font-size: 0.95rem; font-weight: 600; text-align: center; margin-bottom: 15px; margin-top: 5px;">
+                        ⚠️ Please attach your passport-size photo directly in WhatsApp after clicking send.
+                    </p>
+
+                    <button type="submit" class="btn" style="width:100%; background-color: #4CAF50; color:#fff;"><i class="fa-brands fa-whatsapp"></i> Send Application</button>
+                </form>
             </div>
         </div>
 
@@ -539,55 +612,6 @@
             </div>
         </div>
 
-        <div id="sec-about" class="dynamic-sec">
-            <h2 class="section-title">About Us</h2>
-            <div class="glass-card" style="text-align:center; line-height:1.7; font-size:1rem; font-weight:500;">
-                <i class="fa-solid fa-book-atlas" style="font-size:45px; color:var(--primary-brand); margin-bottom:15px;"></i>
-                <p>Welcome to <strong>National Library</strong>, a premier educational environment.</p>
-                <p style="color:var(--reset-red); font-size:1.05rem; margin:15px 0; font-style:italic; font-weight: 600;">"The very first library in the entire Maharajganj, Azamgarh region."</p>
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Strategically located near the Maharajganj Post Office, we are dedicated to fostering academic excellence. We provide a pin-drop silent environment, fully air-conditioned ergonomic cabins, high-speed 5G WiFi, and uninterrupted access to vast study resources.</p>
-            </div>
-        </div>
-
-        <div id="sec-admission" class="dynamic-sec">
-            <h2 class="section-title">Admission Form</h2>
-            <div class="glass-card">
-                <form onsubmit="submitAdmission(event)">
-                    <div class="grid" style="gap: 15px;">
-                        <div class="input-group"><label>Student Name</label><input type="text" id="aName" placeholder="Full Name" required></div>
-                        <div class="input-group"><label>Mobile Number</label><input type="tel" id="aMob" placeholder="10 Digits" maxlength="10" required></div>
-                        <div class="input-group" style="grid-column: 1/-1;">
-                            <label>Shift Preference</label>
-                            <select id="aShift">
-                                <option>Morning Shift (6 AM - 2 PM)</option>
-                                <option>Evening Shift (2 PM - 10 PM)</option>
-                                <option>Full Day (6 AM - 10 PM)</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="grid-column: 1/-1;"><label>Full Address</label><textarea id="aAdd" rows="2" placeholder="District, Pincode..." required></textarea></div>
-                    </div>
-                    
-                    <p style="color: var(--reset-red); font-size: 0.95rem; font-weight: 600; text-align: center; margin-bottom: 15px; margin-top: 5px;">
-                        ⚠️ Please attach your passport-size photo directly in WhatsApp after clicking send.
-                    </p>
-
-                    <button type="submit" class="btn" style="width:100%; background-color: #4CAF50; color:#fff;"><i class="fa-brands fa-whatsapp"></i> Send Application</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="sec-facilities" class="dynamic-sec">
-            <h2 class="section-title">Facilities</h2>
-            <div class="grid">
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-wifi" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">5G WiFi</h3><button class="btn btn-blue" style="margin-top:10px; padding: 6px 12px; font-size:11px;" onclick="window.open('https://fast.com')">Speed Test</button></div>
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-chair" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">A/C Cabins</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Ergonomic comfort.</p></div>
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-volume-xmark" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">Silent Zone</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Pin-drop silence.</p></div>
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-glass-water" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">RO Water</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Hot & Cold available.</p></div>
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-newspaper" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">Daily News Paper</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Hindi & English.</p></div>
-                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-video" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">CCTV Cameras</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">24/7 HD Security.</p></div>
-            </div>
-        </div>
-
         <div id="sec-notice" class="dynamic-sec">
             <h2 class="section-title">Notice Console</h2>
             
@@ -624,7 +648,6 @@
                     <button class="btn btn-blue" onclick="publishNotice()" style="width:100%;"><i class="fa-solid fa-paper-plane"></i> Publish</button>
                 </div>
             </div>
-
         </div>
 
         <div id="sec-gallery" class="dynamic-sec">
@@ -634,6 +657,28 @@
                 <img src="https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=400&q=80" class="gallery-img">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80" class="gallery-img">
                 <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80" class="gallery-img">
+            </div>
+        </div>
+
+        <div id="sec-facilities" class="dynamic-sec">
+            <h2 class="section-title">Premium Facilities</h2>
+            <div class="grid">
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-wifi" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">5G WiFi</h3><button class="btn btn-blue" style="margin-top:10px; padding: 6px 12px; font-size:11px;" onclick="window.open('https://fast.com')">Speed Test</button></div>
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-chair" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">A/C Cabins</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Ergonomic comfort.</p></div>
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-volume-xmark" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">Silent Zone</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Pin-drop silence.</p></div>
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-glass-water" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">RO Water</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Hot & Cold available.</p></div>
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-newspaper" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">Daily News Paper</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">Hindi & English.</p></div>
+                <div class="glass-card" style="text-align:center; padding: 25px 10px;"><i class="fa-solid fa-video" style="font-size:35px; color:var(--primary-brand); margin-bottom:12px;"></i><h3 style="font-size: 1.1rem; color: var(--text-main);">CCTV Cameras</h3><p style="font-size: 0.85rem; color:var(--text-muted); margin-top: 5px;">24/7 HD Security.</p></div>
+            </div>
+        </div>
+
+        <div id="sec-about" class="dynamic-sec">
+            <h2 class="section-title">About Us</h2>
+            <div class="glass-card" style="text-align:center; line-height:1.7; font-size:1rem; font-weight:500;">
+                <i class="fa-solid fa-book-atlas" style="font-size:45px; color:var(--primary-brand); margin-bottom:15px;"></i>
+                <p>Welcome to <strong>National Library</strong>, a premier educational environment.</p>
+                <p style="color:var(--reset-red); font-size:1.05rem; margin:15px 0; font-style:italic; font-weight: 600;">"The very first library in the entire Maharajganj, Azamgarh region."</p>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Strategically located near the Maharajganj Post Office, we are dedicated to fostering academic excellence. We provide a pin-drop silent environment, fully air-conditioned ergonomic cabins, high-speed 5G WiFi, and uninterrupted access to vast study resources.</p>
             </div>
         </div>
 
@@ -654,18 +699,21 @@
     </div>
 
     <footer>
-        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:12px;">
-            <i class="fa-solid fa-book-open-reader" style="font-size:26px; color:var(--primary-brand);"></i> <span style="font-size:22px; font-weight:800; color:var(--primary-brand);">National Library</span>
+        <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:15px;">
+            <i class="fa-solid fa-book-open-reader" style="font-size:30px; color:var(--primary-brand);"></i> <span style="font-size:24px; font-weight:900; color:var(--primary-brand); letter-spacing: 1px;">National Library</span>
         </div>
-        <a href="https://maps.app.goo.gl/YqPafd1meLscH9ZG7" target="_blank" style="text-decoration: none; display: inline-block;">
-            <div style="margin:10px auto 20px; background-color:var(--box-bg); padding:15px; border-radius:8px; border:1px solid var(--glass-border); font-size: 0.9rem; color: var(--text-main); transition: 0.3s;">
-                <i class="fa-solid fa-location-dot" style="color:var(--primary-brand); font-size:20px; margin-bottom: 5px;"></i><br>
-                Near Post Office Maharajganj, Azamgarh UP - 276137
-            </div>
-        </a>
-        <div style="border-top:1px solid var(--glass-border); padding-top:20px; font-weight:500; color:var(--text-muted); font-size: 0.9rem; display: flex; flex-direction: column; align-items: center;">
+        <div style="margin:10px auto 25px; background-color:var(--box-bg); padding:18px; border-radius:12px; border:1px solid var(--glass-border); font-size: 0.95rem; font-weight:600; color: var(--text-main); max-width: 400px;">
+            <i class="fa-solid fa-location-dot" style="color:var(--accent-orange); font-size:22px; margin-bottom: 8px;"></i><br>
+            Near Post Office Maharajganj,<br>Azamgarh UP - 276137
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <button class="btn btn-outline" onclick="showSection('about')" style="padding: 6px 16px; font-size: 0.85rem;"><i class="fa-solid fa-circle-info"></i> View About Us</button>
+        </div>
+
+        <div style="border-top:1px solid var(--glass-border); padding-top:20px; font-weight:600; color:var(--text-muted); font-size: 0.95rem; display: flex; flex-direction: column; align-items: center;">
             © 2026 National Library. All Rights Reserved.<br>
-            <span style="color:var(--text-main); font-size:1.05rem; display:inline-flex; align-items:center; margin-top:10px; font-weight: 600;">
+            <span style="color:var(--text-main); font-size:1.1rem; display:inline-flex; align-items:center; margin-top:12px; font-weight: 800;">
                 Developed by GT Rao 
                 <svg class="premium-tick" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="12" fill="#1D9BF0"/>
@@ -680,15 +728,19 @@
         const UPI_ID = "raviprakash4281@oksbi"; 
         const UPI_NAME = "Ravi Prakash";
         let isCouponApplied = false;
+        
+        // Firebase Config
+        const FIREBASE_DB_URL = "https://national-library-2026-default-rtdb.firebaseio.com/notices";
 
         window.onload = () => {
             const toggleCheckbox = document.getElementById('themeToggleCheckbox');
-            if(localStorage.getItem('theme') === 'light') {
-                document.body.classList.add('light-mode');
-                toggleCheckbox.checked = false;
-            } else {
+            // By default, make it Light Mode as requested
+            if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.remove('light-mode');
                 toggleCheckbox.checked = true;
+            } else {
+                document.body.classList.add('light-mode');
+                toggleCheckbox.checked = false;
             }
 
             let holToday = localStorage.getItem('nl_hol_today') === 'true';
@@ -700,7 +752,7 @@
 
             loadNotices();
             generatePaymentData(); 
-            setTimeout(closeLoader, 3000); 
+            setTimeout(closeLoader, 2000); 
         };
 
         function toggleThemeSwitch() {
@@ -727,7 +779,16 @@
             window.scrollTo({ top: document.getElementById('gridNav').offsetTop + 30, behavior: 'smooth' });
         }
 
-        // --- Tools Functions ---
+        function openPosterGenerator() {
+            document.body.style.opacity = '0'; 
+            setTimeout(() => {
+                showSection('poster');
+                window.scrollTo({ top: 0, behavior: 'instant' }); 
+                document.body.style.opacity = '1'; 
+            }, 300);
+        }
+
+        // --- Restored Original Tool Functions ---
         function findStudyMaterial() {
             let topic = document.getElementById('topicInput').value.trim();
             if(!topic) return alert("Please enter a subject or topic name.");
@@ -749,17 +810,23 @@
             alert("Your notes have been securely saved to this browser!");
         }
 
-        function requestBook() {
-            let book = document.getElementById('reqBookName').value;
-            if(!book) return alert("Enter book details first!");
-            let msg = `*Book Request*%0A%0AHi Manager, I would like to request the following book for the library:%0A*${book}*`;
-            window.open(`https://wa.me/${MANAGER_PHONE}?text=${msg}`, '_blank');
+        // Age Calc & Timer logic
+        function calcAge() {
+            let dob = document.getElementById('dobInput').value;
+            if(!dob) return alert("Please select Date of Birth.");
+            let birth = new Date(dob); let diff = Date.now() - birth.getTime(); let ageDate = new Date(diff); 
+            let years = Math.abs(ageDate.getUTCFullYear() - 1970); let months = ageDate.getUTCMonth(); let days = ageDate.getUTCDate() - 1;
+            document.getElementById('ageResult').innerText = `Your Exact Age: ${years} Years, ${months} Months, ${days} Days`;
         }
 
-        // --- AI Engine Logic ---
+        let timer, min = 25, sec = 0, isRun = false;
+        function updateT() { document.getElementById('timerDisplay').innerText = (min<10?'0':'')+min+":"+(sec<10?'0':'')+sec; }
+        function startTimer() { if(isRun) return; isRun = true; timer = setInterval(()=>{ if(sec==0){if(min==0){clearInterval(timer); isRun=false; return alert("Focus session complete!");} min--; sec=59;}else sec--; updateT(); }, 1000); }
+        function resetTimer() { clearInterval(timer); isRun = false; min=25; sec=0; updateT(); }
+
+        // --- AI Engine Logic Updated for Persona ---
         function showAiSuggestions() { document.getElementById('aiSuggestionsBox').style.display = 'flex'; setTimeout(() => document.getElementById('aiSuggestionsBox').style.opacity = '1', 10); }
         function hideAiSuggestions() { document.getElementById('aiSuggestionsBox').style.opacity = '0'; setTimeout(() => document.getElementById('aiSuggestionsBox').style.display = 'none', 300); }
-
         function askAI(q) { document.getElementById('aiInput').value = q; triggerAI(); }
 
         async function triggerAI() {
@@ -769,40 +836,25 @@
             showSection('ai');
             document.getElementById('userQText').innerText = q;
             let aiBox = document.getElementById('aiResponseBox');
-            aiBox.innerHTML = '<div class="chat-bubble bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Processing advanced query...</div>';
+            aiBox.innerHTML = '<div class="chat-bubble bot"><i class="fa-solid fa-circle-notch fa-spin"></i> National Library ki AI aapki query process kar rahi hai...</div>';
             
             let lowerQ = q.toLowerCase();
             const isMatch = (words) => words.some(w => lowerQ.includes(w));
 
-            try {
-                if(/^[0-9+\-*/().\s]+$/.test(q) && /[+\-*/]/.test(q)) {
-                    let result = Function('return ' + q)();
-                    return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>Smart Math Calculator:</strong><br>${q} = <strong>${result}</strong></div>`; }, 400);
-                }
-            } catch(e) {}
-
             if(isMatch(['time', 'open', 'close', 'timing'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>Library Timing:</strong><br>Mon-Sat: 6:00 AM - 10:00 PM<br>Sunday: 8:00 AM - 5:00 PM.</div>`; }, 600);
+                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI:</strong><br>Humari library Mon-Sat subah 6:00 AM se raat 10:00 PM tak open rehti hai. Sunday ko 8:00 AM se 5:00 PM tak open hoti hai. Aap kabhi bhi aa sakte hain!</div>`; }, 800);
             }
             if(isMatch(['fee', 'price', 'cost'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">The fee is ₹500 per month per shift. Visit the "Fee Payment" section to pay securely. Apply coupon NEW20 for discount!</div>`; }, 600);
+                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI:</strong><br>Library ki fees ₹500 per month per shift hai. Humare yahan best environment milega aapko padhai ke liye.</div>`; }, 800);
             }
-            if(isMatch(['location', 'where', 'address'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">We are located Near Post Office Maharajganj, Azamgarh UP - 276137. Check the About section for map details.</div>`; }, 600);
-            }
-            if(isMatch(['manager', 'contact'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">The Chief Library Manager is Mr. Ravi Prakash. Contact: +91 87950 11001.</div>`; }, 600);
-            }
-            if(isMatch(['about'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">National Library is the very first library in the Maharajganj, Azamgarh region providing a premium digital space and study center.</div>`; }, 600);
+            if(isMatch(['location', 'address', 'kaha'])) {
+                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI:</strong><br>Humari location hai: Near Post Office Maharajganj, Azamgarh UP - 276137.</div>`; }, 800);
             }
             if(isMatch(['facility', 'facilities'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">We offer 5G WiFi, A/C Cabins, Silent Zone, RO Water, Daily News, and 24/7 CCTV Security.</div>`; }, 600);
-            }
-            if(isMatch(['learner', 'student'])) {
-                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot">We have many dedicated learners preparing for various competitive exams. You can check the 'Learners' section to see your batchmates!</div>`; }, 600);
+                return setTimeout(() => { aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI:</strong><br>Aapko yahan High-speed 5G WiFi, A/C Cabins, Pin-Drop Silence aur RO water ki suvidha milegi.</div>`; }, 800);
             }
 
+            // Fallback API if no match
             try {
                 let searchRes = await fetch(`https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&exsentences=3&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=1&origin=*`);
                 let searchData = await searchRes.json();
@@ -810,9 +862,9 @@
                     let pageId = Object.keys(searchData.query.pages)[0];
                     let title = searchData.query.pages[pageId].title;
                     let extract = searchData.query.pages[pageId].extract;
-                    aiBox.innerHTML = `<div class="chat-bubble bot"><strong>AI Result for "${title}":</strong><br>${extract}<br><br><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(title)}" target="_blank">Read Full Article on Wikipedia <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>`;
+                    aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI ki jankari "${title}":</strong><br>${extract}</div>`;
                 } else {
-                    aiBox.innerHTML = `<div class="chat-bubble bot">I searched my database but couldn't find an exact match for "${q}".</div>`;
+                    aiBox.innerHTML = `<div class="chat-bubble bot"><strong>National Library AI:</strong><br>Maaf kijiye, mujhe is baare mein abhi jankari nahi hai. Kripya manager se contact karein ya koi aur sawaal poochein.</div>`;
                 }
             } catch (err) {
                 aiBox.innerHTML = `<div class="chat-bubble bot" style="background:#e53935;">Error connecting to the knowledge base. Please check your internet connection!</div>`;
@@ -820,7 +872,7 @@
             document.getElementById('aiInput').value = '';
         }
 
-        // --- Payment & Forms Logic ---
+        // --- Restored Payment Logic ---
         function switchPayTab(tab) {
             if(tab === 'pay') {
                 document.getElementById('payNowDiv').style.display = 'block'; document.getElementById('verifyDiv').style.display = 'none';
@@ -865,85 +917,7 @@
             window.open(`https://wa.me/${MANAGER_PHONE}?text=${message}`, '_blank');
         }
 
-        // --- Notice Logic ---
-        function toggleAdminPanel() {
-            let panel = document.getElementById('adminNoticePanel');
-            if(panel.style.display === 'none') {
-                let pwd = prompt("Enter Admin Password:");
-                if(pwd === 'NL@2026') {
-                    panel.style.display = 'block';
-                } else {
-                    alert('Incorrect Password!');
-                }
-            } else {
-                panel.style.display = 'none';
-            }
-        }
-
-        function toggleHolidaySwitch(type, element) {
-            if(type === 'today') { localStorage.setItem('nl_hol_today', element.checked); alert(element.checked ? "Holiday SET for Today." : "Holiday CANCELLED for Today."); } 
-            else if(type === 'tomorrow') { localStorage.setItem('nl_hol_tomorrow', element.checked); alert(element.checked ? "Holiday SET for Tomorrow." : "Holiday CANCELLED for Tomorrow."); }
-        }
-
-        function publishNotice() {
-            let pwd = document.getElementById('nPwd').value;
-            if(pwd !== 'NL@2026') return alert('Incorrect Password!');
-            let text = document.getElementById('nText').value;
-            let days = parseInt(document.getElementById('nDays').value);
-            if(!text) return alert('Enter notice text.');
-            let expiry = Date.now() + (days * 86400000);
-            let dateStr = new Date().toLocaleString('en-IN', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
-
-            let notices = JSON.parse(localStorage.getItem('nl_notices') || '[]');
-            notices.push({ id: Date.now(), text, dateStr, expiry }); 
-            localStorage.setItem('nl_notices', JSON.stringify(notices));
-            
-            alert('Notice Published!');
-            document.getElementById('nText').value = ''; document.getElementById('nPwd').value = '';
-            loadNotices();
-        }
-
-        function deleteNotice(id) {
-            let pwd = prompt("Enter Admin Password:");
-            if(pwd !== 'NL@2026') return alert("Incorrect Password!");
-            let notices = JSON.parse(localStorage.getItem('nl_notices') || '[]');
-            notices = notices.filter(n => n.id !== id);
-            localStorage.setItem('nl_notices', JSON.stringify(notices));
-            loadNotices();
-        }
-
-        function loadNotices() {
-            let notices = JSON.parse(localStorage.getItem('nl_notices') || '[]');
-            let valid = notices.filter(n => n.expiry > Date.now());
-            if(notices.length !== valid.length) localStorage.setItem('nl_notices', JSON.stringify(valid));
-            
-            let baseText = "Welcome to National Library! | Mon-Sat: 6 AM - 10 PM | Sunday: 8 AM - 5 PM | Free 5G WiFi active.";
-            if(valid.length > 0) { document.getElementById('liveMarquee').innerHTML = valid.map(n => `<span style="color:var(--text-main); margin-right:5px; font-weight:bold;">[${n.dateStr}]</span> ${n.text}`).join("   |   "); } 
-            else { document.getElementById('liveMarquee').innerText = baseText; }
-
-            let listHTML = "";
-            if(valid.length === 0) listHTML = "<p style='color:var(--text-muted); font-size:0.9rem;'>No active notices.</p>";
-            valid.forEach(n => { listHTML += `<div class="admin-notice-item"><div><span style="color:var(--primary-brand); font-size:0.8rem; font-weight:700;">${n.dateStr}</span><br><span style="font-size:0.95rem; color:var(--text-main);">${n.text}</span></div> <button class="btn btn-red btn-small" onclick="deleteNotice(${n.id})" style="padding: 6px 12px;"><i class="fa-solid fa-trash"></i></button></div>`; });
-            document.getElementById('activeNoticesList').innerHTML = listHTML;
-        }
-
-        setInterval(() => {
-            const now = new Date();
-            let bar = document.getElementById('timeProgress'); let txt = document.getElementById('timeStatusText');
-            let isHolidayToday = localStorage.getItem('nl_hol_today') === 'true';
-            if(isHolidayToday) { bar.style.width = '100%'; bar.style.backgroundColor = 'var(--reset-red)'; txt.innerText = `🔴 Library Closed Today (Holiday)`; return; } 
-            else { bar.style.backgroundColor = 'var(--primary-bg)'; }
-
-            let open = (now.getDay() === 0) ? 8 : 6, close = (now.getDay() === 0) ? 17 : 22;
-            let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-            let total = (close - open) * 3600, elapsed = ((h - open) * 3600) + (m * 60) + s;
-            
-            if(h < open) { bar.style.width = '0%'; txt.innerText = `Opens at ${open}:00 AM`; }
-            else if(h >= close) { bar.style.width = '100%'; txt.innerText = `Library Closed`; }
-            else { bar.style.width = ((elapsed/total)*100) + '%'; txt.innerText = `Open! Closes in ${close - h - 1}h ${59 - m}m`; }
-        }, 1000);
-
-        // --- ID CARD GENERATION ---
+        // --- Restored ID Card Logic ---
         function updateID() {
             let name = document.getElementById('idName').value || "Not Provided"; let dob = document.getElementById('idDob').value || "--/--/----"; let mob = document.getElementById('idMob').value || "Not Provided"; let seat = document.getElementById('idSeat').value || "N/A"; let address = document.getElementById('idAddress').value || "Not Provided";
             document.getElementById('cardName').innerText = name; document.getElementById('cardDob').innerText = dob; document.getElementById('cardMob').innerText = mob; document.getElementById('cardSeat').innerText = seat.toUpperCase(); document.getElementById('cardAddress').innerText = address;
@@ -965,20 +939,341 @@
                 let a = document.createElement('a'); a.download = fileName; a.href = c.toDataURL(); a.click();
             });
         }
-        
-        // --- Tools (Age Calculator & Timer) ---
-        function calcAge() {
-            let dob = document.getElementById('dobInput').value;
-            if(!dob) return alert("Please select Date of Birth.");
-            let birth = new Date(dob); let diff = Date.now() - birth.getTime(); let ageDate = new Date(diff); 
-            let years = Math.abs(ageDate.getUTCFullYear() - 1970); let months = ageDate.getUTCMonth(); let days = ageDate.getUTCDate() - 1;
-            document.getElementById('ageResult').innerText = `Your Exact Age: ${years} Years, ${months} Months, ${days} Days`;
+
+        // --- FIREBASE LIVE NOTICE LOGIC ---
+        function toggleAdminPanel() {
+            let panel = document.getElementById('adminNoticePanel');
+            if(panel.style.display === 'none') {
+                let pwd = prompt("Enter Admin Password:");
+                if(pwd === 'NL@2026') {
+                    panel.style.display = 'block';
+                } else {
+                    alert('Incorrect Password!');
+                }
+            } else {
+                panel.style.display = 'none';
+            }
         }
 
-        let timer, min = 25, sec = 0, isRun = false;
-        function updateT() { document.getElementById('timerDisplay').innerText = (min<10?'0':'')+min+":"+(sec<10?'0':'')+sec; }
-        function startTimer() { if(isRun) return; isRun = true; timer = setInterval(()=>{ if(sec==0){if(min==0){clearInterval(timer); isRun=false; return alert("Focus session complete!");} min--; sec=59;}else sec--; updateT(); }, 1000); }
-        function resetTimer() { clearInterval(timer); isRun = false; min=25; sec=0; updateT(); }
+        function toggleHolidaySwitch(type, element) {
+            if(type === 'today') { localStorage.setItem('nl_hol_today', element.checked); alert(element.checked ? "Holiday SET for Today." : "Holiday CANCELLED for Today."); } 
+            else if(type === 'tomorrow') { localStorage.setItem('nl_hol_tomorrow', element.checked); alert(element.checked ? "Holiday SET for Tomorrow." : "Holiday CANCELLED for Tomorrow."); }
+        }
+
+        async function publishNotice() {
+            let pwd = document.getElementById('nPwd').value;
+            if(pwd !== 'NL@2026') return alert('Incorrect Password!');
+            let text = document.getElementById('nText').value;
+            let days = parseInt(document.getElementById('nDays').value);
+            if(!text) return alert('Enter notice text.');
+            
+            let timestamp = Date.now();
+            let expiry = timestamp + (days * 86400000);
+            let dateStr = new Date().toLocaleString('en-IN', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+
+            let newNotice = { text, dateStr, expiry, timestamp };
+
+            try {
+                let res = await fetch(`${FIREBASE_DB_URL}.json`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newNotice)
+                });
+                
+                if (res.ok) {
+                    alert('Live Notice Published successfully!');
+                    document.getElementById('nText').value = ''; 
+                    document.getElementById('nPwd').value = '';
+                    loadNotices();
+                } else {
+                    alert('Error saving to server!');
+                }
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                alert('Connection Error!');
+            }
+        }
+
+        async function deleteNotice(id) {
+            let pwd = prompt("Enter Admin Password:");
+            if(pwd !== 'NL@2026') return alert("Incorrect Password!");
+            
+            try {
+                let res = await fetch(`${FIREBASE_DB_URL}/${id}.json`, {
+                    method: 'DELETE'
+                });
+                if (res.ok) {
+                    alert("Notice Live Server Se Delete Ho Gaya!");
+                    loadNotices();
+                } else {
+                    alert("Error in deleting from server!");
+                }
+            } catch (error) {
+                console.error("Delete Error:", error);
+                alert("Connection Error!");
+            }
+        }
+
+        async function loadNotices() {
+            try {
+                let res = await fetch(`${FIREBASE_DB_URL}.json`);
+                let data = await res.json();
+                
+                let valid = [];
+                let now = Date.now();
+
+                if (data) {
+                    for (let key in data) {
+                        if (data[key].expiry > now) {
+                            valid.push({ id: key, ...data[key] });
+                        } else {
+                            // Auto delete expired notices from Firebase
+                            fetch(`${FIREBASE_DB_URL}/${key}.json`, { method: 'DELETE' }).catch(e => console.log(e));
+                        }
+                    }
+                }
+
+                // Sort newest first
+                valid.sort((a, b) => b.timestamp - a.timestamp);
+                
+                let baseText = "Welcome to National Library! | Mon-Sat: 6 AM - 10 PM | Sunday: 8 AM - 5 PM | Free 5G WiFi active.";
+                if(valid.length > 0) { 
+                    document.getElementById('liveMarquee').innerHTML = valid.map(n => `<span style="color:var(--text-main); margin-right:5px; font-weight:bold;">[${n.dateStr}]</span> ${n.text}`).join(" &nbsp;&nbsp;|&nbsp;&nbsp; "); 
+                } 
+                else { 
+                    document.getElementById('liveMarquee').innerText = baseText; 
+                }
+
+                let listHTML = "";
+                if(valid.length === 0) listHTML = "<p style='color:var(--text-muted); font-size:0.9rem;'>No active live notices.</p>";
+                valid.forEach(n => { 
+                    listHTML += `<div class="admin-notice-item"><div><span style="color:var(--primary-brand); font-size:0.8rem; font-weight:700;">${n.dateStr}</span><br><span style="font-size:0.95rem; color:var(--text-main);">${n.text}</span></div> <button class="btn btn-red btn-small" onclick="deleteNotice('${n.id}')" style="padding: 6px 12px;"><i class="fa-solid fa-trash"></i></button></div>`; 
+                });
+                document.getElementById('activeNoticesList').innerHTML = listHTML;
+            } catch (error) {
+                console.error("Firebase Load Error:", error);
+                document.getElementById('activeNoticesList').innerHTML = "<p style='color:var(--reset-red); font-size:0.9rem;'>Server connection failed. Could not load notices.</p>";
+            }
+        }
+
+        // --- POSTER GENERATOR LOGIC (Enhanced Quality & Fonts) ---
+        const posterCanvas = document.getElementById('mainCanvas');
+        const pCtx = posterCanvas.getContext('2d');
+        const uiLoader = document.getElementById('loading-overlay');
+        const uiEmptyState = document.getElementById('empty-state');
+        const uiDownloadBtn = document.getElementById('download-btn');
+        const posterLoadText = document.getElementById('loading-text');
+
+        // History logs to prevent immediate repetition
+        const historyLog = { motivation: new Set(), random: new Set(), festival: new Set(), tribute: new Set(), images: new Set() };
+
+        // Best High-Quality Quotes for Students
+        const dataSources = {
+            motivation: [
+                "Shiksha sabse shaktishali hathiyar hai,\njisse aap duniya badal sakte hain.",
+                "Sapne unke poore nahi hote jinke baap bade hote hain,\nsapne unke poore hote hain jo zidd par ade hote hain.",
+                "Mehnat itni khamoshi se karo\nki tumhari safalta shor macha de.",
+                "Jab tak jeetna baaki hai,\ntab tak rukna aur thakna mana hai.",
+                "Samay ke paas itna samay nahi hai\nki wo aapko dobara samay de sake.",
+                "Zindagi me success paani hai toh, \nmehnat par vishwas karo kismat par nahi.",
+                "Raste kabhi khatam nahi hote,\nbas log himmat haar jate hain.",
+                "Aaj books ka haath pakad lo,\nkal kaam maangne ke liye kisi ke paer nahi pakadne padenge.",
+                "Bheed ka hissa nahi,\nbheed jiske liye khadi ho wo bano."
+            ],
+            random: [
+                "Zindagi ek safar hai suhana,\nyahan kal kya ho kisne jaana.",
+                "Jo beet gaya uspar rone se kya fayda,\njo aage hai usko sawarna seekho.",
+                "Khush rehne ka bas ek hi mantra hai,\nummeed khud se rakho, kisi aur se nahi."
+            ],
+            festivals: ["Diwali", "Holi", "Makar Sankranti", "Navratri", "Dussehra", "Eid", "Ganesh Chaturthi"],
+            festWishes: ["ki anant shubhkamnayein.", "par dher saari badhai.", "mangalmay ho."],
+            leaders: ["Mahatma Gandhi", "Dr. APJ Abdul Kalam", "Bhagat Singh", "Swami Vivekananda", "Dr. B.R. Ambedkar"],
+            tributes: ["ji ki jayanti par shat-shat naman.", "ji ko unki punyatithi par bhawpurna shradhanjali."]
+        };
+
+        // Curated High-Quality Study/Motivation Backgrounds from Unsplash
+        const bgImages = [
+            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1080&q=80", // Study setup
+            "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1080&q=80", // Desk/Notes
+            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1080&q=80", // Books/Library
+            "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1080&q=80", // Modern office
+            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1080&q=80", // Laptop focus
+            "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1080&q=80"  // Study minimal
+        ];
+
+        function getUniqueItem(array, categorySet) {
+            if (categorySet.size >= array.length) { categorySet.clear(); }
+            let item;
+            do { item = array[Math.floor(Math.random() * array.length)]; } while (categorySet.has(item));
+            categorySet.add(item);
+            return item;
+        }
+
+        async function getSmartContent(category) {
+            let textResult = ""; let colorTheme = "dark"; 
+            if (category === 'motivation') { textResult = getUniqueItem(dataSources.motivation, historyLog.motivation); colorTheme = "blue"; } 
+            else if (category === 'random') { textResult = getUniqueItem(dataSources.random, historyLog.random); colorTheme = "dark"; }
+            else if (category === 'festival') {
+                let fest = getUniqueItem(dataSources.festivals, historyLog.festival);
+                let wish = dataSources.festWishes[Math.floor(Math.random() * dataSources.festWishes.length)];
+                textResult = `${fest} ${wish}`; colorTheme = "warm";
+            } 
+            else if (category === 'tribute') {
+                let leader = getUniqueItem(dataSources.leaders, historyLog.tribute);
+                let trib = dataSources.tributes[Math.floor(Math.random() * dataSources.tributes.length)];
+                textResult = `${leader} ${trib}`; colorTheme = "tricolor";
+            }
+            return { text: textResult, theme: colorTheme };
+        }
+
+        const fetchImageSafe = (url, timeoutMs = 8000) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                const timer = setTimeout(() => reject(new Error("Timeout")), timeoutMs);
+                img.onload = () => { clearTimeout(timer); resolve(img); };
+                img.onerror = () => { clearTimeout(timer); reject(new Error("Error loading")); };
+                img.src = url;
+            });
+        };
+
+        async function generateSmartPoster(category) {
+            toggleUI(true, "Crafting Modern UI...");
+            try {
+                const { text, theme } = await getSmartContent(category);
+                posterLoadText.innerText = "Downloading HD Assets...";
+                
+                // Get unique background image
+                const bgUrl = getUniqueItem(bgImages, historyLog.images);
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://gtrao2026.github.io/National-Library/&color=ffffff&bgcolor=323232&margin=0`;
+
+                let bgImg = null; let qrImg = null;
+                try { [bgImg, qrImg] = await Promise.all([ fetchImageSafe(bgUrl), fetchImageSafe(qrUrl) ]); } 
+                catch (err) { console.warn("Fallback layout used."); }
+
+                posterLoadText.innerText = "Applying Typography...";
+                drawCanvasPoster(bgImg, qrImg, text, theme);
+            } catch (error) { console.error(error); alert("System error. Please try again."); }
+            toggleUI(false);
+        }
+
+        function drawCanvasPoster(bgImg, qrImg, text, theme) {
+            pCtx.clearRect(0, 0, 1080, 1350);
+            
+            // Premium rounded corners
+            pCtx.beginPath();
+            if(pCtx.roundRect) { pCtx.roundRect(0, 0, 1080, 1350, 60); } 
+            else { pCtx.rect(0, 0, 1080, 1350); }
+            pCtx.clip();
+
+            pCtx.fillStyle = "#323232"; pCtx.fillRect(0, 0, 1080, 1350);
+
+            if (bgImg) { pCtx.drawImage(bgImg, 0, 0, 1080, 1080); } 
+            else { pCtx.fillStyle = "#1e1e1e"; pCtx.fillRect(0, 0, 1080, 1080); }
+
+            const gradient = pCtx.createLinearGradient(0, 0, 0, 1080);
+            if (theme === 'tricolor') {
+                gradient.addColorStop(0, "rgba(255, 153, 51, 0.6)"); 
+                gradient.addColorStop(0.5, "rgba(30, 30, 30, 0.85)");
+                gradient.addColorStop(1, "rgba(19, 136, 8, 0.9)"); 
+            } else if (theme === 'warm') {
+                gradient.addColorStop(0, "rgba(254, 87, 33, 0.6)"); // #FE5721 Custom Override
+                gradient.addColorStop(0.7, "rgba(30, 30, 30, 0.85)");
+                gradient.addColorStop(1, "rgba(20, 20, 20, 1)");
+            } else if (theme === 'blue') {
+                gradient.addColorStop(0, "rgba(0, 102, 255, 0.6)"); 
+                gradient.addColorStop(0.7, "rgba(30, 30, 30, 0.85)");
+                gradient.addColorStop(1, "rgba(20, 20, 20, 1)");
+            } else {
+                gradient.addColorStop(0, "rgba(30, 30, 30, 0.6)");
+                gradient.addColorStop(1, "rgba(20, 20, 20, 1)");
+            }
+            pCtx.fillStyle = gradient; pCtx.fillRect(0, 0, 1080, 1080);
+
+            pCtx.fillStyle = "#ffffff"; pCtx.textAlign = "center"; pCtx.textBaseline = "middle";
+            pCtx.shadowColor = "rgba(0, 0, 0, 0.9)"; pCtx.shadowBlur = 20; pCtx.shadowOffsetX = 0; pCtx.shadowOffsetY = 8;
+
+            let fontSize = text.length > 100 ? 55 : 68;
+            pCtx.font = "italic 150px Georgia, serif"; pCtx.fillStyle = "rgba(255, 255, 255, 0.15)"; pCtx.fillText("“", 540, 170);
+            
+            // Made font bolder (800 weight)
+            pCtx.font = `800 ${fontSize}px Poppins, sans-serif`; pCtx.fillStyle = "#ffffff";
+            renderWrappedText(pCtx, text, 540, 540, 950, fontSize + 25);
+
+            // Footer Design
+            pCtx.shadowColor = "transparent"; pCtx.fillStyle = "#323232"; pCtx.fillRect(0, 1080, 1080, 270);
+            
+            pCtx.fillStyle = "#FE5721"; // Explicitly applied #FE5721
+            pCtx.fillRect(60, 1080, 960, 6); // Thicker top border for footer
+            
+            pCtx.textAlign = "left";
+            
+            // Bolder Footer Text
+            pCtx.fillStyle = "#ffffff"; pCtx.font = "900 55px Poppins, sans-serif"; pCtx.fillText("National Library", 65, 1175);
+            pCtx.fillStyle = "#e0e0e0"; pCtx.font = "600 30px Poppins, sans-serif"; pCtx.fillText("Maharajganj Azamgarh - 276137", 65, 1235);
+            pCtx.fillStyle = "#4dabf7"; pCtx.font = "800 28px Poppins, sans-serif"; pCtx.fillText("🔗 gtrao2026.github.io/National-Library", 65, 1290);
+
+            if (qrImg) {
+                pCtx.strokeStyle = "rgba(255, 255, 255, 0.15)"; pCtx.lineWidth = 3;
+                pCtx.strokeRect(835, 1115, 186, 186); pCtx.drawImage(qrImg, 838, 1118, 180, 180);
+            }
+
+            uiEmptyState.style.display = 'none'; posterCanvas.style.display = 'block';
+        }
+
+        function renderWrappedText(context, text, x, y, maxWidth, lineHeight) {
+            const paragraphs = text.split('\n'); let linesToDraw = [];
+            paragraphs.forEach(paragraph => {
+                if (paragraph.trim() === '') { linesToDraw.push(''); return; }
+                const words = paragraph.split(' '); let currentLine = '';
+                words.forEach((word, index) => {
+                    const testLine = currentLine + word + ' '; const metrics = context.measureText(testLine);
+                    if (metrics.width > maxWidth && index > 0) { linesToDraw.push(currentLine.trim()); currentLine = word + ' '; } 
+                    else { currentLine = testLine; }
+                });
+                linesToDraw.push(currentLine.trim());
+            });
+
+            let startY = y - ((linesToDraw.length - 1) * lineHeight) / 2;
+            linesToDraw.forEach(line => { context.fillText(line, x, startY); startY += lineHeight; });
+        }
+
+        function toggleUI(isLoading, message = "") {
+            const buttons = document.querySelectorAll('#sec-poster .btn');
+            if (isLoading) {
+                posterLoadText.innerText = message; uiLoader.style.display = 'flex'; uiDownloadBtn.style.display = 'none';
+                buttons.forEach(btn => btn.disabled = true);
+            } else {
+                uiLoader.style.display = 'none'; uiDownloadBtn.style.display = 'flex';
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        function savePoster() {
+            try {
+                const dataUrl = posterCanvas.toDataURL("image/png", 1.0);
+                const link = document.createElement('a');
+                link.download = `NationalLibrary_HD_Poster_${Date.now()}.png`;
+                link.href = dataUrl; link.click();
+            } catch(e) {
+                alert("Please Right-Click on the image to save.");
+            }
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            let bar = document.getElementById('timeProgress'); let txt = document.getElementById('timeStatusText');
+            let isHolidayToday = localStorage.getItem('nl_hol_today') === 'true';
+            if(isHolidayToday) { bar.style.width = '100%'; bar.style.backgroundColor = 'var(--reset-red)'; txt.innerText = `🚪 Library Closed Today`; return; } 
+            else { bar.style.backgroundColor = 'var(--primary-bg)'; }
+
+            let open = (now.getDay() === 0) ? 8 : 6, close = (now.getDay() === 0) ? 17 : 22;
+            let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+            let total = (close - open) * 3600, elapsed = ((h - open) * 3600) + (m * 60) + s;
+            
+            if(h < open) { bar.style.width = '0%'; txt.innerText = `Opens at ${open}:00 AM`; }
+            else if(h >= close) { bar.style.width = '100%'; txt.innerText = `Library Closed`; }
+            else { bar.style.width = ((elapsed/total)*100) + '%'; txt.innerText = `Open! Closes in ${close - h - 1}h ${59 - m}m`; }
+        }, 1000);
     </script>
 </body>
 </html>
