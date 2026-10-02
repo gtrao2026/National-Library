@@ -14,26 +14,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Core Libraries (PDF, Canvas, QR) -->
+    <!-- Core Libraries (PDF, Canvas, QR, Firebase) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-
-    <!-- FIREBASE V8 SDK (For Realtime Sync) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     
     <style>
         /* =========================================================
-           1. PERFECT LIGHT/DARK MODE VARIABLES
+           1. PERFECT LIGHT/DARK MODE VARIABLES (Ultra 8K Scalable)
            ========================================================= */
         :root, html[data-theme="light"] {
             --bg-body: #f1f5f9;
             --bg-surface: #ffffff;
             --bg-glass: rgba(255, 255, 255, 0.95);
             --border-glass: rgba(0, 0, 0, 0.08);
+            
             --text-main: #0f172a;
             --text-muted: #64748b;
+            
             --brand-blue: #2563eb;
             --brand-hover: #1d4ed8;
             --accent-orange: #f59e0b;
@@ -41,6 +41,7 @@
             --danger-red: #ef4444;
             --warning-yellow: #eab308;
             --water-blue: #0ea5e9;
+            
             --input-bg: rgba(241, 245, 249, 0.9);
             --shadow-bento: 0 10px 40px rgba(0, 0, 0, 0.05);
             --shadow-glow: 0 0 25px rgba(37, 99, 235, 0.15);
@@ -51,8 +52,10 @@
             --bg-surface: #0f172a;
             --bg-glass: rgba(15, 23, 42, 0.85);
             --border-glass: rgba(255, 255, 255, 0.1);
+            
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            
             --brand-blue: #3b82f6;
             --brand-hover: #60a5fa;
             --accent-orange: #fbbf24;
@@ -60,37 +63,39 @@
             --danger-red: #f87171;
             --warning-yellow: #facc15;
             --water-blue: #38bdf8;
+            
             --input-bg: rgba(30, 41, 59, 0.8);
             --shadow-bento: 0 10px 40px rgba(0, 0, 0, 0.4);
             --shadow-glow: 0 0 25px rgba(59, 130, 246, 0.25);
         }
 
         /* =========================================================
-           2. RESPONSIVE BASE & ULTRA HD APP WRAPPER
+           2. RESPONSIVE BASE & ULTRA 8K APP WRAPPER
            ========================================================= */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
         body { 
             background-color: var(--bg-body); color: var(--text-main); 
-            font-size: clamp(14px, 1vw, 18px); line-height: 1.6;
+            font-size: clamp(14px, 1vw, 20px); line-height: 1.6;
             -webkit-tap-highlight-color: transparent; transition: background-color 0.4s ease, color 0.4s ease; 
             overflow-x: hidden; scroll-behavior: smooth;
         }
 
+        /* Max-width expanded to 2560px for flawless Ultra HD / 8K TV displays */
         .app-wrapper {
-            max-width: 1600px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
-            background: var(--bg-body); box-shadow: 0 0 80px rgba(0,0,0,0.15); position: relative; transition: 0.4s ease;
+            max-width: 2560px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
+            background: var(--bg-body); box-shadow: 0 0 100px rgba(0,0,0,0.2); position: relative; transition: 0.4s ease;
         }
 
-        .subtitle { font-size: clamp(0.75rem, 1vw, 0.9rem); color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
-        .section-title { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 900; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
+        .subtitle { font-size: clamp(0.75rem, 1vw, 1rem); color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
+        .section-title { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 900; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
 
         /* =========================================================
            3. BENTO GLASSMORPHISM CARDS
            ========================================================= */
         .bento-card {
             background: var(--bg-glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border-glass); border-radius: clamp(16px, 2vw, 24px); 
+            border: 1px solid var(--border-glass); border-radius: clamp(16px, 2vw, 28px); 
             padding: clamp(15px, 3vw, 40px); box-shadow: var(--shadow-bento); 
             transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease, border 0.4s ease;
         }
@@ -102,13 +107,13 @@
         /* =========================================================
            4. PREMIUM BUTTONS & INPUTS
            ========================================================= */
-        .btn { padding: clamp(12px, 1.5vw, 18px) clamp(20px, 2vw, 30px); border-radius: 14px; font-weight: 700; font-size: clamp(0.95rem, 1.2vw, 1.1rem); border: none; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 10px; outline: none; }
+        .btn { padding: clamp(12px, 1.5vw, 18px) clamp(20px, 2vw, 30px); border-radius: 12px; font-weight: 700; font-size: clamp(0.95rem, 1.2vw, 1.2rem); border: none; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; outline: none; }
         .btn-primary { background: var(--brand-blue); color: #fff; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
-        .btn-primary:hover { filter: brightness(1.15); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4); }
-        .btn-success { background: var(--success-green); color: #fff; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); }
+        .btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4); }
+        .btn-success { background: var(--success-green); color: #fff; }
         .btn-danger { background: var(--danger-red); color: #fff; }
         .btn-warning { background: var(--warning-yellow); color: #000; font-weight: 900; }
-        .btn-water { background: var(--water-blue); color: #fff; box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3); }
+        .btn-water { background: var(--water-blue); color: #fff; }
         .btn-outline { background: transparent; border: 1.5px solid var(--border-glass); color: var(--text-main); }
         .btn-outline:hover { background: var(--input-bg); }
 
@@ -116,114 +121,167 @@
         .input-group label { display: block; margin-bottom: 8px; font-size: clamp(0.8rem, 1vw, 0.9rem); color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .input-group input, .input-group select, .input-group textarea {
             width: 100%; padding: clamp(14px, 1.5vw, 18px); background: var(--input-bg); border: 1.5px solid var(--border-glass);
-            color: var(--text-main); border-radius: 14px; font-size: clamp(0.95rem, 1.2vw, 1.1rem); outline: none; transition: 0.3s; font-weight: 500;
+            color: var(--text-main); border-radius: 12px; font-size: clamp(0.95rem, 1.2vw, 1.15rem); outline: none; transition: 0.3s; font-weight: 500;
         }
         .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); background: transparent; }
 
-        /* Full Width Action Layouts */
-        .wide-btn-container { display: flex; gap: clamp(10px, 2vw, 20px); margin-bottom: 20px; flex-wrap: wrap; }
-        .wide-btn { flex: 1; min-width: 45%; padding: clamp(18px, 2vw, 24px); border-radius: 20px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 900; font-size: clamp(1.1rem, 1.5vw, 1.3rem); border: none; transition: 0.3s; color: #fff; }
-        .wide-btn-water { background: linear-gradient(135deg, #0ea5e9, #0369a1); box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); }
-        .wide-btn-seat { background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
-        .wide-btn:hover { transform: translateY(-4px) scale(1.02); filter: brightness(1.15); }
-
-        .btn-pdfly-full {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); background-size: 200% 200%;
-            animation: gradientAnim 4s ease infinite; color: #fff; width: 100%; padding: clamp(18px, 2vw, 24px);
-            border-radius: 20px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); font-weight: 900; font-size: clamp(1.1rem, 1.5vw, 1.3rem); border: none; transition: 0.3s; margin-bottom: 30px;
-        }
-        .btn-pdfly-full:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.6); }
-        @keyframes gradientAnim { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        /* Smooth Custom Toggle Switch */
+        .toggle-switch-ui { width: 54px; height: 30px; background: var(--input-bg); border-radius: 20px; position: relative; border: 1.5px solid var(--border-glass); cursor: pointer; }
+        .toggle-switch-ui input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .toggle-knob { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: absolute; top: 1.5px; left: 2px; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .toggle-switch-ui input:checked + .toggle-knob { transform: translateX(24px); background: #fff; }
         /* =========================================================
-           5. COMPACT GRID NAVIGATION (ULTRA HD SCALED)
+           5. NAVIGATION & WIDE BUTTONS (Grid, 3-Row, 2-Row & PDFly)
            ========================================================= */
         .grid-nav { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: clamp(10px, 1.5vw, 20px); 
-            padding: 0 clamp(10px, 2.5vw, 30px); 
-            padding-bottom: 20px; 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.5vw, 20px); 
+            padding: 0 clamp(10px, 2.5vw, 30px); padding-bottom: 20px; 
         }
         @media (min-width: 768px) { .grid-nav { grid-template-columns: repeat(6, 1fr); } }
         @media (min-width: 1024px) { .grid-nav { grid-template-columns: repeat(8, 1fr); } }
 
         .nav-item {
-            background: var(--bg-glass); backdrop-filter: blur(15px); border: 1px solid var(--border-glass); 
-            border-radius: clamp(14px, 2vw, 20px); padding: clamp(14px, 1.5vw, 20px) 5px; 
+            background: var(--bg-glass); backdrop-filter: blur(15px); border: 1.5px solid var(--border-glass); 
+            border-radius: clamp(14px, 1.5vw, 18px); padding: clamp(14px, 1.5vw, 20px) 5px; 
             text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: var(--shadow-bento);
+            box-shadow: var(--shadow-bento); color: var(--text-main);
         }
-        .nav-item i { font-size: clamp(1.3rem, 2vw, 1.8rem); margin-bottom: 10px; color: var(--brand-blue); transition: 0.3s; }
-        .nav-item span { font-size: clamp(0.7rem, 1vw, 0.9rem); font-weight: 800; color: var(--text-main); white-space: nowrap; }
-        .nav-item:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); }
-        .nav-item:hover i, .nav-item:hover span { color: #fff; }
+        .nav-item i { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 8px; color: var(--brand-blue); transition: 0.3s; }
+        .nav-item span { font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 800; white-space: nowrap; }
+        .nav-item:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); color: #fff; }
+        .nav-item:hover i { color: #fff; }
+
+        /* 3-Button Row (Books, Notes, Video) */
+        .action-row-3 { display: flex; gap: clamp(10px, 1.5vw, 15px); margin-bottom: 15px; padding: 0 clamp(10px, 2.5vw, 30px); flex-wrap: wrap; }
+        .action-btn-3 { 
+            flex: 1; min-width: 100px; display: flex; flex-direction: column; align-items: center; gap: 8px; 
+            padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; font-weight: 800; text-align: center; cursor: pointer; 
+            transition: 0.3s; box-shadow: var(--shadow-bento); border: 1.5px solid var(--border-glass); background: var(--bg-glass); color: var(--text-main);
+        }
+        .action-btn-3 i { font-size: clamp(1.3rem, 1.5vw, 1.6rem); color: var(--brand-blue); transition: 0.3s; }
+        .action-btn-3 span { font-size: clamp(0.85rem, 1vw, 1rem); }
+        .action-btn-3:hover { transform: translateY(-3px); border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
+        .action-btn-3:hover i { color: #fff; }
+
+        /* 50-50 Water & Seat Row */
+        .wide-action-row { display: flex; gap: clamp(12px, 1.5vw, 20px); margin-bottom: 20px; padding: 0 clamp(10px, 2.5vw, 30px); }
+        .wide-nav-btn { flex: 1; flex-direction: row; gap: 12px; padding: clamp(16px, 1.5vw, 22px); }
+        .wide-nav-btn i { margin: 0; font-size: clamp(1.3rem, 1.5vw, 1.6rem); }
+        .wide-nav-btn span { font-size: clamp(1rem, 1.2vw, 1.15rem); }
+
+        .btn-pdfly-full {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); background-size: 200% 200%; animation: gradientAnim 4s ease infinite; 
+            color: #fff; width: 100%; padding: clamp(16px, 2vw, 22px); border-radius: 16px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4); font-weight: 900; font-size: clamp(1.05rem, 1.4vw, 1.2rem); border: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-pdfly-full:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 12px 30px rgba(37, 99, 235, 0.5); }
+        @keyframes gradientAnim { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
         /* =========================================================
            6. LIVE SEAT MATRIX UI
            ========================================================= */
-        .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(35px, 3vw, 50px), 1fr)); gap: clamp(8px, 1vw, 12px); margin-top: 20px; }
+        .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(40px, 4vw, 60px), 1fr)); gap: clamp(10px, 1.2vw, 15px); margin-top: 20px; }
         .seat-box {
-            aspect-ratio: 1; border-radius: clamp(6px, 1vw, 10px); display: flex; align-items: center; justify-content: center;
-            font-size: clamp(0.8rem, 1.2vw, 1rem); font-weight: 900; color: #fff; cursor: pointer; transition: 0.3s; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.15); position: relative;
+            aspect-ratio: 1; border-radius: clamp(8px, 1vw, 12px); display: flex; align-items: center; justify-content: center;
+            font-size: clamp(0.9rem, 1.2vw, 1.15rem); font-weight: 900; color: #fff; cursor: pointer; transition: 0.3s; 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.15); position: relative; border: 2px solid transparent;
         }
         .seat-box.available { background: var(--success-green); }
-        .seat-box.occupied { background: var(--danger-red); opacity: 0.4; }
-        .seat-box:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 5px 15px rgba(0,0,0,0.4); opacity: 1; }
-        .edit-mode .seat-box { animation: seatShake 0.4s infinite alternate; opacity: 1; border: 2px solid #fff; }
+        .seat-box.occupied { background: var(--danger-red); opacity: 0.35; }
+        .seat-box:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 8px 25px rgba(0,0,0,0.4); opacity: 1; border-color: #fff; }
+        .edit-mode .seat-box { animation: seatShake 0.4s infinite alternate; opacity: 1; border-color: #fff; }
         @keyframes seatShake { 0% {transform: rotate(-3deg) scale(1.05);} 100% {transform: rotate(3deg) scale(1.05);} }
 
         /* =========================================================
-           7. 20L WATER BOTTLE ANIMATION (REALISTIC)
+           7. 20L RIBBED WATER BOTTLE ANIMATION (REALISTIC)
            ========================================================= */
-        .water-dashboard { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 20px; }
-        .bottle-wrapper { display: flex; flex-direction: column; align-items: center; margin: 10px; position: relative; }
+        .water-dashboard { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-end; margin-bottom: 20px; }
+        .bottle-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; transition: 0.3s; }
+        .bottle-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 15px 25px rgba(14, 165, 233, 0.4)); }
+        
+        /* Realistic Plastic Neck */
         .bottle-neck { 
-            width: clamp(25px, 3vw, 35px); height: clamp(15px, 2vw, 25px); 
-            background: rgba(14, 165, 233, 0.2); border: 3px solid var(--water-blue); 
-            border-bottom: none; border-radius: 6px 6px 0 0; position: relative; z-index: 2; 
+            width: clamp(28px, 3vw, 40px); height: clamp(20px, 2vw, 30px); 
+            background: rgba(14, 165, 233, 0.15); border: 3px solid var(--water-blue); 
+            border-bottom: none; border-radius: 8px 8px 0 0; position: relative; z-index: 2; 
         }
+        .bottle-neck::before, .bottle-neck::after {
+            content: ''; position: absolute; left: -4px; width: calc(100% + 8px); height: 5px; 
+            background: var(--water-blue); border-radius: 3px;
+        }
+        .bottle-neck::before { top: 2px; }
+        .bottle-neck::after { bottom: 2px; }
+        
+        /* Realistic Ribbed Body */
         .bottle-body { 
-            width: clamp(80px, 10vw, 120px); height: clamp(110px, 15vw, 160px); 
-            border: 4px solid var(--water-blue); border-radius: 30px 30px 10px 10px; 
+            width: clamp(100px, 12vw, 150px); height: clamp(140px, 16vw, 210px); 
+            border: 4px solid var(--water-blue); border-radius: 35px 35px 15px 15px; 
             position: relative; overflow: hidden; background: rgba(14, 165, 233, 0.05); 
-            box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.2); z-index: 1;
+            box-shadow: inset 0 0 25px rgba(14, 165, 233, 0.25); z-index: 1;
         }
-        /* The horizontal ribs styling matching the 20L bottle */
+        /* Ribbed Line Effect */
         .bottle-body::after { 
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: repeating-linear-gradient(to bottom, transparent, transparent 20%, rgba(14, 165, 233, 0.5) 20%, rgba(14, 165, 233, 0.5) 22%); 
+            background: repeating-linear-gradient(to bottom, transparent, transparent 18%, rgba(14, 165, 233, 0.45) 18%, rgba(14, 165, 233, 0.45) 22%); 
             pointer-events: none; z-index: 5; 
         }
+        
+        /* Real Water Wave */
         .water-fill { 
             position: absolute; bottom: 0; width: 100%; 
-            background: linear-gradient(to bottom, #38bdf8, #0284c7); 
-            transition: height 1s ease-in-out; z-index: 1; 
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.85), rgba(2, 132, 199, 0.95)); 
+            transition: height 1s linear; z-index: 1; 
         }
-        /* Top surface wave of the water */
         .water-fill::before {
-            content: ''; position: absolute; top: -5px; left: 0; width: 100%; height: 10px;
-            background: rgba(255, 255, 255, 0.3); border-radius: 50%;
+            content: ''; position: absolute; top: -8px; left: -10%; width: 120%; height: 16px;
+            background: rgba(255, 255, 255, 0.4); border-radius: 50%; animation: liquidMove 2.5s infinite alternate ease-in-out;
         }
-        .bottle-label { margin-top: 10px; font-weight: 800; font-size: 0.9rem; color: var(--text-main); }
-        .bottle-time { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        @keyframes liquidMove { 0% { transform: translateX(0) scaleX(0.9); } 100% { transform: translateX(10px) scaleX(1.1); } }
+        
+        .bottle-label { margin-top: 15px; font-weight: 900; font-size: 1rem; color: var(--text-main); }
+        .bottle-time { font-size: 0.85rem; color: var(--text-muted); font-weight: 800; background: var(--input-bg); padding: 6px 14px; border-radius: 100px; margin-top: 5px; border: 1px solid var(--border-glass); }
+        
+        /* Delete Bottle Tooltip on Hover */
+        .bottle-delete-btn {
+            position: absolute; top: -15px; right: -15px; background: var(--danger-red); color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center;
+            font-size: 1rem; cursor: pointer; z-index: 10; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.6); border: 2px solid var(--bg-surface);
+        }
+        .bottle-wrapper:hover .bottle-delete-btn { display: flex; }
 
         /* Popup Notification */
         #waterPopup {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff;
-            padding: 15px 30px; border-radius: 100px; font-weight: 900; font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.5); z-index: 99999;
-            display: none; align-items: center; gap: 10px; animation: slideDown 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding: 15px 30px; border-radius: 100px; font-weight: 900; font-size: 1.15rem;
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.6); z-index: 999999;
+            display: none; align-items: center; gap: 12px; animation: slideDown 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 2px solid rgba(255,255,255,0.2);
         }
         @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
 
         /* =========================================================
-           8. MODALS, LOADERS & HIGH SECURITY RECEIPT CSS
+           8. SECURE RECEIPT WATERMARKS & ANTI-EDIT DESIGN
            ========================================================= */
-        .verified-badge { color: #3b82f6; font-size: clamp(1rem, 1.5vw, 1.3rem); margin-left: 6px; display: inline-flex; align-items: center; filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3)); }
+        .secure-receipt-bg {
+            background-color: #ffffff;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 2px, transparent 2px, transparent 8px),
+                url('data:image/svg+xml;utf8,<svg width="180" height="180" xmlns="http://www.w3.org/2000/svg"><text x="10" y="90" font-size="12" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.035)" transform="rotate(-35 90 90)">NATIONAL LIBRARY ORIGINAL</text><text x="90" y="160" font-size="10" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.02)" transform="rotate(-35 160 160)">SECURE DOCUMENT</text></svg>');
+            background-repeat: repeat;
+        }
+        .hologram-stamp {
+            position: absolute; right: 45px; top: 110px; width: 95px; height: 95px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(212,175,55,0.4) 0%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,0.4) 100%);
+            border: 2.5px dashed #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;
+            color: #d4af37; text-align: center; transform: rotate(-15deg); opacity: 0.95; z-index: 1; box-shadow: 0 0 25px rgba(212,175,55,0.6); line-height: 1.3;
+        }
+
+        /* =========================================================
+           9. MODALS, LOADERS & MISC CSS
+           ========================================================= */
+        .verified-badge { color: #3b82f6; font-size: clamp(1.1rem, 1.5vw, 1.4rem); margin-left: 8px; display: inline-flex; align-items: center; filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.4)); }
         
         #loader {
             position: fixed; inset: 0; background: var(--bg-body); z-index: 99999; 
@@ -234,21 +292,6 @@
         @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(15px); padding: 20px; }
-        
-        /* 100+ TINY WATERMARKS FOR HIGH PRIVACY */
-        .secure-receipt-bg {
-            background-color: #ffffff;
-            background-image: url('data:image/svg+xml;utf8,<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg"><text x="10" y="75" font-size="11" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.025)" transform="rotate(-35 75 75)">NATIONAL LIBRARY ORIGINAL</text><text x="80" y="140" font-size="9" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.015)" transform="rotate(-35 140 140)">SECURE DOCUMENT</text></svg>');
-            background-repeat: repeat;
-        }
-        
-        .hologram-stamp {
-            position: absolute; right: 40px; top: 120px; width: 90px; height: 90px; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(212,175,55,0.4) 0%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,0.4) 100%);
-            border: 2px dashed #d4af37; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900;
-            color: #d4af37; text-align: center; transform: rotate(-15deg); opacity: 0.9; z-index: 1; box-shadow: 0 0 20px rgba(212,175,55,0.5);
-            letter-spacing: 1px;
-        }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -258,52 +301,65 @@
 </head>
 <body>
 
-    <!-- Water Popup -->
-    <div id="waterPopup"><i class="fa-solid fa-droplet"></i> Fresh Water Arrived Just Now!</div>
+    <!-- Water Arrived Popup -->
+    <div id="waterPopup"><span style="font-size: 1.6rem;">🥛</span> Fresh Water Arrived Just Now!</div>
 
-    <!-- SMART LOADER (Tap anywhere to force skip immediately) -->
+    <!-- SMART LOADER -->
     <div id="loader" onclick="forceCloseLoader()">
         <i class="fa-solid fa-book-open-reader loader-logo"></i>
-        <div style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -1.5px; text-align: center; background: linear-gradient(135deg, #1e3a8a, #3b82f6, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NATIONAL LIBRARY</div>
-        <div class="subtitle" style="margin-top: 5px; font-size: clamp(0.9rem, 1.5vw, 1.1rem); font-weight: 800;">Maharajganj Azamgarh</div>
-        <p style="margin-top: 40px; font-size: clamp(0.85rem, 1.2vw, 1rem); color: var(--text-muted); font-weight: 700; opacity: 0.5; background: var(--input-bg); padding: 10px 20px; border-radius: 100px;">Tap anywhere to enter instantly</p>
+        <div style="font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -1.5px; text-align: center; background: linear-gradient(135deg, #1e3a8a, #3b82f6, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NATIONAL LIBRARY</div>
+        <div class="subtitle" style="margin-top: 5px; font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 800;">Maharajganj Azamgarh</div>
+        <p style="margin-top: 40px; font-size: clamp(0.9rem, 1.2vw, 1.1rem); color: var(--text-muted); font-weight: 700; opacity: 0.6; background: var(--input-bg); padding: 14px 28px; border-radius: 100px; border: 1px solid var(--border-glass);">Tap anywhere to enter instantly</p>
     </div>
 
     <div class="app-wrapper">
         
-        <!-- GLASSMORPHISM HEADER -->
-        <header style="display: flex; justify-content: space-between; align-items: center; padding: clamp(15px, 2vw, 25px) clamp(20px, 3vw, 40px); background: var(--bg-glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100;">
-            <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showSection('home')">
-                <i class="fa-solid fa-book-open-reader" style="color: var(--brand-blue); font-size: clamp(1.6rem, 2.5vw, 2.2rem);"></i>
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 900; letter-spacing: -0.5px;">National Library</span>
-                    <span class="subtitle" style="font-size: clamp(0.7rem, 1vw, 0.85rem);">Maharajganj Azamgarh</span>
+        <!-- COMPACT GLASSMORPHISM HEADER -->
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: clamp(10px, 1.2vw, 16px) clamp(20px, 3vw, 40px); background: var(--bg-glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 100;">
+            <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="showSection('home')">
+                <i class="fa-solid fa-book-open-reader" style="color: var(--brand-blue); font-size: clamp(1.4rem, 2vw, 1.8rem);"></i>
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <span style="font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 900; letter-spacing: -0.5px; line-height: 1;">National Library</span>
+                    <span class="subtitle" style="font-size: clamp(0.65rem, 1vw, 0.75rem); margin-top: 2px;">Maharajganj Azamgarh</span>
                 </div>
             </div>
-            <div style="display:flex; gap: clamp(10px, 1.5vw, 15px);">
-                <button class="btn btn-outline" style="padding: clamp(10px, 1.5vw, 14px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: relative;" onclick="openNotificationModal()">
-                    <i class="fa-solid fa-bell" style="font-size: clamp(1.1rem, 1.5vw, 1.3rem);"></i>
-                    <span id="notifBadge" style="position: absolute; top: 0; right: 0; background: var(--danger-red); width: 14px; height: 14px; border-radius: 50%; display: none; border: 2px solid var(--bg-glass);"></span>
+            <div style="display:flex; gap: clamp(8px, 1vw, 12px);">
+                <button class="btn btn-outline" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: relative;" onclick="openNotificationModal()">
+                    <i class="fa-solid fa-bell" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i>
+                    <span id="notifBadge" style="position: absolute; top: 0; right: 0; background: var(--danger-red); width: 12px; height: 12px; border-radius: 50%; display: none; border: 2px solid var(--bg-glass);"></span>
                 </button>
-                <button class="btn btn-outline" style="padding: clamp(10px, 1.5vw, 14px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openGlobalScanner()"><i class="fa-solid fa-qrcode" style="font-size: clamp(1.1rem, 1.5vw, 1.3rem);"></i></button>
-                <button class="btn btn-primary" style="padding: clamp(10px, 1.5vw, 14px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openAdminModal()"><i class="fa-solid fa-shield-halved" style="font-size: clamp(1.1rem, 1.5vw, 1.3rem);"></i></button>
+                <button class="btn btn-outline" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openGlobalScanner()"><i class="fa-solid fa-qrcode" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i></button>
+                <button class="btn btn-primary" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openAdminModal()"><i class="fa-solid fa-shield-halved" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i></button>
             </div>
         </header>
         <!-- =========================================================
-             SYSTEM MODALS (NOTIFICATIONS, ADMIN, WATER LOGIN)
+             SYSTEM MODALS (NOTIFICATIONS, ADMIN, WATER LOGIN, NCERT BOOKS)
              ========================================================= -->
         
-        <!-- 1. NOTIFICATION CENTER (Firebase Live) -->
+        <!-- 1. NOTIFICATION CENTER -->
         <div class="modal-overlay" id="notificationModal">
             <div class="bento-card" style="width: 100%; max-width: 500px; position: relative; max-height: 80vh; display: flex; flex-direction: column;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: var(--text-muted);" onclick="closeNotificationModal()"></i>
                 <h3 style="margin-bottom: 20px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem);"><i class="fa-solid fa-bell" style="color: var(--accent-orange);"></i> Library Updates</h3>
                 <div id="notificationList" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px;"></div>
-                <button class="btn btn-outline" style="width: 100%; margin-top: 20px; font-size: 1rem;" onclick="clearAllNotifications()"><i class="fa-solid fa-trash-can"></i> Clear All History</button>
+                <button class="btn btn-outline" style="width: 100%; margin-top: 20px; font-size: 1rem; border-radius: 12px;" onclick="clearAllNotifications()"><i class="fa-solid fa-trash-can"></i> Clear All History</button>
             </div>
         </div>
 
-        <!-- 2. Admin Control Panel (Notices & Holiday) -->
+        <!-- 2. NCERT Books Modal -->
+        <div class="modal-overlay" id="booksModal">
+            <div class="bento-card" style="width: 100%; max-width: 460px; text-align: center; position: relative;">
+                <i class="fa-solid fa-times" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.3rem; color: var(--text-muted);" onclick="document.getElementById('booksModal').style.display='none'"></i>
+                <i class="fa-solid fa-book-bookmark" style="font-size: 3.5rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.4rem;">Digital Library Portal</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Official repository for textbooks from Class 1 to 12.</p>
+                <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://ncert.nic.in/textbook.php', '_blank')">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> NCERT Textbooks PDF (I-XII)
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Admin Control Panel -->
         <div class="modal-overlay" id="adminModal">
             <div class="bento-card" style="width: 100%; max-width: 480px; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: var(--text-muted);" onclick="document.getElementById('adminModal').style.display='none'"></i>
@@ -321,7 +377,7 @@
                         <span style="font-size: 0.95rem; font-weight: 700;"><i class="fa-solid fa-clock-rotate-left"></i> Auto Delete in 24 Hours</span>
                         <input type="checkbox" id="autoDeleteNotice" checked style="width: 20px; height: 20px; accent-color: var(--brand-blue);">
                     </div>
-                    <button class="btn btn-success" style="width:100%; margin-bottom: 20px; padding: 16px;" onclick="addNotice()"><i class="fa-solid fa-paper-plane"></i> Publish Now</button>
+                    <button class="btn btn-success" style="width:100%; margin-bottom: 20px; padding: 16px; border-radius: 12px;" onclick="addNotice()"><i class="fa-solid fa-paper-plane"></i> Publish Now</button>
                     <div style="display:flex; align-items:center; justify-content:space-between; padding: 15px; background: var(--input-bg); border-radius: 12px; border: 1px solid var(--border-glass);">
                         <span style="font-weight: 700; font-size: 0.95rem;"><i class="fa-solid fa-power-off" style="color: var(--danger-red); margin-right: 8px;"></i> Library Holiday Mode</span>
                         <input type="checkbox" id="holidayToggle" onchange="toggleHoliday()" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--danger-red);">
@@ -330,7 +386,7 @@
             </div>
         </div>
 
-        <!-- 3. Receipt Generator Password -->
+        <!-- 4. Receipt Generator Password -->
         <div class="modal-overlay" id="pwdModal">
             <div class="bento-card" style="width: 100%; max-width: 420px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); font-size: 1.2rem;" onclick="document.getElementById('pwdModal').style.display='none'"></i>
@@ -342,7 +398,7 @@
             </div>
         </div>
 
-        <!-- 4. Water Vendor Login Modal -->
+        <!-- 5. Water Vendor Login Modal -->
         <div class="modal-overlay" id="waterLoginModal">
             <div class="bento-card" style="width: 100%; max-width: 420px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); font-size: 1.2rem;" onclick="document.getElementById('waterLoginModal').style.display='none'"></i>
@@ -350,11 +406,11 @@
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.5rem;">Vendor Access</h3>
                 <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter Water Password to update 20L bottle log.</p>
                 <div class="input-group"><input type="password" id="waterPwdInput" placeholder="Enter Password" style="text-align:center; font-size: 1.3rem; font-weight: 900;"></div>
-                <button class="btn btn-water" style="width:100%; padding: 16px;" onclick="verifyWaterLogin()">Login</button>
+                <button class="btn btn-water" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyWaterLogin()">Login</button>
             </div>
         </div>
 
-        <!-- 5. Global Identity Scanner Modal -->
+        <!-- 6. Global Identity Scanner Modal -->
         <div class="modal-overlay" id="globalQrModal">
             <div class="bento-card" style="width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); z-index: 10; font-size: 1.2rem;" onclick="closeGlobalScanner()"></i>
@@ -380,7 +436,7 @@
              ========================================================= -->
         <div style="padding: clamp(15px, 3vw, 40px); flex: 1;">
             
-            <!-- Live Announcement Marquee (Height Reduced) -->
+            <!-- Live Announcement Marquee -->
             <div style="background: rgba(255, 159, 10, 0.15); border: 1px solid rgba(255, 159, 10, 0.3); padding: clamp(10px, 1.2vw, 15px) 20px; border-radius: 100px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer; backdrop-filter: blur(10px);" onclick="openNotificationModal()">
                 <i class="fa-solid fa-bullhorn" style="color: var(--accent-orange); font-size: 1.2rem; animation: seatShake 2s infinite;"></i>
                 <marquee id="liveMarquee" style="color: var(--accent-orange); font-size: clamp(0.95rem, 1.2vw, 1.1rem); font-weight: 800; letter-spacing: 0.5px; height: 100%;">Connecting to Live Library Servers... Updates will appear here.</marquee>
@@ -392,20 +448,21 @@
                     <i class="fa-solid fa-clock" style="color: var(--brand-blue); margin-right: 10px; font-size: 1.2rem;"></i> <span id="realTimeClock">Loading...</span>
                 </div>
                 
-                <div class="bento-card" style="padding: 10px; border-radius: 100px; display: flex; align-items: center; gap: 12px; cursor: pointer; box-shadow: var(--shadow-bento);" onclick="toggleTheme()">
+                <div class="bento-card" style="padding: 10px; border-radius: 100px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-bento);">
                     <i class="fa-solid fa-sun" style="color: var(--accent-orange); font-size: 1.2rem; padding-left: 6px;"></i>
-                    <div style="width: 54px; height: 30px; background: var(--input-bg); border-radius: 20px; position: relative; border: 1.5px solid var(--border-glass);">
-                        <div id="themeKnob" style="width: 24px; height: 24px; background: #fff; border-radius: 50%; position: absolute; top: 1.5px; left: 2px; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
-                    </div>
+                    <label class="toggle-switch-ui">
+                        <input type="checkbox" id="themeToggleCheckbox" onchange="toggleTheme()">
+                        <div class="toggle-knob" id="themeKnob"></div>
+                    </label>
                     <i class="fa-solid fa-moon" style="color: var(--brand-blue); font-size: 1.2rem; padding-right: 6px;"></i>
                 </div>
             </div>
 
-            <!-- SMART AI ASSISTANT (Wikipedia Integrated) -->
+            <!-- SMART AI ASSISTANT -->
             <div style="position: relative; margin-bottom: 30px; z-index: 90;" id="aiSearchContainerBox">
                 <div class="bento-card" style="border-radius: 100px; padding: 10px 20px; display: flex; align-items: center; gap: 15px;">
                     <i class="fa-solid fa-sparkles" style="color: var(--brand-blue); font-size: 1.6rem; animation: pulse 2s infinite;"></i>
-                    <input type="text" id="aiSearchInput" placeholder="Ask AI about Rules, Fees or Wikipedia Facts..." style="background: transparent; border: none; color: var(--text-main); font-size: clamp(1.05rem, 1.3vw, 1.2rem); outline: none; font-weight: 700; flex: 1; min-width: 0;" autocomplete="off" onkeypress="handleAIEnter(event)" onclick="openAIChat(event)">
+                    <input type="text" id="aiSearchInput" placeholder="Ask AI about Fees, Seats, Facilities or Wikipedia..." style="background: transparent; border: none; color: var(--text-main); font-size: clamp(1.05rem, 1.3vw, 1.2rem); outline: none; font-weight: 700; flex: 1; min-width: 0;" autocomplete="off" onkeypress="handleAIEnter(event)" onclick="openAIChat(event)">
                     <button class="btn btn-primary" style="border-radius: 100px; padding: 14px 28px; flex-shrink: 0;" onclick="sendAIMessage(event)"><i class="fa-solid fa-paper-plane" style="font-size: 1.2rem;"></i></button>
                 </div>
                 
@@ -419,40 +476,26 @@
                     </div>
                     <div id="aiChatHistory" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap: 15px; padding-right: 10px; margin-bottom: 15px;">
                         <div style="align-self: flex-start; background: var(--input-bg); padding: 18px 24px; border-radius: 20px; border-bottom-left-radius: 4px; font-size: 1.05rem; font-weight: 600; border: 1px solid var(--border-glass); line-height: 1.6;">
-                            Hello! I am connected to the Library Database and Wikipedia. Even if you spell a topic slightly wrong, I will find the right fact for you!
+                            Hello! I am connected to the Library Database and Wikipedia. Ask anything regarding timings, fees, rules, or general knowledge topics!
                         </div>
                     </div>
                     <div id="aiTypingIndicator" style="display: none; font-size: 1rem; color: var(--brand-blue); font-weight: 800; margin-bottom: 15px;">
                         <i class="fa-solid fa-circle-notch fa-spin"></i> Fetching details...
                     </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--border-glass); padding-top: 15px;">
-                        <span class="btn-outline" style="padding: 10px 20px; border-radius: 100px; font-size: 0.9rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('What are the library timings?')"><i class="fa-regular fa-clock"></i> Time</span>
-                        <span class="btn-outline" style="padding: 10px 20px; border-radius: 100px; font-size: 0.9rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('What are the fees?')"><i class="fa-solid fa-indian-rupee-sign"></i> Fees</span>
-                        <span class="btn-outline" style="padding: 10px 20px; border-radius: 100px; font-size: 0.9rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Who is APJ Abdul Kalam?')"><i class="fa-solid fa-rocket"></i> Fact</span>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--border-glass); padding-top: 15px;">
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Fee')">Fee</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Time')">Time</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Manager')">Manager</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Address')">Address</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Seat')">Seat</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Water')">Water</span>
+                        <span class="btn-outline" style="padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 800; cursor: pointer;" onclick="quickAsk('Facility')">Facility</span>
                     </div>
                 </div>
             </div>
 
-            <!-- WATER & SEATS (Side by Side in 1 Line) -->
-            <div class="wide-btn-container">
-                <button class="wide-btn wide-btn-water" onclick="showSection('water')">
-                    <i class="fa-solid fa-droplet"></i> Water Status
-                </button>
-                <button class="wide-btn wide-btn-seat" onclick="showSection('seats')">
-                    <i class="fa-solid fa-chair"></i> Live Seats
-                </button>
-            </div>
-
-            <!-- FULL WIDTH PREMIUM PDFLY BUTTON (Right Below Water & Seats) -->
-            <div style="margin-bottom: 30px; padding: 0 clamp(10px, 2.5vw, 30px);">
-                <button class="btn-pdfly-full" onclick="window.open('https://pdflytools.github.io/Home/', '_blank')">
-                    <i class="fa-solid fa-file-pdf"></i> PDFly Tools Premium
-                </button>
-            </div>
-
-            <!-- COMPACT GRID NAVIGATION (Rearranged specific order) -->
+            <!-- COMPACT GRID NAVIGATION (All Buttons Working) -->
             <div class="grid-nav" id="gridNav">
-                <!-- Top rows -->
                 <div class="nav-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
                 <div class="nav-item" onclick="showSection('admission')"><i class="fa-solid fa-user-plus"></i><span>Admission</span></div>
                 <div class="nav-item" onclick="showSection('payment')"><i class="fa-solid fa-indian-rupee-sign"></i><span>Fee Pay</span></div>
@@ -460,20 +503,50 @@
                 
                 <div class="nav-item" onclick="showSection('idcard')"><i class="fa-solid fa-id-badge"></i><span>ID Card</span></div>
                 <div class="nav-item" onclick="showSection('learners')"><i class="fa-solid fa-users"></i><span>Learners</span></div>
-                <div class="nav-item" onclick="openPosterGenerator()"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Poster</span></div>
+                <div class="nav-item" onclick="openQuotesGenerator()"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Quotes</span></div>
                 <div class="nav-item" onclick="showSection('facilities')"><i class="fa-solid fa-star"></i><span>Facilities</span></div>
                 
-                <!-- Last Row: Gallery, Tools, Expenses, Tasks -->
                 <div class="nav-item" onclick="showSection('gallery')"><i class="fa-solid fa-images"></i><span>Gallery</span></div>
                 <div class="nav-item" onclick="showSection('tools')"><i class="fa-solid fa-toolbox"></i><span>Tools</span></div>
                 <div class="nav-item" onclick="showSection('expense')"><i class="fa-solid fa-wallet"></i><span>Expenses</span></div>
                 <div class="nav-item" onclick="showSection('tasks')"><i class="fa-solid fa-list-check"></i><span>Tasks</span></div>
+            </div>
+
+            <!-- NEW 3-BUTTON ROW (Books, Notes, Video Lecture) -->
+            <div class="action-row-3">
+                <div class="action-btn-3" onclick="document.getElementById('booksModal').style.display='flex'">
+                    <i class="fa-solid fa-book-open"></i><span>Books</span>
+                </div>
+                <div class="action-btn-3" onclick="showSection('tools'); document.getElementById('docType').value='pdf'; document.getElementById('topicInput').focus();">
+                    <i class="fa-solid fa-file-lines"></i><span>Notes</span>
+                </div>
+                <div class="action-btn-3" onclick="showSection('tools'); document.getElementById('docType').value='video'; document.getElementById('topicInput').focus();">
+                    <i class="fa-solid fa-circle-play"></i><span>Video Lecture</span>
+                </div>
+            </div>
+
+            <!-- WATER & SEATS (50-50 Layout) -->
+            <div class="wide-action-row">
+                <div class="nav-item wide-nav-btn" onclick="showSection('water')">
+                    <i class="fa-solid fa-droplet"></i><span>Water Status</span>
+                </div>
+                <div class="nav-item wide-nav-btn" onclick="showSection('seats')">
+                    <i class="fa-solid fa-chair"></i><span>Live Seats</span>
+                </div>
+            </div>
+
+            <!-- FULL WIDTH PDFLY BUTTON -->
+            <div style="margin-bottom: 30px; padding: 0 clamp(10px, 2.5vw, 30px);">
+                <button class="btn-pdfly-full" onclick="window.open('https://pdflytools.github.io/Home/', '_blank')">
+                    <i class="fa-solid fa-file-pdf"></i> PDFly Tools
+                </button>
             </div>
             <!-- =========================================================
                  SECTION: HOME DASHBOARD
                  ========================================================= -->
             <div id="sec-home" class="dynamic-sec" style="display: block;">
                 
+                <!-- Status Card -->
                 <div class="bento-card" style="margin-bottom: clamp(20px, 3vw, 30px); position: relative; overflow: hidden;">
                     <i class="fa-regular fa-clock" style="position: absolute; right: -20px; top: -20px; font-size: clamp(150px, 20vw, 250px); opacity: 0.03; color: var(--text-main);"></i>
                     <h4 style="font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 900; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Workspace Status</h4>
@@ -486,24 +559,26 @@
                     <h2 id="timeStatusText" style="font-weight: 900; font-size: clamp(1.6rem, 3vw, 2.5rem); margin-bottom: 25px; letter-spacing: -1px;">Calculating...</h2>
                     
                     <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px) clamp(20px, 2vw, 30px); border-radius: 16px; font-weight: 800; font-size: clamp(0.95rem, 1.2vw, 1.1rem); flex: 1; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-glass);">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 16px) clamp(20px, 2vw, 25px); border-radius: 12px; font-weight: 800; font-size: clamp(0.95rem, 1.2vw, 1.1rem); flex: 1; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-glass);">
                             <i class="fa-solid fa-sun" style="color: var(--accent-orange); font-size: 1.3rem;"></i> Opens: 7:00 AM
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px) clamp(20px, 2vw, 30px); border-radius: 16px; font-weight: 800; font-size: clamp(0.95rem, 1.2vw, 1.1rem); flex: 1; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-glass);">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 16px) clamp(20px, 2vw, 25px); border-radius: 12px; font-weight: 800; font-size: clamp(0.95rem, 1.2vw, 1.1rem); flex: 1; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border-glass);">
                             <i class="fa-solid fa-moon" style="color: var(--brand-blue); font-size: 1.3rem;"></i> Closes: 9:00 PM
                         </div>
                     </div>
                 </div>
 
+                <!-- Welcome Card -->
                 <div class="bento-card" style="margin-bottom: clamp(20px, 3vw, 30px); text-align: center; padding: clamp(40px, 6vw, 80px) 20px; background: linear-gradient(145deg, var(--bg-glass), rgba(37, 99, 235, 0.05)); border: 1px solid rgba(37, 99, 235, 0.1);">
                     <div style="background: rgba(37, 99, 235, 0.15); width: clamp(80px, 10vw, 120px); height: clamp(80px, 10vw, 120px); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; box-shadow: 0 10px 40px rgba(37, 99, 235, 0.2);">
                         <i class="fa-solid fa-book-open-reader" style="font-size: clamp(2.5rem, 4vw, 4rem); color: var(--brand-blue);"></i>
                     </div>
                     <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 900; margin-bottom: 5px; letter-spacing: -1.5px;">Welcome to National Library</h1>
                     <div class="subtitle" style="margin-bottom: 25px; font-size: clamp(0.9rem, 1.2vw, 1.1rem);">Maharajganj Azamgarh</div>
-                    <p style="font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--text-muted); max-width: 750px; margin: 0 auto; line-height: 1.8; font-weight: 500;">Experience the most advanced premium digital study environment in Maharajganj. Check live seats, manage daily study tasks, and prepare for success.</p>
+                    <p style="font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--text-muted); max-width: 750px; margin: 0 auto; line-height: 1.8; font-weight: 500;">Experience the most advanced premium digital study environment in Maharajganj. Check live seats, access NCERT books, manage study tasks, and prepare for success.</p>
                 </div>
                 
+                <!-- Manager Profile -->
                 <div class="bento-card" style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(30px, 4vw, 50px); justify-content: center; padding: clamp(30px, 5vw, 60px);">
                     <div style="position: relative;">
                         <img src="https://ui-avatars.com/api/?name=Ravi+Prakash&background=3b82f6&color=fff&size=250&bold=true" style="width: clamp(130px, 15vw, 180px); height: clamp(130px, 15vw, 180px); border-radius: 50%; border: 5px solid var(--bg-surface); outline: 3px solid var(--brand-blue); object-fit: cover; box-shadow: 0 15px 50px rgba(37, 99, 235, 0.4);">
@@ -518,8 +593,27 @@
                         <p style="font-size: clamp(1.15rem, 1.5vw, 1.3rem); font-weight: 800; margin-bottom: 25px; color: var(--text-muted);">+91 87950 11001</p>
                         
                         <div style="display: flex; gap: 15px; justify-content: center; width: 100%;">
-                            <button class="btn btn-success" style="flex: 1; padding: clamp(14px, 1.5vw, 18px); border-radius: 100px; font-size: clamp(1.05rem, 1.2vw, 1.15rem); white-space: nowrap;" onclick="window.open('https://wa.me/918795011001', '_blank')"><i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> WhatsApp</button>
-                            <button class="btn btn-primary" style="flex: 1; padding: clamp(14px, 1.5vw, 18px); border-radius: 100px; font-size: clamp(1.05rem, 1.2vw, 1.15rem); white-space: nowrap;" onclick="window.location.href='tel:+918795011001'"><i class="fa-solid fa-phone" style="font-size: 1.2rem;"></i> Call</button>
+                            <button class="btn btn-success" style="flex: 1; padding: clamp(14px, 1.5vw, 16px); border-radius: 100px; font-size: clamp(1.05rem, 1.2vw, 1.15rem); white-space: nowrap;" onclick="window.open('https://wa.me/918795011001', '_blank')"><i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> WhatsApp</button>
+                            <button class="btn btn-primary" style="flex: 1; padding: clamp(14px, 1.5vw, 16px); border-radius: 100px; font-size: clamp(1.05rem, 1.2vw, 1.15rem); white-space: nowrap;" onclick="window.location.href='tel:+918795011001'"><i class="fa-solid fa-phone" style="font-size: 1.2rem;"></i> Call</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restored Static Inspiration Quotes -->
+                <div id="homeQuotesSec" style="display: flex; flex-direction: column; gap: 20px; margin-top: 40px;">
+                    <div class="bento-card" style="border-left: 6px solid var(--accent-orange); position: relative; overflow: hidden; padding: clamp(20px, 3vw, 30px);">
+                        <i class="fa-solid fa-quote-left" style="font-size:60px; opacity:0.05; position:absolute; top: 15px; left: 15px; color: var(--text-main);"></i>
+                        <p style="font-size: clamp(1.15rem, 1.5vw, 1.4rem); font-weight: 800; font-style: italic; margin-bottom: 15px; line-height: 1.6; position: relative; z-index: 2; padding-left: 30px;">"Shiksha us sherni ka dudh hai jo piyega wo dahadega"</p>
+                        <h4 style="color: var(--accent-orange); text-align: right; font-size: 1rem; font-weight: 900;">- Dr. B.R. Ambedkar</h4>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="bento-card" style="border-left: 5px solid var(--brand-blue); padding: clamp(20px, 3vw, 25px);">
+                            <p style="font-style: italic; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.6; font-weight: 700;">"Sapne wo nahi jo aap sote hue dekhte hain, sapne wo hain jo sone nahi dete."</p>
+                            <h4 style="color: var(--brand-blue); text-align: right; font-size: 0.95rem; font-weight: 900;">- A.P.J. Abdul Kalam</h4>
+                        </div>
+                        <div class="bento-card" style="border-left: 5px solid var(--success-green); padding: clamp(20px, 3vw, 25px);">
+                            <p style="font-style: italic; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.6; font-weight: 700;">"Ve mujhe maar sakte hain, lekin mere vicharon ko nahi."</p>
+                            <h4 style="color: var(--success-green); text-align: right; font-size: 0.95rem; font-weight: 900;">- Bhagat Singh</h4>
                         </div>
                     </div>
                 </div>
@@ -532,8 +626,9 @@
                 <h2 class="section-title"><i class="fa-solid fa-droplet" style="color: var(--water-blue);"></i> Live Water Status</h2>
                 <div class="bento-card" style="border-top: 5px solid var(--water-blue);">
                     
-                    <div style="display: flex; flex-wrap: wrap; gap: clamp(30px, 4vw, 50px); align-items: flex-start; justify-content: center; margin-bottom: 30px;">
-                        <!-- Animated Bottles Dashboard -->
+                    <div style="display: flex; flex-wrap: wrap; gap: clamp(30px, 4vw, 50px); align-items: flex-start; justify-content: center; margin-bottom: 20px;">
+                        
+                        <!-- Animated Bottles Dashboard (Batch System) -->
                         <div style="flex: 1.5; min-width: 300px; text-align: center; background: rgba(14, 165, 233, 0.05); padding: 25px; border-radius: 20px; border: 1px dashed rgba(14, 165, 233, 0.3);">
                             <h4 style="font-weight: 900; font-size: clamp(1.2rem, 1.5vw, 1.4rem); margin-bottom: 5px;">20L Drinking Water Supply</h4>
                             <p style="font-size: 0.95rem; color: var(--text-muted); font-weight: 700; margin-bottom: 25px;" id="waterBottleCount">Connecting to server...</p>
@@ -542,17 +637,23 @@
                             <div id="bottlesContainer" class="water-dashboard">
                                 <div style="color: var(--text-muted); font-style: italic; width: 100%;">No active water supply data available today.</div>
                             </div>
+                            
+                            <!-- Disclaimer Added -->
+                            <div style="margin-top: 25px; font-size: 0.85rem; color: var(--danger-red); font-weight: 700; background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; text-align: left; display: inline-block;">
+                                <i class="fa-solid fa-circle-exclamation"></i> Disclaimer: Niche dikhaya gaya pani ka percentage aur bacha hua lagbhag anumanit (approximate) samay hai, jo average consumption par aadharit hai.
+                            </div>
                         </div>
 
                         <!-- Info & Vendor Update Panel -->
                         <div style="flex: 1; min-width: 280px; max-width: 500px;">
                             <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.2); padding: clamp(20px, 2.5vw, 30px); border-radius: 20px; margin-bottom: 20px;">
-                                <h4 style="font-weight: 900; font-size: clamp(1.1rem, 1.3vw, 1.2rem); margin-bottom: 12px; color: var(--water-blue);"><i class="fa-solid fa-clock"></i> Delivery Info</h4>
-                                <p style="font-weight: 800; font-size: clamp(1rem, 1.2vw, 1.15rem); margin-bottom: 5px;" id="lastWaterUpdateText">No recent deliveries.</p>
-                                <p style="font-size: clamp(0.85rem, 1vw, 0.95rem); color: var(--text-muted); font-weight: 600;">(Estimated to finish at <span id="waterTimeLeft">--</span>)</p>
+                                <h4 style="font-weight: 900; font-size: clamp(1.1rem, 1.3vw, 1.2rem); margin-bottom: 12px; color: var(--water-blue);"><i class="fa-solid fa-clock-rotate-left"></i> Delivery History</h4>
+                                <div id="waterHistoryList" style="max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: clamp(0.9rem, 1.1vw, 1rem); color: var(--text-main); font-weight: 700;">
+                                    <span style="color: var(--text-muted);">No history for today.</span>
+                                </div>
                             </div>
                             
-                            <button class="btn btn-outline" style="width: 100%; padding: clamp(16px, 2vw, 20px); border-radius: 16px; font-size: clamp(1rem, 1.2vw, 1.1rem);" onclick="document.getElementById('waterLoginModal').style.display='flex'">
+                            <button class="btn btn-outline" style="width: 100%; padding: clamp(16px, 2vw, 20px); border-radius: 12px; font-size: clamp(1rem, 1.2vw, 1.1rem);" onclick="document.getElementById('waterLoginModal').style.display='flex'">
                                 <i class="fa-solid fa-truck-droplet"></i> Log Delivery (Vendor Only)
                             </button>
                             
@@ -564,7 +665,7 @@
                                     <input type="number" id="vendorBottleInput" value="1" min="1" readonly style="width: 80px; text-align: center; font-size: 1.6rem; font-weight: 900; padding: 10px; background: var(--bg-surface); border: 2px solid var(--water-blue); border-radius: 12px; color: var(--text-main);">
                                     <button class="btn btn-outline" style="border-radius: 50%; width: 50px; height: 50px; padding: 0; font-size: 1.2rem;" onclick="changeBottleCount(1)"><i class="fa-solid fa-plus"></i></button>
                                 </div>
-                                <button class="btn btn-water" style="width: 100%; padding: clamp(16px, 2vw, 20px); font-size: clamp(1.05rem, 1.2vw, 1.15rem); border-radius: 14px;" onclick="submitWaterUpdate()">Save Delivery Data Live</button>
+                                <button class="btn btn-water" style="width: 100%; padding: clamp(16px, 2vw, 20px); font-size: clamp(1.05rem, 1.2vw, 1.15rem); border-radius: 12px;" onclick="submitWaterUpdate()">Save Delivery Data Live</button>
                             </div>
                         </div>
                     </div>
@@ -585,7 +686,7 @@
                         <button class="btn btn-outline" id="editSeatsBtn" style="border-radius: 100px; padding: 12px 24px; font-size: 1rem;" onclick="toggleSeatEditMode()"><i class="fa-solid fa-pen"></i> Manage Seats</button>
                     </div>
                     
-                    <div style="display: flex; gap: 20px; margin-bottom: 25px; font-size: clamp(0.95rem, 1.2vw, 1.05rem); font-weight: 800; background: var(--input-bg); padding: 18px 25px; border-radius: 16px; border: 1px solid var(--border-glass);">
+                    <div style="display: flex; gap: 20px; margin-bottom: 25px; font-size: clamp(0.95rem, 1.2vw, 1.05rem); font-weight: 800; background: var(--input-bg); padding: 18px 25px; border-radius: 12px; border: 1px solid var(--border-glass);">
                         <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 18px; height: 18px; background: var(--success-green); border-radius: 6px;"></div> Available</div>
                         <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 18px; height: 18px; background: var(--danger-red); border-radius: 6px; opacity: 0.5;"></div> Occupied</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); margin-left: auto;"><i class="fa-solid fa-cloud-arrow-down"></i> 100% Live Auto Sync</div>
@@ -615,25 +716,25 @@
                             </div>
                             <div class="input-group" style="grid-column: 1/-1;"><label>Complete Address</label><textarea id="aAdd" rows="3" required autocomplete="off" placeholder="Enter residential address"></textarea></div>
                         </div>
-                        <div style="background: rgba(255, 159, 10, 0.1); border-left: 5px solid var(--accent-orange); padding: clamp(18px, 2vw, 24px); border-radius: 16px; margin: 25px 0;">
+                        <div style="background: rgba(255, 159, 10, 0.1); border-left: 5px solid var(--accent-orange); padding: clamp(18px, 2vw, 24px); border-radius: 12px; margin: 25px 0;">
                             <p style="color: var(--accent-orange); font-size: clamp(1rem, 1.2vw, 1.1rem); font-weight: 800; display: flex; gap: 12px; align-items: flex-start;">
                                 <i class="fa-solid fa-camera" style="margin-top: 4px;"></i> Note: Attach your passport-size photo directly in WhatsApp after submitting.
                             </p>
                         </div>
-                        <button type="submit" class="btn btn-success" style="width:100%; font-size: clamp(1.15rem, 1.5vw, 1.25rem); padding: clamp(18px, 2vw, 24px); border-radius: 20px;"><i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Submit via WhatsApp</button>
+                        <button type="submit" class="btn btn-success" style="width:100%; font-size: clamp(1.15rem, 1.5vw, 1.25rem); padding: clamp(18px, 2vw, 22px); border-radius: 16px;"><i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Submit via WhatsApp</button>
                     </form>
                 </div>
             </div>
 
             <!-- =========================================================
-                 SECTION: PREMIUM FEE GATEWAY
+                 SECTION: PREMIUM FEE GATEWAY (1 to 6 Months)
                  ========================================================= -->
             <div id="sec-payment" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-indian-rupee-sign"></i> Fee Gateway</h2>
                 <div class="bento-card" style="max-width: 650px; margin: 0 auto; text-align: center; border-top: 5px solid var(--success-green);">
-                    <div style="display: flex; background: var(--input-bg); padding: 10px; border-radius: 20px; margin-bottom: 35px; border: 1px solid var(--border-glass);">
-                        <button class="btn btn-primary" id="btnPayTab" onclick="switchPayTab('pay')" style="flex:1; border-radius: 16px; font-size: clamp(1.05rem, 1.2vw, 1.15rem);">Pay Now</button>
-                        <button class="btn btn-outline" id="btnVerifyTab" onclick="switchPayTab('verify')" style="flex:1; border-radius: 16px; border: none; font-size: clamp(1.05rem, 1.2vw, 1.15rem);">Verify</button>
+                    <div style="display: flex; background: var(--input-bg); padding: 10px; border-radius: 16px; margin-bottom: 35px; border: 1px solid var(--border-glass);">
+                        <button class="btn btn-primary" id="btnPayTab" onclick="switchPayTab('pay')" style="flex:1; border-radius: 12px; font-size: clamp(1.05rem, 1.2vw, 1.15rem);">Pay Now</button>
+                        <button class="btn btn-outline" id="btnVerifyTab" onclick="switchPayTab('verify')" style="flex:1; border-radius: 12px; border: none; font-size: clamp(1.05rem, 1.2vw, 1.15rem);">Verify</button>
                     </div>
                     
                     <div id="payNowDiv">
@@ -643,22 +744,24 @@
                                 <option value="1" selected>1 Month (₹400)</option>
                                 <option value="2">2 Months (₹800)</option>
                                 <option value="3">3 Months (₹1200)</option>
+                                <option value="4">4 Months (₹1600)</option>
+                                <option value="5">5 Months (₹2000)</option>
                                 <option value="6">6 Months (₹2400) - Most Popular</option>
                             </select>
                         </div>
-                        <div style="background: linear-gradient(135deg, #111, #000); padding: clamp(30px, 4vw, 40px); border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                        <div style="background: linear-gradient(135deg, #111, #000); padding: clamp(30px, 4vw, 40px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
                             <span style="color: #888; font-size: clamp(1rem, 1.2vw, 1.1rem); text-transform: uppercase; letter-spacing: 2px; font-weight: 900;">Payable Amount</span>
                             <div id="displayAmount" style="font-size: clamp(3.5rem, 6vw, 5rem); font-weight: 900; color: #34d399; text-shadow: 0 0 40px rgba(52, 211, 153, 0.4); margin-top: 5px;">₹400</div>
                         </div>
-                        <div style="background: #fff; padding: 25px; border-radius: 24px; display: inline-block; margin-bottom: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);">
+                        <div style="background: #fff; padding: 25px; border-radius: 20px; display: inline-block; margin-bottom: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);">
                             <img src="" id="dynamicQR" alt="UPI QR" crossorigin="anonymous" style="display: block; width: clamp(180px, 20vw, 220px); height: clamp(180px, 20vw, 220px);">
                         </div>
-                        <div style="background: var(--input-bg); padding: 20px; border-radius: 16px; border: 2px dashed var(--border-glass); margin-bottom: 30px;">
+                        <div style="background: var(--input-bg); padding: 20px; border-radius: 12px; border: 2px dashed var(--border-glass); margin-bottom: 30px;">
                             <p style="font-weight: 900; font-size: clamp(1.15rem, 1.5vw, 1.3rem); letter-spacing: 1px;" id="upiTextCopy">raviprakash4281@oksbi</p>
                         </div>
                         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <button class="btn btn-outline" onclick="copyUPI()" style="flex:1; min-width: 150px; padding: clamp(16px, 2vw, 20px); font-size: 1.1rem;"><i class="fa-regular fa-copy"></i> Copy UPI</button>
-                            <a href="#" id="autoPayLink" class="btn btn-primary" style="flex:2; min-width: 200px; padding: clamp(16px, 2vw, 20px); text-decoration: none; font-size: 1.1rem;"><i class="fa-solid fa-bolt"></i> Pay via App</a>
+                            <button class="btn btn-outline" onclick="copyUPI()" style="flex:1; min-width: 150px; padding: clamp(16px, 2vw, 20px); font-size: 1.1rem; border-radius: 16px;"><i class="fa-regular fa-copy"></i> Copy UPI</button>
+                            <a href="#" id="autoPayLink" class="btn btn-primary" style="flex:2; min-width: 200px; padding: clamp(16px, 2vw, 20px); text-decoration: none; font-size: 1.1rem; border-radius: 16px;"><i class="fa-solid fa-bolt"></i> Pay via App</a>
                         </div>
                     </div>
 
@@ -666,123 +769,105 @@
                         <i class="fa-solid fa-receipt" style="font-size: 6rem; color: var(--brand-blue); margin-bottom: 30px;"></i>
                         <h3 style="font-weight: 900; margin-bottom: 10px; font-size: clamp(1.6rem, 2vw, 1.8rem);">Verify Transaction</h3>
                         <p style="margin-bottom: 40px; font-size: clamp(1.05rem, 1.2vw, 1.15rem); color: var(--text-muted); line-height: 1.7; max-width: 450px; margin-left: auto; margin-right: auto;">Send the payment screenshot to the Manager. Your official ultra-secure PDF receipt will be generated.</p>
-                        <button class="btn btn-success" style="width: 100%; border-radius: 100px; padding: clamp(18px, 2.5vw, 24px); font-size: clamp(1.15rem, 1.5vw, 1.3rem);" onclick="window.open('https://wa.me/918795011001?text=Hello%20Manager,%20I%20have%20paid%20my%20library%20fee.', '_blank')"><i class="fa-brands fa-whatsapp"></i> Send Screenshot</button>
+                        <button class="btn btn-success" style="width: 100%; border-radius: 16px; padding: clamp(18px, 2.5vw, 24px); font-size: clamp(1.15rem, 1.5vw, 1.3rem);" onclick="window.open('https://wa.me/918795011001?text=Hello%20Manager,%20I%20have%20paid%20my%20library%20fee.', '_blank')"><i class="fa-brands fa-whatsapp"></i> Send Screenshot to Manager</button>
                     </div>
                 </div>
             </div>
+            
             <!-- =========================================================
-                 SECTION: ULTRA-SECURE RECEIPT ENGINE (Impossible to Fake)
+                 SECTION: LEARNERS (2-Column & Categories)
                  ========================================================= -->
-            <div id="sec-receipt" class="dynamic-sec">
-                <h2 class="section-title"><i class="fa-solid fa-file-invoice-dollar"></i> Pro Receipt Engine</h2>
-                <div class="bento-card" style="margin-bottom: 35px; border-left: 6px solid var(--accent-orange);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
-                        <h3 style="font-weight: 900; font-size: clamp(1.15rem, 1.5vw, 1.3rem);"><i class="fa-solid fa-shield-halved" style="color: var(--accent-orange);"></i> High Security Generator</h3>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <div class="input-group"><label>Mobile No (ID) [No NL]</label><input type="tel" id="inpIdMobile" maxlength="10" placeholder="e.g. 8063963280" oninput="updatePreview()" autocomplete="off"></div>
-                        <div class="input-group"><label>Student Name</label><input type="text" id="inpName" placeholder="Full Name" oninput="updatePreview()" autocomplete="off"></div>
-                        <div class="input-group"><label>Seat Number</label><input type="text" id="inpSeat" placeholder="Seat No" oninput="updatePreview()" autocomplete="off"></div>
-                        <div class="input-group"><label>Shift Assigned</label>
-                            <select id="inpShift" onchange="updatePreview()">
-                                <option value="Full Shift (7 AM - 9 PM)" selected>Full Shift (7 AM - 9 PM)</option>
-                                <option value="Morning Shift (7 AM - 2 PM)">Morning Shift (7 AM - 2 PM)</option>
-                                <option value="Evening Shift (2 PM - 9 PM)">Evening Shift (2 PM - 9 PM)</option>
-                            </select>
+            <div id="sec-learners" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-users-rectangle"></i> Registered Learners</h2>
+                
+                <!-- Category 1: Selected / Achieved Government Jobs -->
+                <div class="bento-card" style="margin-bottom: 30px; border-top: 5px solid var(--success-green);">
+                    <h3 style="color: var(--success-green); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-medal"></i> Achieved Government Jobs
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.5vw, 20px);">
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Pradeep</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB ALP</p></div>
                         </div>
-                        <div class="input-group"><label>Start Month</label><input type="month" id="inpMonth" onchange="updatePreview()"></div>
-                        <div class="input-group"><label>Duration</label><select id="inpDuration" onchange="updatePreview()"><option value="1" selected>1 Month</option><option value="2">2 Months</option><option value="3">3 Months</option><option value="6">6 Months</option></select></div>
-                        <div class="input-group"><label>Payment Mode</label><select id="inpMode" onchange="updatePreview()"><option value="Online / UPI" selected>Online / UPI</option><option value="Cash">Cash</option></select></div>
-                        <div class="input-group" id="txnDateGroup"><label>Txn Date & Time</label><input type="datetime-local" id="inpTxnDate" oninput="updatePreview()"></div>
-                        <div class="input-group" id="txnGroup"><label>Transaction ID</label><input type="text" id="inpTxn" placeholder="Txn Ref No." oninput="updatePreview()" autocomplete="off"></div>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Kanhaiya</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB ALP</p></div>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Chandresh</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">UP Police</p></div>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-train"></i></div>
+                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Sumit</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB Technician</p></div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="text-align: center; margin-bottom: 50px;">
-                    <button class="btn btn-primary" style="font-size: clamp(1.15rem, 1.5vw, 1.3rem); padding: 20px 50px; border-radius: 100px; box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download Secure PDF</button>
-                </div>
-
-                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE -->
-                <div style="overflow-x: auto; padding-bottom: 20px; display: flex; justify-content: center;">
-                    <div id="receiptPrintArea" style="padding: 20px;">
-                        <div id="receiptPaper" class="secure-receipt-bg" style="width: 100%; min-width: 750px; max-width: 800px; color: #000; padding: 50px 60px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid #ddd; background-color: #fff;">
-                            
-                            <!-- Hologram Stamp -->
-                            <div class="hologram-stamp"><div>SECURE<br><span style="font-size: 16px;">✓</span><br>ORIGINAL</div></div>
-                            
-                            <div style="text-align: center; margin-bottom: 30px; border-bottom: 4px double #000; padding-bottom: 25px; position: relative; z-index: 2;">
-                                <h2 style="font-size: 38px; font-weight: 900; margin-bottom: 6px; letter-spacing: 2px; color: #0f172a;">NATIONAL LIBRARY</h2>
-                                <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569;">Maharajganj Azamgarh</div>
-                                <p style="font-size: 13px; margin: 4px 0; color: #1e293b;">Near Post Office Maharajganj, Azamgarh UP-276137</p>
-                                <p style="font-size: 13px; margin: 4px 0; font-weight: 900; color: #0f172a;">+91 87950 11001 | demo@nationallibrary.in</p>
-                            </div>
-                            
-                            <div style="text-align: center; margin: 35px 0; position: relative; z-index: 2;">
-                                <span style="font-size: 24px; font-weight: 900; border: 3px solid #0f172a; padding: 14px 35px; border-radius: 8px; letter-spacing: 4px; background: rgba(15, 23, 42, 0.05); color: #0f172a;">OFFICIAL FEE RECEIPT</span>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; margin-bottom: 25px; position: relative; z-index: 2; color: #000;">
-                                <span id="outDate">Date: --</span><span id="outRcptNo">Receipt No: --</span>
-                            </div>
-                            
-                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 16px; border: 2px solid #0f172a; position: relative; z-index: 2; background: rgba(255,255,255,0.95);">
-                                <tbody>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; width: 40%; font-weight: 800;">ID Card No:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; color: #2563eb;" id="dispId">NL--</td></tr>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Student Name:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; text-transform: uppercase;" id="dispName">--</td></tr>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Seat Number:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispSeat">--</td></tr>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Shift Assigned:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispShift">Full Shift (7 AM - 9 PM)</td></tr>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Fee Duration:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMonth">--</td></tr>
-                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Mode:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMode">Online / UPI</td></tr>
-                                    <tr id="rowTxnDate"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Date/Time:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispTxnDate">--</td></tr>
-                                    <tr id="rowTxn"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Transaction ID:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; font-family: monospace; font-size: 18px;" id="dispTxn">--</td></tr>
-                                </tbody>
-                            </table>
-                            
-                            <div style="display: flex; justify-content: space-between; align-items: center; border: 3px solid #0f172a; padding: 30px; margin-bottom: 50px; background: rgba(15, 23, 42, 0.03); position: relative; z-index: 2;">
-                                <div><div style="font-size: 20px; font-weight: 900; color: #0f172a;">Total Fee Received</div><div style="font-size: 15px; margin-top:6px; font-weight: 800;" id="dispSubTotal">(₹400 x 1 Month)</div></div>
-                                <div style="font-size: 42px; font-weight: 900; color: #10b981; text-shadow: 1px 1px 0 #000;">₹<span id="dispTotal">400.00</span></div>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; position: relative; z-index: 2;">
-                                <div style="flex: 1; font-size: 13px; line-height: 1.7; color: #334155; font-weight: 700;">
-                                    <strong style="color: #000; font-size: 14px;">Official Document</strong><br>This system-generated receipt serves<br>as the official proof of fee payment.<br>Please retain for your records.
-                                </div>
-                                <div style="text-align: center; flex: 0.5;">
-                                    <img src="" id="outQR" crossorigin="anonymous" alt="QR Code" style="width: 105px; height: 105px; margin-bottom: 8px; border: 2px solid #000; padding: 2px; border-radius: 4px; background:#fff;">
-                                    <div style="font-size: 12px; font-weight: 900; letter-spacing: 1px;">SCAN VERIFY</div>
-                                </div>
-                                <div style="text-align: right; flex: 1;">
-                                    <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 40px; color: #0f172a; margin-bottom: 10px;">Ravi Prakash</div>
-                                    <div style="font-weight: 900; font-size: 13px; border-top: 2px solid #0f172a; display: inline-block; padding-top: 8px; letter-spacing: 1px;">MANAGER SIGNATURE</div>
-                                </div>
-                            </div>
+                <!-- Category 2: Current Aspirants -->
+                <div class="bento-card">
+                    <h3 style="color: var(--brand-blue); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-book-open-reader"></i> Current Aspirants
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.5vw, 20px); margin-bottom: 30px;">
+                        <!-- Generated List: Shivam, Banty, Praduman, V Sharma, G Rao, Prakhar, Shavej -->
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Shivam</h4>
                         </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Banty</h4>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Praduman</h4>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">V Sharma</h4>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">G Rao</h4>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Prakhar</h4>
+                        </div>
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Shavej</h4>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; color: var(--brand-blue); font-weight: 800; font-size: 1.1rem; animation: pulse 2s infinite;">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="margin-right: 8px;"></i> Loading more students...
                     </div>
                 </div>
             </div>
 
             <!-- =========================================================
-                 SECTION: HD PRO POSTER MAKER (WITH WEBSITE QR)
+                 SECTION: FACILITIES (With WiFi Speed Check)
                  ========================================================= -->
-            <div id="sec-poster" class="dynamic-sec">
-                <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Pro Poster Maker</h2>
-                <div class="bento-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: clamp(40px, 5vw, 60px) 20px; text-align: center;">
-                    <p style="font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 900; margin-bottom: 5px;">HD Premium Poster Engine</p>
-                    <div class="subtitle" style="margin-bottom: 25px; font-size: clamp(0.9rem, 1.1vw, 1rem);">Auto-Generates Motivational Quote & Website QR</div>
-                    <div id="canvas-wrapper" style="width: 100%; max-width: 450px; position: relative;">
-                        <div id="empty-state" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: var(--input-bg); border: 2.5px dashed var(--border-glass); border-radius: 24px; height: 560px; color: var(--text-muted); transition: 0.3s;">
-                            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 4rem; margin-bottom: 20px; color: var(--brand-blue); filter: drop-shadow(0 0 25px rgba(37, 99, 235, 0.4));"></i> 
-                            <span style="font-weight: 800; font-size: 1.2rem;">Poster Will Render Here</span>
-                        </div>
-                        <canvas id="mainCanvas" width="1080" height="1350" style="width: 100%; height: auto; display: none; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); border: 1px solid var(--border-glass);"></canvas>
+            <div id="sec-facilities" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-star"></i> Premium Facilities</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; align-items: center;">
+                        <i class="fa-solid fa-wifi" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i>
+                        <h3 style="font-size:1.1rem; font-weight: 900; margin-bottom: 12px;">5G WiFi</h3>
+                        <button class="btn btn-outline" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 100px; font-weight: 800;" onclick="window.open('https://fast.com', '_blank')"><i class="fa-solid fa-gauge-high"></i> Check Speed</button>
                     </div>
-                    <button class="btn btn-primary" id="generate-btn" onclick="generateSmartPoster()" style="margin-top: 35px; width: 100%; max-width: 450px; padding: 20px; border-radius: 100px; font-size: clamp(1.1rem, 1.3vw, 1.2rem);"><i class="fa-solid fa-bolt"></i> Generate Poster</button>
-                    <button class="btn btn-success" id="download-btn" onclick="savePoster()" style="display: none; margin-top: 15px; width: 100%; max-width: 450px; padding: 20px; border-radius: 100px; font-size: clamp(1.1rem, 1.3vw, 1.2rem);"><i class="fa-solid fa-download"></i> Save to Gallery (HD)</button>
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-chair" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">A/C Cabins</h3></div>
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-volume-xmark" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">Silent Zone</h3></div>
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-glass-water" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">RO Water</h3></div>
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-newspaper" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">Daily News</h3></div>
+                    <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-video" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">CCTV Secure</h3></div>
                 </div>
             </div>
-
             <!-- =========================================================
-                 SECTION: SMART ID ENGINE
+                 SECTION: SMART ID ENGINE (Fixed & Working)
                  ========================================================= -->
             <div id="sec-idcard" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Smart ID Engine</h2>
@@ -829,13 +914,14 @@
                                 <div style="text-align: right;"><div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 20px; color: #000; margin-bottom: 2px;">Ravi Prakash</div><div style="font-size: 8px; color: #475569; letter-spacing: 0.5px; font-weight: 900; border-top: 2px solid #ccc; padding-top: 4px;">LIBRARY MANAGER</div></div>
                             </div>
                         </div>
-                        <button class="btn btn-primary" onclick="downloadID()" style="width: 100%; max-width: 290px; margin-top: 25px; border-radius: 100px; padding: 16px; font-size: 1.1rem;"><i class="fa-solid fa-download"></i> Download HD ID</button>
+                        <button class="btn btn-primary" onclick="downloadID()" style="width: 100%; max-width: 290px; margin-top: 25px; border-radius: 12px; padding: 16px; font-size: 1.1rem;"><i class="fa-solid fa-download"></i> Download HD ID</button>
                     </div>
                 </div>
             </div>
 
-            <!-- (Facilities, Gallery, Tools, Expenses, Tasks, About Us, Footer omitted here as they are perfectly placed in Parts 3/4. Proceeding directly to the Core JS Engine) -->
-            
+            <!-- =========================================================
+                 SECTION: GALLERY
+                 ========================================================= -->
             <div id="sec-gallery" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-images"></i> Gallery</h2>
                 <div class="bento-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: clamp(20px, 3vw, 30px);">
@@ -845,17 +931,23 @@
                 </div>
             </div>
 
+            <!-- =========================================================
+                 SECTION: STUDY TOOLS
+                 ========================================================= -->
             <div id="sec-tools" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> Study Tools</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
-                    <div class="bento-card" style="border-left: 5px solid var(--brand-blue);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-magnifying-glass-book"></i> Smart Finder</h4><div style="display: flex; gap: 10px; flex-wrap: wrap;"><select id="docType" style="padding: 16px; flex: 1; min-width: 120px; background: var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 14px; outline:none;"><option value="pdf">PDF Notes</option><option value="video">Lectures</option><option value="mock">Mock Tests</option></select><input type="text" id="topicInput" placeholder="Enter topic..." style="flex: 2; min-width: 150px; padding: 16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 14px; outline:none;"><button class="btn btn-primary" onclick="findStudyMaterial()" style="padding: 16px 20px;"><i class="fa-solid fa-search"></i></button></div></div>
-                    <div class="bento-card" style="border-left: 5px solid var(--success-green);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-calculator"></i> CGPA Calc</h4><div style="display: flex; gap: 10px;"><input type="number" id="cgpaInput" placeholder="CGPA / %" style="flex:1; padding:16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 14px; font-weight: bold;"><button class="btn btn-success" style="padding: 16px;" onclick="calcCGPA()">To %</button><button class="btn btn-outline" style="padding: 16px;" onclick="calcPercent()">To CGPA</button></div><div id="cgpaResult" style="display: none; margin-top: 15px; font-weight: 900; color: var(--success-green); font-size: 1.3rem;"></div></div>
+                    <div class="bento-card" style="border-left: 5px solid var(--brand-blue);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-magnifying-glass-book"></i> Smart Finder</h4><div style="display: flex; gap: 10px; flex-wrap: wrap;"><select id="docType" style="padding: 16px; flex: 1; min-width: 120px; background: var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; outline:none;"><option value="pdf">PDF Notes</option><option value="video">Lectures</option><option value="mock">Mock Tests</option></select><input type="text" id="topicInput" placeholder="Enter topic..." style="flex: 2; min-width: 150px; padding: 16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; outline:none;"><button class="btn btn-primary" onclick="findStudyMaterial()" style="padding: 16px 20px;"><i class="fa-solid fa-search"></i></button></div></div>
+                    <div class="bento-card" style="border-left: 5px solid var(--success-green);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-calculator"></i> CGPA Calc</h4><div style="display: flex; gap: 10px;"><input type="number" id="cgpaInput" placeholder="CGPA / %" style="flex:1; padding:16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; font-weight: bold;"><button class="btn btn-success" style="padding: 16px; border-radius: 12px;" onclick="calcCGPA()">To %</button><button class="btn btn-outline" style="padding: 16px; border-radius: 12px;" onclick="calcPercent()">To CGPA</button></div><div id="cgpaResult" style="display: none; margin-top: 15px; font-weight: 900; color: var(--success-green); font-size: 1.3rem;"></div></div>
                     <div class="bento-card" style="border-left: 5px solid var(--danger-red); grid-column: 1 / -1;"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-stopwatch"></i> Focus Timer</h4><div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;"><div id="timerDisplay" style="font-size: clamp(4rem, 6vw, 5rem); font-weight: 900; font-family: monospace; color: var(--text-main); letter-spacing: -2px;">25:00</div><div style="display: flex; gap: 15px; flex: 1; min-width: 280px;"><button class="btn btn-primary" onclick="startTimer()" style="flex: 1; border-radius: 100px; padding: 18px; font-size: 1.1rem;"><i class="fa-solid fa-play"></i> Start Focus</button><button class="btn btn-danger" onclick="resetTimer()" style="flex: 1; border-radius: 100px; padding: 18px; font-size: 1.1rem;"><i class="fa-solid fa-rotate-right"></i> Reset</button></div></div></div>
-                    <div class="bento-card" style="border-left: 5px solid var(--accent-orange);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-cake-candles"></i> Age Calc</h4><div style="display: flex; gap: 10px;"><input type="date" id="dobInput" style="flex:1; padding:16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 14px;"><button class="btn btn-primary" onclick="calcAge()">Calculate</button></div><div id="ageResult" style="display: none; margin-top: 15px; font-weight: 900; color: var(--accent-orange); font-size: 1.2rem;"></div></div>
-                    <div class="bento-card" style="border-left: 5px solid var(--warning-yellow);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-pen-to-square"></i> Quick Notes</h4><textarea id="quickNotes" rows="3" placeholder="Formulas, short tricks..." style="width: 100%; padding:18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 14px; margin-bottom: 15px; resize: none; font-size: 1rem;"></textarea><button class="btn btn-outline" style="width: 100%; padding: 16px;" onclick="saveNotes()"><i class="fa-solid fa-save"></i> Save Offline</button></div>
+                    <div class="bento-card" style="border-left: 5px solid var(--accent-orange);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-cake-candles"></i> Age Calc</h4><div style="display: flex; gap: 10px;"><input type="date" id="dobInput" style="flex:1; padding:16px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px;"><button class="btn btn-primary" onclick="calcAge()" style="border-radius: 12px;">Calculate</button></div><div id="ageResult" style="display: none; margin-top: 15px; font-weight: 900; color: var(--accent-orange); font-size: 1.2rem;"></div></div>
+                    <div class="bento-card" style="border-left: 5px solid var(--warning-yellow);"><h4 style="margin-bottom: 20px; font-weight: 900; text-transform: uppercase;"><i class="fa-solid fa-pen-to-square"></i> Quick Notes</h4><textarea id="quickNotes" rows="3" placeholder="Formulas, short tricks..." style="width: 100%; padding:18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; margin-bottom: 15px; resize: none; font-size: 1rem;"></textarea><button class="btn btn-outline" style="width: 100%; padding: 16px; border-radius: 12px;" onclick="saveNotes()"><i class="fa-solid fa-save"></i> Save Offline</button></div>
                 </div>
             </div>
-            
+
+            <!-- =========================================================
+                 SECTION: EXPENSE TRACKER
+                 ========================================================= -->
             <div id="sec-expense" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-wallet" style="color: var(--warning-yellow);"></i> Expense Tracker</h2>
                 <div class="bento-card" style="display: flex; gap: 40px; flex-wrap: wrap;">
@@ -866,7 +958,7 @@
                         </div>
                         <div class="input-group"><label>Expense Reason</label><input type="text" id="expName" placeholder="e.g. Chai, Books" autocomplete="off"></div>
                         <div class="input-group"><label>Amount (₹)</label><input type="number" id="expAmount" placeholder="e.g. 50"></div>
-                        <button class="btn btn-warning" style="width: 100%; padding: 18px; border-radius: 16px; font-size: 1.1rem;" onclick="addExpense()"><i class="fa-solid fa-plus"></i> Add Expense</button>
+                        <button class="btn btn-warning" style="width: 100%; padding: 18px; border-radius: 12px; font-size: 1.1rem;" onclick="addExpense()"><i class="fa-solid fa-plus"></i> Add Expense</button>
                     </div>
                     <div style="flex: 1; min-width: 300px; background: var(--bg-body); padding: 25px; border-radius: 24px; border: 1px solid var(--border-glass); max-height: 480px; overflow-y: auto;">
                         <h4 style="font-weight: 900; font-size: 1.3rem; margin-bottom: 20px; border-bottom: 1px solid var(--border-glass); padding-bottom: 15px;">Transactions</h4>
@@ -874,45 +966,145 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- =========================================================
+                 SECTION: TASK MASTER
+                 ========================================================= -->
             <div id="sec-tasks" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-list-check" style="color: var(--success-green);"></i> Task Master</h2>
                 <div class="bento-card" style="margin-bottom: 30px;">
                     <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
-                        <input type="text" id="taskInput" placeholder="What to study today?" style="flex: 3; min-width: 250px; padding:18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 16px; font-size: 1.1rem;" autocomplete="off">
-                        <select id="taskPriority" style="flex: 1; min-width: 120px; padding: 18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 16px; font-weight: 700;"><option value="High">High</option><option value="Medium" selected>Medium</option><option value="Low">Low</option></select>
-                        <button class="btn btn-success" style="flex: 1; min-width: 120px; padding: 18px; font-size: 1.3rem; border-radius: 16px;" onclick="addTask()"><i class="fa-solid fa-plus"></i></button>
+                        <input type="text" id="taskInput" placeholder="What to study today?" style="flex: 3; min-width: 250px; padding:18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; font-size: 1.1rem;" autocomplete="off">
+                        <select id="taskPriority" style="flex: 1; min-width: 120px; padding: 18px; background:var(--input-bg); color:var(--text-main); border: 1.5px solid var(--border-glass); border-radius: 12px; font-weight: 700;"><option value="High">High</option><option value="Medium" selected>Medium</option><option value="Low">Low</option></select>
+                        <button class="btn btn-success" style="flex: 1; min-width: 120px; padding: 18px; font-size: 1.3rem; border-radius: 12px;" onclick="addTask()"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div id="taskListContainer" style="display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto;"></div>
                 </div>
             </div>
 
-            <!-- ABOUT US & QUOTES -->
-            <div id="sec-about" class="dynamic-sec">
-                <h2 class="section-title"><i class="fa-solid fa-circle-info"></i> About Us</h2>
-                <div class="bento-card" style="text-align:center; padding: clamp(40px, 5vw, 60px) 20px;">
-                    <i class="fa-solid fa-book-atlas" style="font-size:70px; color:var(--brand-blue); margin-bottom:20px; filter: drop-shadow(0 10px 20px rgba(37,99,235,0.3));"></i>
-                    <p style="font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 900; margin-bottom: 5px; line-height: 1.6;">Welcome to <strong>National Library</strong>, the premier digital study space.</p>
-                    <div class="subtitle" style="margin-bottom: 25px; font-size: 0.9rem;">Maharajganj Azamgarh</div>
-                    <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; font-size: 1.05rem; line-height: 1.8; font-weight: 600;">Strategically located near the Post Office, we provide aspirants with a distraction-free, fully air-conditioned environment, ergonomic seating, high-speed Wi-Fi, pin-drop silence, RO water, and 24/7 CCTV surveillance.</p>
+            <!-- =========================================================
+                 SECTION: ULTRA-SECURE RECEIPT ENGINE (Anti-Editable Full Fix)
+                 ========================================================= -->
+            <div id="sec-receipt" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-file-invoice-dollar"></i> Pro Receipt Engine</h2>
+                <div class="bento-card" style="margin-bottom: 35px; border-left: 6px solid var(--accent-orange);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+                        <h3 style="font-weight: 900; font-size: clamp(1.15rem, 1.5vw, 1.3rem);"><i class="fa-solid fa-shield-halved" style="color: var(--accent-orange);"></i> High Security Generator</h3>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="input-group"><label>Mobile No (ID) [No NL]</label><input type="tel" id="inpIdMobile" maxlength="10" placeholder="e.g. 8063963280" oninput="updatePreview()" autocomplete="off"></div>
+                        <div class="input-group"><label>Student Name</label><input type="text" id="inpName" placeholder="Full Name" oninput="updatePreview()" autocomplete="off"></div>
+                        <div class="input-group"><label>Seat Number</label><input type="text" id="inpSeat" placeholder="Seat No" oninput="updatePreview()" autocomplete="off"></div>
+                        <div class="input-group"><label>Shift Assigned</label>
+                            <select id="inpShift" onchange="updatePreview()">
+                                <option value="Full Shift (7 AM - 9 PM)" selected>Full Shift (7 AM - 9 PM)</option>
+                                <option value="Morning Shift (7 AM - 2 PM)">Morning Shift (7 AM - 2 PM)</option>
+                                <option value="Evening Shift (2 PM - 9 PM)">Evening Shift (2 PM - 9 PM)</option>
+                            </select>
+                        </div>
+                        <div class="input-group"><label>Start Month</label><input type="month" id="inpMonth" onchange="updatePreview()"></div>
+                        <div class="input-group"><label>Duration</label><select id="inpDuration" onchange="updatePreview()"><option value="1" selected>1 Month</option><option value="2">2 Months</option><option value="3">3 Months</option><option value="4">4 Months</option><option value="5">5 Months</option><option value="6">6 Months</option></select></div>
+                        <div class="input-group"><label>Payment Mode</label><select id="inpMode" onchange="updatePreview()"><option value="Online / UPI" selected>Online / UPI</option><option value="Cash">Cash</option></select></div>
+                        <div class="input-group" id="txnDateGroup"><label>Txn Date & Time</label><input type="datetime-local" id="inpTxnDate" oninput="updatePreview()"></div>
+                        <div class="input-group" id="txnGroup"><label>Transaction ID</label><input type="text" id="inpTxn" placeholder="Txn Ref No." oninput="updatePreview()" autocomplete="off"></div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <button class="btn btn-primary" style="font-size: clamp(1.15rem, 1.5vw, 1.3rem); padding: 20px 50px; border-radius: 100px; box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download Secure PDF</button>
+                </div>
+
+                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE (Height Cut-off completely Fixed) -->
+                <div style="overflow-x: auto; padding-bottom: 20px; display: flex; justify-content: center;" id="receiptPrintArea">
+                    <div id="receiptPaper" class="secure-receipt-bg" style="width: 100%; min-width: 750px; max-width: 800px; color: #000; padding: 50px 60px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid #ddd; background-color: #fff;">
+                        
+                        <!-- Hologram Stamp -->
+                        <div class="hologram-stamp"><div>SECURE<br><span style="font-size: 16px;">✓</span><br>ORIGINAL</div></div>
+                        
+                        <div style="text-align: center; margin-bottom: 30px; border-bottom: 4px double #000; padding-bottom: 25px; position: relative; z-index: 2;">
+                            <h2 style="font-size: 38px; font-weight: 900; margin-bottom: 6px; letter-spacing: 2px; color: #0f172a;">NATIONAL LIBRARY</h2>
+                            <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569;">Maharajganj Azamgarh</div>
+                            <p style="font-size: 13px; margin: 4px 0; color: #1e293b;">Near Post Office Maharajganj, Azamgarh UP-276137</p>
+                            <p style="font-size: 13px; margin: 4px 0; font-weight: 900; color: #0f172a;">+91 87950 11001 | demo@nationallibrary.in</p>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 35px 0; position: relative; z-index: 2;">
+                            <span style="font-size: 22px; font-weight: 900; border: 3px solid #0f172a; padding: 12px 35px; border-radius: 8px; letter-spacing: 4px; background: rgba(15, 23, 42, 0.05); color: #0f172a;">OFFICIAL FEE RECEIPT</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; margin-bottom: 25px; position: relative; z-index: 2; color: #000;">
+                            <span id="outDate">Date: --</span><span id="outRcptNo">Receipt No: --</span>
+                        </div>
+                        
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 16px; border: 2px solid #0f172a; position: relative; z-index: 2; background: rgba(255,255,255,0.95);">
+                            <tbody>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; width: 40%; font-weight: 800;">ID Card No:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; color: #2563eb;" id="dispId">NL--</td></tr>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Student Name:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; text-transform: uppercase;" id="dispName">--</td></tr>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Seat Number:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispSeat">--</td></tr>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Shift Assigned:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispShift">Full Shift (7 AM - 9 PM)</td></tr>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Fee Duration:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMonth">--</td></tr>
+                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Mode:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMode">Online / UPI</td></tr>
+                                <tr id="rowTxnDate"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Date/Time:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispTxnDate">--</td></tr>
+                                <tr id="rowTxn"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Transaction ID:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; font-family: monospace; font-size: 18px;" id="dispTxn">--</td></tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; border: 3px solid #0f172a; padding: 25px 30px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.03); position: relative; z-index: 2;">
+                            <div><div style="font-size: 20px; font-weight: 900; color: #0f172a;">Total Fee Received</div><div style="font-size: 15px; margin-top:6px; font-weight: 800;" id="dispSubTotal">(₹400 x 1 Month)</div></div>
+                            <div style="font-size: 40px; font-weight: 900; color: #10b981; text-shadow: 1px 1px 0 #000;">₹<span id="dispTotal">400.00</span></div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; position: relative; z-index: 2;">
+                            <div style="flex: 1; font-size: 13px; line-height: 1.6; color: #334155; font-weight: 700;">
+                                <strong style="color: #000; font-size: 14px;">Official Document</strong><br>This system-generated receipt serves<br>as the official proof of fee payment.<br>Please retain for your records.
+                            </div>
+                            <div style="text-align: center; flex: 0.5;">
+                                <img src="" id="outQR" crossorigin="anonymous" alt="QR Code" style="width: 100px; height: 100px; margin-bottom: 8px; border: 2px solid #000; padding: 2px; border-radius: 4px; background:#fff;">
+                                <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px;">SCAN VERIFY</div>
+                            </div>
+                            <div style="text-align: right; flex: 1;">
+                                <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 38px; color: #0f172a; margin-bottom: 8px;">Ravi Prakash</div>
+                                <div style="font-weight: 900; font-size: 12px; border-top: 2px solid #0f172a; display: inline-block; padding-top: 8px; letter-spacing: 1px;">MANAGER SIGNATURE</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="quotesSec" style="display: flex; flex-direction: column; gap: 20px; margin-top: 30px;">
-                <div class="bento-card" style="border-left: 6px solid var(--accent-orange); position: relative; overflow: hidden; padding: clamp(20px, 3vw, 30px);">
-                    <i class="fa-solid fa-quote-left" style="font-size:60px; opacity:0.05; position:absolute; top: 15px; left: 15px; color: var(--text-main);"></i>
-                    <p style="font-size: clamp(1.15rem, 1.5vw, 1.4rem); font-weight: 800; font-style: italic; margin-bottom: 15px; line-height: 1.6; position: relative; z-index: 2; padding-left: 30px;">"Shiksha us sherni ka dudh hai jo piyega wo dahadega"</p>
-                    <h4 style="color: var(--accent-orange); text-align: right; font-size: 1rem; font-weight: 900;">- Dr. B.R. Ambedkar</h4>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <div class="bento-card" style="border-left: 5px solid var(--brand-blue); padding: clamp(20px, 3vw, 25px);"><p style="font-style: italic; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.6; font-weight: 700;">"Sapne wo nahi jo aap sote hue dekhte hain, sapne wo hain jo sone nahi dete."</p><h4 style="color: var(--brand-blue); text-align: right; font-size: 0.95rem; font-weight: 900;">- A.P.J. Abdul Kalam</h4></div>
-                    <div class="bento-card" style="border-left: 5px solid var(--success-green); padding: clamp(20px, 3vw, 25px);"><p style="font-style: italic; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.6; font-weight: 700;">"Ve mujhe maar sakte hain, lekin mere vicharon ko nahi."</p><h4 style="color: var(--success-green); text-align: right; font-size: 0.95rem; font-weight: 900;">- Bhagat Singh</h4></div>
+            <!-- =========================================================
+                 SECTION: MULTI-LANGUAGE QUOTES MAKER (No Repeats, Height Adjusted)
+                 ========================================================= -->
+            <div id="sec-poster" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Quotes Maker</h2>
+                <div class="bento-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: clamp(40px, 5vw, 60px) 20px; text-align: center;">
+                    <p style="font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 900; margin-bottom: 5px;">HD Premium Quotes Engine</p>
+                    <div class="subtitle" style="margin-bottom: 20px; font-size: clamp(0.9rem, 1.1vw, 1rem);">Auto-Generates Motivational Quote & Website QR</div>
+                    
+                    <div class="input-group" style="max-width: 400px; margin-bottom: 25px;">
+                        <select id="quoteLangSelect" style="font-weight: 800; font-size: 1.1rem; text-align: center; border-radius: 100px;">
+                            <option value="en">English Quotes</option>
+                            <option value="hi" selected>Hindi Quotes (हिंदी)</option>
+                            <option value="hinglish">Hinglish Quotes</option>
+                        </select>
+                    </div>
+
+                    <div id="canvas-wrapper" style="width: 100%; max-width: 380px; position: relative;">
+                        <div id="empty-state" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: var(--input-bg); border: 2.5px dashed var(--border-glass); border-radius: 24px; height: 480px; color: var(--text-muted); transition: 0.3s;">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 3.5rem; margin-bottom: 15px; color: var(--brand-blue); filter: drop-shadow(0 0 25px rgba(37, 99, 235, 0.4));"></i> 
+                            <span style="font-weight: 800; font-size: 1.1rem;">Quote Will Render Here</span>
+                        </div>
+                        <canvas id="mainCanvas" width="1080" height="1350" style="width: 100%; height: auto; display: none; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); border: 1px solid var(--border-glass);"></canvas>
+                    </div>
+                    <button class="btn btn-primary" id="generate-btn" onclick="generateSmartPoster()" style="margin-top: 30px; width: 100%; max-width: 380px; padding: 18px; border-radius: 100px; font-size: clamp(1.05rem, 1.3vw, 1.15rem);"><i class="fa-solid fa-bolt"></i> Generate Quote</button>
+                    <button class="btn btn-success" id="download-btn" onclick="savePoster()" style="display: none; margin-top: 15px; width: 100%; max-width: 380px; padding: 18px; border-radius: 100px; font-size: clamp(1.05rem, 1.3vw, 1.15rem);"><i class="fa-solid fa-download"></i> Save to Gallery</button>
                 </div>
             </div>
 
         </div> <!-- End App Container Content -->
 
-        <!-- PREMIUM FOOTER -->
+        <!-- =========================================================
+             PREMIUM SMART FOOTER (With Modern Verified Badge Identity Reveal)
+             ========================================================= -->
         <footer style="background: var(--bg-glass); border-top: 1px solid var(--border-glass); padding: clamp(40px, 6vw, 80px) 20px; text-align: center; margin-top: auto; backdrop-filter: blur(30px);">
             <div style="font-size:clamp(1.6rem, 2.5vw, 2.2rem); font-weight:900; color:var(--brand-blue); letter-spacing: -1px; margin-bottom: 5px;"><i class="fa-solid fa-book-open-reader"></i> National Library</div>
             <div class="subtitle" style="margin-bottom: 30px; font-size: clamp(0.9rem, 1.2vw, 1.05rem);">Maharajganj Azamgarh</div>
@@ -921,18 +1113,27 @@
                 <a href="mailto:demo@nationallibrary.in" style="color: var(--text-main); text-decoration: none; transition: 0.3s;"><i class="fa-solid fa-envelope" style="color: var(--warning-yellow); margin-right: 10px;"></i> demo@nationallibrary.in</a>
                 <a href="tel:8795011001" style="color: var(--text-main); text-decoration: none; transition: 0.3s;"><i class="fa-solid fa-phone" style="color: var(--success-green); margin-right: 10px;"></i> +91 87950 11001</a>
             </div>
+            
             <div style="border-top: 1px solid var(--border-glass); padding-top: 35px; font-weight: 700; color: var(--text-muted); font-size: clamp(0.95rem, 1.1vw, 1.05rem);">
                 © 2026 National Library. Ultra Premium Workspace.<br>
-                <span style="color:var(--text-main); font-size: clamp(1.1rem, 1.3vw, 1.2rem); display:inline-flex; align-items:center; margin-top:20px; font-weight: 900; cursor: pointer; letter-spacing: 0.5px; padding: 12px 24px; background: var(--input-bg); border-radius: 100px; border: 1.5px solid var(--border-glass);" onclick="window.open('https://instagram.com/mr_gt_rao', '_blank')">
-                    Developed by GT Rao 
-                    <svg class="verified-badge" viewBox="0 0 24 24" style="width:26px; height:26px; margin-left:10px;"><circle cx="12" cy="12" r="12" fill="#1D9BF0"/><path d="M16.5 8L10.5 14L7.5 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </span>
+                
+                <!-- Modern Secret Developer Reveal Button -->
+                <div style="margin-top: 25px; font-size: clamp(1rem, 1.2vw, 1.1rem); font-weight: 800; background: var(--bg-glass); padding: 12px 24px; border-radius: 100px; display: inline-flex; align-items: center; border: 1.5px solid var(--border-glass); transition: 0.3s; box-shadow: var(--shadow-bento); backdrop-filter: blur(10px);">
+                    <span id="devTextBase" style="color: var(--text-muted);">Developed by Library Students</span> 
+                    <i id="devEyeIcon" class="fa-solid fa-eye" style="margin-left: 12px; cursor: pointer; color: var(--brand-blue); font-size: 1.2rem; padding: 4px;" onclick="revealDev()"></i>
+                    
+                    <span id="devNameReveal" style="display: none; align-items: center; margin-left: 8px; color: var(--brand-blue); font-weight: 900; letter-spacing: 0.5px;">
+                        GT Rao
+                        <!-- Original Blue Verified Badge -->
+                        <svg class="verified-badge" viewBox="0 0 24 24" style="width:22px; height:22px; margin-left:6px;"><circle cx="12" cy="12" r="12" fill="#1D9BF0"/><path d="M16.5 8L10.5 14L7.5 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                    </span>
+                </div>
             </div>
         </footer>
     </div> 
 
     <!-- =========================================================
-         ADVANCED JAVASCRIPT ENGINE (WIKI API, FIREBASE SYNC, WATER ENGINE)
+         MASTER JAVASCRIPT ENGINE (Water Timer, PDF Fix, AI Quotes Non-Repeat)
          ========================================================= -->
     <script>
         // 1. FIREBASE CONFIGURATION
@@ -953,7 +1154,7 @@
         let seatData = Array(70).fill(true);
         let seatEditMode = false;
         let notifications = [];
-        let waterData = { bottles: 0, timestamp: 0 };
+        let waterData = { bottles: 0, timestamp: 0, history: [] };
         let waterInterval;
 
         // Force Close Loader Method
@@ -965,50 +1166,55 @@
             }
         }
 
+        // Secret Dev Reveal Logic
+        function revealDev() {
+            document.getElementById('devTextBase').style.display = 'none';
+            document.getElementById('devEyeIcon').style.display = 'none';
+            document.getElementById('devNameReveal').style.display = 'inline-flex';
+        }
+
         // 2. WINDOW ONLOAD INITIALIZATION
         window.onload = () => {
             const savedTheme = localStorage.getItem('theme');
+            const checkbox = document.getElementById('themeToggleCheckbox');
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                document.getElementById('themeKnob').style.transform = 'translateX(0px)';
-                document.getElementById('themeToggleCheckbox').checked = true;
+                if(checkbox) checkbox.checked = true;
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
-                document.getElementById('themeKnob').style.transform = 'translateX(24px)';
-                document.getElementById('themeToggleCheckbox').checked = false;
+                if(checkbox) checkbox.checked = false;
             }
 
             const now = new Date();
             document.getElementById('inpMonth').value = now.toISOString().slice(0, 7);
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('inpTxnDate').value = now.toISOString().slice(0, 16);
-            document.getElementById('outDate').innerText = `Date: ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
             
-            // Generate Detailed Exact Receipt No (YYYYMMDDHHMM)
+            // Receipt Exact Number
             const exactRcpt = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0') + now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0');
             document.getElementById('outRcptNo').innerText = `Receipt No: ${exactRcpt}`;
+            document.getElementById('outDate').innerText = `Date: ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 
+            initializeSeats(); renderBottles(0, 0); renderNotifications();
             updatePreview(); generatePaymentData(); updateRealTimeClock(); setInterval(updateRealTimeClock, 1000);
-            loadTasks(); loadExpenses();
-            initFirebaseSync();
+            loadTasks(); loadExpenses(); initFirebaseSync();
             setTimeout(forceCloseLoader, 3000);
         };
 
+        // 3. UI Navigation & Time
         function toggleTheme() {
-            let currentTheme = document.documentElement.getAttribute('data-theme');
-            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const checkbox = document.getElementById('themeToggleCheckbox');
+            let newTheme = checkbox.checked ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            document.getElementById('themeKnob').style.transform = newTheme === 'light' ? 'translateX(24px)' : 'translateX(0px)';
         }
-
         function showSection(secId) {
             document.querySelectorAll('.dynamic-sec').forEach(el => el.style.display = 'none');
             const target = document.getElementById('sec-' + secId);
             target.style.display = 'block';
+            if(secId === 'home') document.getElementById('homeQuotesSec').style.display = 'flex'; else document.getElementById('homeQuotesSec').style.display = 'none';
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
         function updateRealTimeClock() {
             document.getElementById('realTimeClock').innerText = new Date().toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             let bar = document.getElementById('timeProgress'); let txt = document.getElementById('timeStatusText');
@@ -1017,52 +1223,36 @@
             let open = 7, close = 21; let totalSecs = (close - open) * 3600; let elapsedSecs = ((h - open) * 3600) + (m * 60) + s;
             if(h < open) { bar.style.width = '0%'; txt.innerText = `Opens at ${open}:00 AM`; bar.style.background = 'var(--text-muted)'; } 
             else if(h >= close) { bar.style.width = '100%'; txt.innerText = `Library Closed`; bar.style.background = 'var(--danger-red)'; } 
-            else { bar.style.width = ((elapsedSecs/totalSecs)*100) + '%'; let rem = totalSecs - elapsedSecs; txt.innerText = `Closes in ${Math.floor(rem / 3600)}h ${Math.floor((rem % 3600) / 60)}m`; bar.style.background = 'linear-gradient(90deg, var(--success-green), #20bf6b)'; }
+            else { bar.style.width = ((elapsedSecs/totalSecs)*100) + '%'; let rem = totalSecs - elapsedSecs; txt.innerText = `Closes in ${Math.floor(rem / 3600)}h ${Math.floor((rem % 3600) / 60)}m`; bar.style.background = 'linear-gradient(90deg, var(--success-green), #059669)'; }
         }
 
-        // 3. FIREBASE LIVE ENGINE
+        // 4. FIREBASE ENGINE
         function initFirebaseSync() {
-            db.ref('library/seats').on('value', (snapshot) => {
-                if (snapshot.exists()) { seatData = snapshot.val(); initializeSeats(); } 
-                else { db.ref('library/seats').set(seatData); }
-            });
-            db.ref('library/notifications').on('value', (snapshot) => {
-                if (snapshot.exists()) { notifications = snapshot.val() || []; processAndRenderNotifications(); } 
-                else { notifications = []; renderNotifications(); }
-            });
+            db.ref('library/seats').on('value', (snapshot) => { if (snapshot.exists()) { seatData = snapshot.val(); initializeSeats(); } else { db.ref('library/seats').set(seatData); } });
+            db.ref('library/notifications').on('value', (snapshot) => { if (snapshot.exists()) { notifications = snapshot.val() || []; processAndRenderNotifications(); } });
             db.ref('library/water').on('value', (snapshot) => {
                 if (snapshot.exists()) { 
                     let oldTimestamp = waterData.timestamp;
                     waterData = snapshot.val(); 
+                    if(!waterData.history) waterData.history = [];
                     processWaterData(); 
-                    // Show Popup if new water was added within last 5 minutes (300000 ms)
-                    if(waterData.timestamp > oldTimestamp && (Date.now() - waterData.timestamp) < 300000) {
-                        showWaterPopup();
-                    }
+                    if(waterData.timestamp > oldTimestamp && (Date.now() - waterData.timestamp) < 300000) { showWaterPopup(); }
                 }
             });
-            db.ref('library/holiday').on('value', (snapshot) => {
-                if (snapshot.exists()) { isHoliday = snapshot.val(); document.getElementById('holidayToggle').checked = isHoliday; updateRealTimeClock(); }
-            });
+            db.ref('library/holiday').on('value', (snapshot) => { if (snapshot.exists()) { isHoliday = snapshot.val(); document.getElementById('holidayToggle').checked = isHoliday; updateRealTimeClock(); } });
         }
 
-        // Admin Modals
         function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
         function verifyAdmin() { if(document.getElementById('adminPassword').value === "NL@2026") { document.getElementById('adminLoginArea').style.display = 'none'; document.getElementById('adminDashboardArea').style.display = 'block'; } else alert("Access Denied!"); }
         function toggleHoliday() { isHoliday = document.getElementById('holidayToggle').checked; db.ref('library/holiday').set(isHoliday); }
         function promptReceiptPwd() { document.getElementById('pwdModal').style.display = 'flex'; document.getElementById('receiptPwdInput').value = ''; }
         function verifyReceiptPwd() { if(document.getElementById('receiptPwdInput').value === "NLRS@2050") { document.getElementById('pwdModal').style.display = 'none'; showSection('receipt'); } else alert("Access Denied!"); }
 
-        // Live Seats Logic
         function initializeSeats() {
-            const container = document.getElementById('seatGridContainer');
-            if(!container) return; container.innerHTML = ''; let avail = 0;
+            const container = document.getElementById('seatGridContainer'); if(!container) return; container.innerHTML = ''; let avail = 0;
             for(let i=0; i<70; i++) {
                 if(seatData[i]) avail++;
-                const seatDiv = document.createElement('div');
-                seatDiv.className = `seat-box ${seatData[i] ? 'available' : 'occupied'}`;
-                seatDiv.innerText = i + 1;
-                seatDiv.onclick = () => handleSeatClick(i);
+                const seatDiv = document.createElement('div'); seatDiv.className = `seat-box ${seatData[i] ? 'available' : 'occupied'}`; seatDiv.innerText = i + 1; seatDiv.onclick = () => handleSeatClick(i);
                 container.appendChild(seatDiv);
             }
             document.getElementById('seatStatsText').innerText = `Available: ${avail} / 70`;
@@ -1070,37 +1260,23 @@
         function toggleSeatEditMode() {
             if(!seatEditMode) {
                 let pwd = prompt("Enter Admin Password:");
-                if(pwd === "NL@2026") {
-                    seatEditMode = true; document.getElementById('seatGridContainer').classList.add('edit-mode');
-                    document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-save'></i> Save Updates";
-                    document.getElementById('editSeatsBtn').classList.replace('btn-outline', 'btn-danger');
-                } else alert("Incorrect.");
+                if(pwd === "NL@2026") { seatEditMode = true; document.getElementById('seatGridContainer').classList.add('edit-mode'); document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-save'></i> Save Updates"; document.getElementById('editSeatsBtn').classList.replace('btn-outline', 'btn-danger'); } else alert("Incorrect.");
             } else {
-                seatEditMode = false; document.getElementById('seatGridContainer').classList.remove('edit-mode');
-                document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-pen'></i> Manage Seats";
-                document.getElementById('editSeatsBtn').classList.replace('btn-danger', 'btn-outline');
-                db.ref('library/seats').set(seatData); 
+                seatEditMode = false; document.getElementById('seatGridContainer').classList.remove('edit-mode'); document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-pen'></i> Manage Seats"; document.getElementById('editSeatsBtn').classList.replace('btn-danger', 'btn-outline'); db.ref('library/seats').set(seatData); 
             }
         }
         function handleSeatClick(index) { if(!seatEditMode) return; seatData[index] = !seatData[index]; initializeSeats(); }
 
-        // Live Notices (24h Delete)
         function openNotificationModal() { document.getElementById('notificationModal').style.display = 'flex'; document.getElementById('notifBadge').style.display = 'none'; }
         function closeNotificationModal() { document.getElementById('notificationModal').style.display = 'none'; }
         function addNotice() {
-            let text = document.getElementById('newNoticeText').value.trim();
-            if(!text) return;
-            let autoDelete = document.getElementById('autoDeleteNotice').checked;
-            notifications.unshift({ id: Date.now(), text: text, time: Date.now(), autoDelete: autoDelete });
-            db.ref('library/notifications').set(notifications);
+            let text = document.getElementById('newNoticeText').value.trim(); if(!text) return; let autoDelete = document.getElementById('autoDeleteNotice').checked;
+            notifications.unshift({ id: Date.now(), text: text, time: Date.now(), autoDelete: autoDelete }); db.ref('library/notifications').set(notifications);
             document.getElementById('newNoticeText').value = ''; document.getElementById('adminModal').style.display = 'none';
         }
         function processAndRenderNotifications() {
             let now = Date.now(); let hasChanges = false;
-            let validNotifs = notifications.filter(n => {
-                if(n.autoDelete && (now - n.time) > (24 * 60 * 60 * 1000)) { hasChanges = true; return false; }
-                return true;
-            });
+            let validNotifs = notifications.filter(n => { if(n.autoDelete && (now - n.time) > (24 * 60 * 60 * 1000)) { hasChanges = true; return false; } return true; });
             if(hasChanges) { notifications = validNotifs; db.ref('library/notifications').set(notifications); }
             renderNotifications();
         }
@@ -1110,64 +1286,81 @@
                 list.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px;"><i class="fa-solid fa-bell-slash" style="font-size: 2.5rem; margin-bottom: 10px; opacity: 0.3;"></i><p>No new updates.</p></div>`;
                 if(badge) badge.style.display = 'none'; document.getElementById('liveMarquee').innerText = "Welcome to National Library! | Connect to 5G Free WiFi."; return;
             }
-            if(badge) badge.style.display = 'block'; 
-            document.getElementById('liveMarquee').innerText = notifications.map(n => n.text).join("  |  ");
-            list.innerHTML = notifications.map(n => `<div style="background: var(--input-bg); padding: 16px; border-radius: 14px; border: 1px solid var(--border-glass);"><p style="font-weight: 700; font-size: 1rem; margin-bottom: 8px;">${n.text}</p><div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;"><i class="fa-regular fa-clock"></i> ${new Date(n.time).toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})} ${n.autoDelete ? '<span style="color:var(--danger-red); margin-left: 10px;">(Auto-deletes 24h)</span>' : ''}</div></div>`).join('');
+            if(badge) badge.style.display = 'block'; document.getElementById('liveMarquee').innerText = notifications.map(n => n.text).join("  |  ");
+            list.innerHTML = notifications.map(n => `<div style="background: var(--input-bg); padding: 16px; border-radius: 12px; border: 1px solid var(--border-glass);"><p style="font-weight: 700; font-size: 1rem; margin-bottom: 8px;">${n.text}</p><div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;"><i class="fa-regular fa-clock"></i> ${new Date(n.time).toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})} ${n.autoDelete ? '<span style="color:var(--danger-red); margin-left: 10px;">(Auto-deletes 24h)</span>' : ''}</div></div>`).join('');
         }
         function clearAllNotifications() { if(confirm("Clear all global history?")) { notifications = []; db.ref('library/notifications').set(notifications); } }
 
-        // Advanced Water Status Engine (2 Hours/Bottle)
+        // 5. ADVANCED WATER ENGINE (Exact Real-Time Batch Drain Logic)
         function verifyWaterLogin() {
-            if(document.getElementById('waterPwdInput').value === "WATER2026") {
-                document.getElementById('waterLoginModal').style.display = 'none';
-                document.getElementById('waterVendorPanel').style.display = 'block';
-                document.getElementById('waterPwdInput').value = '';
-            } else alert("Incorrect Vendor Password.");
+            if(document.getElementById('waterPwdInput').value === "WATER2026") { document.getElementById('waterLoginModal').style.display = 'none'; document.getElementById('waterVendorPanel').style.display = 'block'; document.getElementById('waterPwdInput').value = ''; } else alert("Incorrect Vendor Password.");
         }
         function changeBottleCount(amount) {
-            let el = document.getElementById('vendorBottleInput');
-            let current = parseInt(el.value) || 1;
-            let newVal = current + amount;
-            if(newVal < 1) newVal = 1;
-            el.value = newVal;
+            let el = document.getElementById('vendorBottleInput'); let newVal = (parseInt(el.value) || 1) + amount;
+            if(newVal < 1) newVal = 1; el.value = newVal;
         }
         function submitWaterUpdate() {
-            let b = parseInt(document.getElementById('vendorBottleInput').value);
-            if(!b || b <= 0) return alert("Enter valid bottle count.");
-            let wData = { bottles: b, timestamp: Date.now() };
-            db.ref('library/water').set(wData);
+            let b = parseInt(document.getElementById('vendorBottleInput').value); if(!b || b <= 0) return alert("Enter valid bottle count.");
+            let wTime = Date.now();
+            if(!waterData.history) waterData.history = [];
+            waterData.history.unshift({ time: wTime, bottles: b });
+            if(waterData.history.length > 5) waterData.history.pop();
+            db.ref('library/water').set({ bottles: b, timestamp: wTime, history: waterData.history });
             document.getElementById('waterVendorPanel').style.display = 'none';
         }
         function showWaterPopup() {
-            const popup = document.getElementById('waterPopup');
-            popup.style.display = 'flex';
-            setTimeout(() => { popup.style.display = 'none'; }, 5000);
+            const popup = document.getElementById('waterPopup'); popup.style.display = 'flex';
+            setTimeout(() => { popup.style.display = 'none'; }, 5000); 
         }
-        function renderBottles(bottlesCount, overallPct) {
-            const container = document.getElementById('bottlesContainer');
-            if(bottlesCount === 0) {
-                container.innerHTML = `<div style="color: var(--text-muted); font-style: italic; width: 100%;">No active water supply data available today.</div>`;
-                return;
+        
+        let pressTimer;
+        function setupBottleHold(el) {
+            el.onmousedown = () => { pressTimer = window.setTimeout(deleteWaterData, 1200); };
+            el.onmouseup = () => { clearTimeout(pressTimer); };
+            el.onmouseleave = () => { clearTimeout(pressTimer); };
+            el.ontouchstart = () => { pressTimer = window.setTimeout(deleteWaterData, 1200); };
+            el.ontouchend = () => { clearTimeout(pressTimer); };
+        }
+        function deleteWaterData() {
+            if(confirm("Delete this active water session?")) {
+                db.ref('library/water').set({ bottles: 0, timestamp: 0, history: waterData.history || [] });
             }
+        }
+
+        function renderBottles(bottlesCount, elapsedMs) {
+            const container = document.getElementById('bottlesContainer');
+            if(bottlesCount === 0) { container.innerHTML = `<div style="color: var(--text-muted); font-style: italic; width: 100%;">No active water supply data available today.</div>`; return; }
             
             let html = '';
-            // Calculate fill for each bottle based on overall percentage
-            // If overall is 50% and 3 bottles: 1.5 bottles total. So Bottle 1 is 0%, Bottle 2 is 50%, Bottle 3 is 100%
-            let totalCapacity = bottlesCount * 100;
-            let remainingCapacity = (overallPct / 100) * totalCapacity;
+            const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 2 hours strictly per bottle
             
-            for(let i=0; i<bottlesCount; i++) {
-                let bottleFill = 0;
-                if(remainingCapacity >= 100) { bottleFill = 100; remainingCapacity -= 100; }
-                else if(remainingCapacity > 0) { bottleFill = remainingCapacity; remainingCapacity = 0; }
+            for(let i = 0; i < bottlesCount; i++) {
+                // Determine start and end time window for each individual bottle
+                let drainStart = i * TWO_HOURS_MS;
+                let drainEnd = (i + 1) * TWO_HOURS_MS;
                 
+                let bottleFill = 0;
                 let timeStr = "";
-                if(bottleFill === 100) timeStr = "~2h left";
-                else if(bottleFill > 0) timeStr = "In use";
-                else timeStr = "Empty";
+                let remainingForThisBottle = 0;
+
+                if(elapsedMs >= drainEnd) {
+                    // Time passed this bottle's slot
+                    bottleFill = 0; timeStr = "Empty (0%)";
+                } else if (elapsedMs < drainStart) {
+                    // Time hasn't reached this bottle yet
+                    bottleFill = 100; timeStr = "Full (100%)";
+                } else {
+                    // Active bottle draining exactly now
+                    remainingForThisBottle = drainEnd - elapsedMs;
+                    bottleFill = (remainingForThisBottle / TWO_HOURS_MS) * 100;
+                    let remHrs = Math.floor(remainingForThisBottle / (1000 * 60 * 60));
+                    let remMins = Math.floor((remainingForThisBottle % (1000 * 60 * 60)) / (1000 * 60));
+                    timeStr = `~${remHrs}h ${remMins}m (${Math.floor(bottleFill)}%)`;
+                }
 
                 html += `
-                <div class="bottle-wrapper">
+                <div class="bottle-wrapper" id="bottleItem${i}">
+                    <div class="bottle-delete-btn" onclick="deleteWaterData()" title="Long press to delete session"><i class="fa-solid fa-times"></i></div>
                     <div class="bottle-neck"></div>
                     <div class="bottle-body">
                         <div class="water-fill" style="height: ${bottleFill}%"></div>
@@ -1177,12 +1370,29 @@
                 </div>`;
             }
             container.innerHTML = html;
+            for(let i = 0; i < bottlesCount; i++) {
+                let el = document.getElementById(`bottleItem${i}`);
+                if(el) setupBottleHold(el);
+            }
         }
+
         function processWaterData() {
             if(waterInterval) clearInterval(waterInterval);
             let tsDate = new Date(waterData.timestamp);
             let today = new Date();
             
+            // Render History
+            let historyEl = document.getElementById('waterHistoryList');
+            if(waterData.history && waterData.history.length > 0) {
+                historyEl.innerHTML = waterData.history.map(h => {
+                    let d = new Date(h.time);
+                    if(d.getDate() === today.getDate() && d.getMonth() === today.getMonth()) {
+                        return `<div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-glass); padding-bottom:5px;"><span>${h.bottles} Bottles</span> <span style="color:var(--brand-blue);">${d.toLocaleString('en-IN', {hour:'2-digit', minute:'2-digit', hour12:true})}</span></div>`;
+                    }
+                    return '';
+                }).join('') || '<span style="color: var(--text-muted);">No history for today.</span>';
+            } else { historyEl.innerHTML = '<span style="color: var(--text-muted);">No history for today.</span>'; }
+
             // Midnight Auto Reset
             if(waterData.timestamp === 0 || tsDate.getDate() !== today.getDate() || tsDate.getMonth() !== today.getMonth() || tsDate.getFullYear() !== today.getFullYear()) {
                 document.getElementById('waterBottleCount').innerText = "0 / 0 Bottles Left";
@@ -1192,34 +1402,31 @@
                 return;
             }
             
-            // 2 Hours per 20L Bottle formula
-            let totalMs = waterData.bottles * (2 * 60 * 60 * 1000); 
+            const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+            let totalMs = waterData.bottles * TWO_HOURS_MS; 
             
             waterInterval = setInterval(() => {
                 let now = Date.now();
                 let elapsed = now - waterData.timestamp;
                 let remaining = totalMs - elapsed;
                 
+                document.getElementById('waterBottleCount').innerText = `Batch: ${waterData.bottles} Bottles (Total ~${waterData.bottles * 2} Hrs)`;
+                document.getElementById('lastWaterUpdateText').innerText = `Arrived at ${tsDate.toLocaleString('en-IN', {hour:'2-digit', minute:'2-digit', hour12:true})}`;
+                
                 if(remaining <= 0) {
                     clearInterval(waterInterval);
-                    document.getElementById('waterBottleCount').innerText = `Log: ${waterData.bottles} Bottles Delivered`;
-                    document.getElementById('lastWaterUpdateText').innerText = `Delivered at ${tsDate.toLocaleString('en-IN', {hour:'2-digit', minute:'2-digit', hour12:true})}`;
-                    document.getElementById('waterTimeLeft').innerText = "Empty";
-                    renderBottles(waterData.bottles, 0);
+                    document.getElementById('waterTimeLeft').innerText = "All Empty";
+                    renderBottles(waterData.bottles, totalMs); 
                 } else {
-                    let pct = Math.floor((remaining / totalMs) * 100);
                     let remHrs = Math.floor(remaining / (1000 * 60 * 60));
                     let remMins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                    
-                    document.getElementById('waterBottleCount').innerText = `Log: ${waterData.bottles} Bottles Delivered`;
-                    document.getElementById('lastWaterUpdateText').innerText = `Delivered at ${tsDate.toLocaleString('en-IN', {hour:'2-digit', minute:'2-digit', hour12:true})}`;
-                    document.getElementById('waterTimeLeft').innerText = `${remHrs}h ${remMins}m`;
-                    renderBottles(waterData.bottles, pct);
+                    document.getElementById('waterTimeLeft').innerText = `~${remHrs}h ${remMins}m overall`;
+                    renderBottles(waterData.bottles, elapsed);
                 }
             }, 1000);
         }
 
-        // Advanced AI Wikipedia Auto-Correct API
+        // 6. AI WIKIPEDIA ASSISTANT
         function openAIChat() { document.getElementById('aiChatDropdown').style.display = 'flex'; }
         function closeAIChat(e) { e.stopPropagation(); document.getElementById('aiChatDropdown').style.display = 'none'; }
         function handleAIEnter(e) { if(e.key === 'Enter') sendAIMessage(); }
@@ -1242,6 +1449,10 @@
             if(q.includes('fee') || q.includes('price')) return "📌 **Library Fees:**\n• ₹400 for 1 Month\n• ₹800 for 2 Months\n• ₹1200 for 3 Months\n• ₹2400 for 6 Months\n*Pay securely via UPI.*";
             if(q.includes('time') || q.includes('open') || q.includes('close')) return "📌 **Library Timings:**\n• Open all days: 7:00 AM to 9:00 PM (14-Hour Shift).";
             if(q.includes('manager') || q.includes('contact')) return "📌 **Manager Details:**\n• Name: Mr. Ravi Prakash\n• Phone: +91 87950 11001";
+            if(q.includes('address') || q.includes('location')) return "📌 **Address:**\n• Near Post Office, Maharajganj, Azamgarh UP-276137.";
+            if(q.includes('seat')) return "📌 **Seats:**\n• We have 70 Premium Ergonomic Seats available.";
+            if(q.includes('water')) return "📌 **Water:**\n• We provide unlimited RO Chilled Drinking Water.";
+            if(q.includes('facility') || q.includes('facilities')) return "📌 **Facilities:**\n• 5G WiFi\n• A/C Cabins\n• Silent Zone\n• RO Water\n• Daily News\n• CCTV Security";
             
             let searchWord = q.replace(/who is|what is|tell me about|explain|details of/gi, '').trim();
             if(searchWord.length > 2) {
@@ -1274,12 +1485,13 @@
             }).catch(e => { html5QrCode.clear(); document.getElementById('global-qr-reader').innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger-red);"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;"></i><p style="margin-top:10px; font-weight:700;">QR not detected!</p></div>`; });
         }
 
+        // Admissions & Payment
         function submitAdmission(e) { e.preventDefault(); window.open(`https://wa.me/918795011001?text=${encodeURIComponent(`*Admission*\nName: ${document.getElementById('aName').value}\nMob:${document.getElementById('aMob').value}\nShift: ${document.getElementById('aShift').value}\nAdd:${document.getElementById('aAdd').value}`)}`, '_blank'); }
         function switchPayTab(tab) { if(tab==='pay') { document.getElementById('payNowDiv').style.display='block'; document.getElementById('verifyDiv').style.display='none'; document.getElementById('btnPayTab').classList.replace('btn-outline','btn-primary'); document.getElementById('btnVerifyTab').classList.replace('btn-primary','btn-outline'); } else { document.getElementById('payNowDiv').style.display='none'; document.getElementById('verifyDiv').style.display='block'; document.getElementById('btnVerifyTab').classList.replace('btn-outline','btn-primary'); document.getElementById('btnPayTab').classList.replace('btn-primary','btn-outline'); } }
         function generatePaymentData() { let amt = parseInt(document.getElementById('payMonths').value) * 400; let upi = `upi://pay?pa=raviprakash4281@oksbi&pn=Ravi%20Prakash&am=${amt}&cu=INR`; document.getElementById('displayAmount').innerText = `₹${amt}`; document.getElementById('dynamicQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upi)}`; document.getElementById('autoPayLink').href = upi; }
         function copyUPI() { navigator.clipboard.writeText('raviprakash4281@oksbi').then(() => alert("UPI Copied!")); }
 
-        // PDF Generation with Highly Detailed QR Code
+        // 7. ULTRA-SECURE PDF GENERATION (Perfect A4 Height Scale)
         function updatePreview() {
             const mob = document.getElementById('inpIdMobile').value.trim(); const idNo = mob ? `NL${mob}` : "NL--"; 
             const name = document.getElementById('inpName').value || "--";
@@ -1289,10 +1501,8 @@
             const mode = document.getElementById('inpMode').value;
             const amount = dur * 400;
 
-            document.getElementById('dispId').innerText = idNo; 
-            document.getElementById('dispName').innerText = name; 
-            document.getElementById('dispSeat').innerText = seat; 
-            document.getElementById('dispShift').innerText = shift;
+            document.getElementById('dispId').innerText = idNo; document.getElementById('dispName').innerText = name; 
+            document.getElementById('dispSeat').innerText = seat; document.getElementById('dispShift').innerText = shift;
             let stD = document.getElementById('inpMonth').value; let mT = "--";
             if(stD) { let d = new Date(stD+"-01"); let sT = d.toLocaleString('en-US',{month:'short',year:'numeric'}); if(dur===1) mT = sT+" (1 Month)"; else { d.setMonth(d.getMonth()+(dur-1)); mT = sT+" To "+d.toLocaleString('en-US',{month:'short',year:'numeric'})+` (${dur} Months)`; } }
             document.getElementById('dispMonth').innerText = mT; document.getElementById('dispMode').innerText = mode;
@@ -1300,31 +1510,38 @@
             else { document.getElementById('rowTxnDate').style.display = "table-row"; document.getElementById('txnDateGroup').style.display = "block"; document.getElementById('dispTxnDate').innerText = document.getElementById('inpTxnDate').value ? new Date(document.getElementById('inpTxnDate').value).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true}) : "--"; document.getElementById('rowTxn').style.display = "table-row"; document.getElementById('txnGroup').style.display = "block"; document.getElementById('dispTxn').innerText = document.getElementById('inpTxn').value || "--"; }
             document.getElementById('dispSubTotal').innerText = `(₹400 x ${dur} Month${dur>1?'s':''})`; document.getElementById('dispTotal').innerText = `${amount}.00`;
             
-            // Generate Exact Receipt No if Txn Date is available, else use current time
+            // Detail Exact Receipt No and QR
             let tDate = document.getElementById('inpTxnDate').value ? new Date(document.getElementById('inpTxnDate').value) : new Date();
             const exactRcpt = tDate.getFullYear().toString() + (tDate.getMonth()+1).toString().padStart(2,'0') + tDate.getDate().toString().padStart(2,'0') + tDate.getHours().toString().padStart(2,'0') + tDate.getMinutes().toString().padStart(2,'0');
             document.getElementById('outRcptNo').innerText = `Receipt No: ${exactRcpt}`;
             document.getElementById('outDate').innerText = `Date: ${tDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-
-            // DETAILED QR CODE STRING
             const qrDetails = `VERIFIED ORIGINAL RECEIPT\nReceipt No: ${exactRcpt}\nDate: ${tDate.toLocaleString('en-IN')}\nName: ${name}\nID: ${idNo}\nSeat: ${seat}\nShift: ${shift}\nAmount: INR ${amount}`;
             document.getElementById('outQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrDetails)}&margin=0`;
         }
+        
         function downloadPDF() {
             const btn = document.querySelector('#sec-receipt .btn-primary'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF...'; btn.disabled = true;
             
-            // To prevent cut-off, we temporarily adjust the element for pure capture
             const printArea = document.getElementById('receiptPrintArea');
-            window.scrollTo(0, printArea.offsetTop);
+            const paper = document.getElementById('receiptPaper');
+            window.scrollTo(0, 0); 
             
-            html2canvas(document.getElementById('receiptPaper'), { scale: 3, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
-                const pdf = new window.jspdf.jsPDF('p', 'mm', 'a4'); const w = pdf.internal.pageSize.getWidth(); const m = 10; const h = (canvas.height * (w - m*2)) / canvas.width;
-                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', m, m, w - m*2, h); pdf.save(`NL_Secure_Receipt_${document.getElementById('outRcptNo').innerText.split(': ')[1]}.pdf`);
+            html2canvas(paper, { scale: 3, useCORS: true, backgroundColor: '#ffffff', scrollY: 0 }).then(canvas => {
+                const pdf = new window.jspdf.jsPDF('p', 'mm', 'a4'); 
+                const w = pdf.internal.pageSize.getWidth(); const m = 10; 
+                let h = (canvas.height * (w - m*2)) / canvas.width;
+                
+                // Strict A4 fit mapping: Prevents height from exceeding max printable area bounds.
+                h = Math.min(h, 277); 
+                
+                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', m, m, w - m*2, h); 
+                pdf.save(`NL_Secure_Receipt_${document.getElementById('outRcptNo').innerText.split(': ')[1]}.pdf`);
                 btn.innerHTML = orig; btn.disabled = false;
+                window.scrollTo(0, printArea.offsetTop); 
             });
         }
         
-        // Smart ID
+        // 8. ID CARD DOWNLOAD FIX
         function updateID() {
             let m = document.getElementById('idMob').value || '--'; let idNo = m !== '--' ? `NL${m}` : 'NL--';
             document.getElementById('cardName').innerText = document.getElementById('idName').value || '--'; document.getElementById('cardDob').innerText = document.getElementById('idDob').value || '--'; document.getElementById('cardMob').innerText = m; document.getElementById('cardSeat').innerText = document.getElementById('idSeat').value || 'N/A'; document.getElementById('cardAddress').innerText = document.getElementById('idAddress').value || '--';
@@ -1332,7 +1549,13 @@
             document.getElementById('cardBarcode').src = `https://bwipjs-api.metafloor.com/?bcid=code128&text=${idNo !== 'NL--' ? idNo : 'NL20261234'}&scale=2&height=10&includetext=true`;
         }
         function previewPhoto(e) { let r = new FileReader(); r.onload = function() { document.getElementById('cardPhoto').src = r.result; }; if(e.target.files[0]) r.readAsDataURL(e.target.files[0]); }
-        function downloadID() { html2canvas(document.getElementById('idCardHTML'), { scale: 4, useCORS:true, backgroundColor: null }).then(c => { let a = document.createElement('a'); a.download = "ID_Card_Pro.png"; a.href = c.toDataURL(); a.click(); }); }
+        function downloadID() { 
+            window.scrollTo(0, 0); 
+            html2canvas(document.getElementById('idCardHTML'), { scale: 4, useCORS:true, backgroundColor: null, scrollY: 0 }).then(c => { 
+                let a = document.createElement('a'); a.download = "ID_Card_Pro.png"; a.href = c.toDataURL(); a.click(); 
+                window.scrollTo(0, document.getElementById('sec-idcard').offsetTop); 
+            }); 
+        }
 
         // Tools & LocalStorage Features
         let tasks = JSON.parse(localStorage.getItem('nl_tasks')) || [];
@@ -1344,7 +1567,7 @@
         function renderTasks() {
             const container = document.getElementById('taskListContainer');
             if(tasks.length === 0) { container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 30px;"><i class="fa-solid fa-clipboard-check" style="font-size: 3.5rem; margin-bottom: 10px; opacity: 0.3;"></i><p>No tasks pending!</p></div>`; return; }
-            container.innerHTML = tasks.map(t => { let pColor = t.priority === 'High' ? 'var(--danger-red)' : t.priority === 'Medium' ? 'var(--warning-yellow)' : 'var(--success-green)'; return `<div style="display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border-glass); opacity: ${t.completed ? '0.5' : '1'};"><div style="display: flex; align-items: center; gap: 15px; flex: 1;"><input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" style="width: 22px; height: 22px; cursor: pointer; accent-color: var(--brand-blue);"><div><p style="font-weight: 800; font-size: 1.05rem; text-decoration: ${t.completed ? 'line-through' : 'none'}; margin-bottom: 5px;">${t.text}</p><span style="font-size: 0.8rem; font-weight: 900; background: ${pColor}; color: ${t.priority==='High'?'#fff':'#000'}; padding: 4px 10px; border-radius: 100px;">${t.priority}</span></div></div><button class="btn btn-outline" style="padding: 10px 14px; border-radius: 12px; color: var(--danger-red);" onclick="deleteTask(${t.id})"><i class="fa-solid fa-trash"></i></button></div>`; }).join('');
+            container.innerHTML = tasks.map(t => { let pColor = t.priority === 'High' ? 'var(--danger-red)' : t.priority === 'Medium' ? 'var(--warning-yellow)' : 'var(--success-green)'; return `<div style="display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border-glass); opacity: ${t.completed ? '0.5' : '1'};"><div style="display: flex; align-items: center; gap: 15px; flex: 1;"><input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" style="width: 22px; height: 22px; cursor: pointer; accent-color: var(--brand-blue);"><div><p style="font-weight: 800; font-size: 1.05rem; text-decoration: ${t.completed ? 'line-through' : 'none'}; margin-bottom: 5px;">${t.text}</p><span style="font-size: 0.8rem; font-weight: 900; background: ${pColor}; color: ${t.priority==='High'?'#fff':'#000'}; padding: 4px 10px; border-radius: 100px;">${t.priority}</span></div></div><button class="btn btn-outline" style="padding: 10px 14px; border-radius: 12px; color: var(--danger-red);" onclick="deleteTask(${t.id})"><i class="fa-solid fa-trash"></i></button></div>`; }).join('');
         }
 
         let expenses = JSON.parse(localStorage.getItem('nl_expenses')) || [];
@@ -1355,7 +1578,7 @@
         function renderExpenses() {
             const container = document.getElementById('expenseListContainer'); let total = expenses.reduce((sum, exp) => sum + exp.amount, 0); document.getElementById('totalExpenseDisp').innerText = total;
             if(expenses.length === 0) { container.innerHTML = `<p style="text-align: center; color: var(--text-muted);">No expenses.</p>`; return; }
-            container.innerHTML = expenses.map(e => `<div style="display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 15px 20px; border-radius: 14px; border: 1px solid var(--border-glass);"><div><h4 style="font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">${e.name}</h4><span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">${e.date}</span></div><div style="display: flex; align-items: center; gap: 20px;"><strong style="color: var(--warning-yellow); font-size: 1.2rem;">₹${e.amount}</strong><i class="fa-solid fa-times" style="color: var(--danger-red); cursor: pointer; font-size: 1.2rem;" onclick="deleteExpense(${e.id})"></i></div></div>`).join('');
+            container.innerHTML = expenses.map(e => `<div style="display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border-glass);"><div><h4 style="font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">${e.name}</h4><span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">${e.date}</span></div><div style="display: flex; align-items: center; gap: 20px;"><strong style="color: var(--warning-yellow); font-size: 1.2rem;">₹${e.amount}</strong><i class="fa-solid fa-times" style="color: var(--danger-red); cursor: pointer; font-size: 1.2rem;" onclick="deleteExpense(${e.id})"></i></div></div>`).join('');
         }
 
         function findStudyMaterial() { let t = document.getElementById('topicInput').value.trim(); if(!t) return; let type = document.getElementById('docType').value, url = ''; if(type === 'pdf') url = `https://www.google.com/search?q=filetype:pdf+${encodeURIComponent(t)}+notes`; else if(type === 'video') url = `https://www.youtube.com/results?search_query=${encodeURIComponent(t)}+full+lecture`; else url = `https://www.google.com/search?q=${encodeURIComponent(t)}+free+online+mock+test`; window.open(url, '_blank'); }
@@ -1369,18 +1592,62 @@
         function startTimer() { if(isRun) return; isRun=true; timer = setInterval(()=>{ if(sec==0){if(min==0){clearInterval(timer);isRun=false;return alert("Focus Complete!");} min--;sec=59;}else sec--; updateT(); }, 1000); }
         function resetTimer() { clearInterval(timer); isRun=false; min=25; sec=0; updateT(); }
 
-        // Poster Engine with Website QR Code
+        // 9. SMART MULTI-LANGUAGE QUOTES MAKER (Anti-Repeat Algorithm)
         const posterCanvas = document.getElementById('mainCanvas'), pCtx = posterCanvas.getContext('2d');
-        function openPosterGenerator() { showSection('poster'); }
+        const hindiQuotes = [
+            {q: "शिक्षा सबसे शक्तिशाली हथियार है जिसका उपयोग आप दुनिया को बदलने के लिए कर सकते हैं।", a: "नेल्सन मंडेला"},
+            {q: "सपने वो नहीं जो हम सोते हुए देखते हैं, सपने वो हैं जो हमें सोने नहीं देते।", a: "ए.पी.जे. अब्दुल कलाम"},
+            {q: "एक छात्र की सबसे महत्वपूर्ण विशेषता यह है कि वह हमेशा प्रश्न पूछता रहे।", a: "ए.पी.जे. अब्दुल कलाम"},
+            {q: "जो जितना ज्यादा पढ़ता है, वह उतना ही ज्यादा जानता है।", a: "डॉ. सूस"},
+            {q: "ज्ञान में किया गया निवेश सबसे अच्छा ब्याज देता है।", a: "बेंजामिन फ्रैंकलिन"},
+            {q: "सीखना कभी दिमाग को थकाता नहीं है।", a: "लियोनार्डो दा विंची"},
+            {q: "कठिन परिश्रम का कोई विकल्प नहीं है।", a: "थॉमस एडिसन"},
+            {q: "सफलता का कोई रहस्य नहीं है। यह तैयारी, कड़ी मेहनत का परिणाम है।", a: "कॉलिन पॉवेल"}
+        ];
+        const hinglishQuotes = [
+            {q: "Shiksha us sherni ka dudh hai, jo piyega wo dahadega.", a: "Dr. B.R. Ambedkar"},
+            {q: "Sapne wo nahi jo aap sote hue dekhte hain, sapne wo hain jo sone nahi dete.", a: "A.P.J. Abdul Kalam"},
+            {q: "Mehnat itni khamoshi se karo ki kamyabi shor macha de.", a: "Anonymous"},
+            {q: "Waqt sabko milta hai zindagi badalne ke liye, par zindagi dobara nahi milti waqt badalne ke liye.", a: "Anonymous"},
+            {q: "Agar tum suraj ki tarah chamakna chahte ho, to pehle suraj ki tarah jalna sikho.", a: "A.P.J. Abdul Kalam"},
+            {q: "Koshish karne walon ki kabhi haar nahi hoti.", a: "Harivansh Rai Bachchan"},
+            {q: "Raste mushkil hain par manzil bhi kareeb hai, bas chalte raho.", a: "Anonymous"}
+        ];
+        
+        let lastQuoteIndexes = { hi: -1, hinglish: -1 };
+
+        // Helper function for anti-repeat logic
+        function getUniqueQuote(quotesArray, type) {
+            if (quotesArray.length <= 1) return quotesArray[0];
+            let newIndex;
+            do { newIndex = Math.floor(Math.random() * quotesArray.length); } 
+            while (newIndex === lastQuoteIndexes[type]);
+            lastQuoteIndexes[type] = newIndex;
+            return quotesArray[newIndex];
+        }
+        
+        function openQuotesGenerator() { showSection('poster'); }
         async function generateSmartPoster() {
-            const btn = document.getElementById('generate-btn'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering HD Poster...'; btn.disabled = true;
-            document.getElementById('empty-state').style.display = 'flex'; document.getElementById('empty-state').innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color: var(--brand-blue);"></i><br><span style="margin-top:15px; font-weight: 800;">Applying HD Filters...</span>`;
+            const btn = document.getElementById('generate-btn'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering Quote...'; btn.disabled = true;
+            document.getElementById('empty-state').style.display = 'flex'; document.getElementById('empty-state').innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="font-size: 3.5rem; color: var(--brand-blue);"></i><br><span style="margin-top:15px; font-weight: 800;">Applying HD Filters...</span>`;
             document.getElementById('download-btn').style.display = 'none'; posterCanvas.style.display = 'none';
+            
             try {
-                let res = await fetch("https://dummyjson.com/quotes/random"); let data = await res.json();
-                let text = `"${data.quote}"\n- ${data.author}`; 
+                let text = "";
+                let lang = document.getElementById('quoteLangSelect').value;
+                if(lang === 'hi') {
+                    let item = getUniqueQuote(hindiQuotes, 'hi');
+                    text = `"${item.q}"\n- ${item.a}`;
+                } else if(lang === 'hinglish') {
+                    let item = getUniqueQuote(hinglishQuotes, 'hinglish');
+                    text = `"${item.q}"\n- ${item.a}`;
+                } else {
+                    let res = await fetch(`https://api.quotable.io/random?time=${Date.now()}`); 
+                    let data = await res.json();
+                    text = `"${data.content}"\n- ${data.author}`; 
+                }
+
                 let bgImg = new Image(); bgImg.crossOrigin = "Anonymous"; bgImg.src = `https://picsum.photos/id/${Math.floor(Math.random() * 200) + 1}/1080/1350?grayscale&blur=2`;
-                
                 let qrImg = new Image(); qrImg.crossOrigin = "Anonymous"; qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent('https://gtrao2026.github.io/National-Library/')}&color=ffffff&bgcolor=111111&margin=1`;
 
                 let imagesLoaded = 0;
@@ -1389,30 +1656,32 @@
                     if(imagesLoaded === 2) {
                         pCtx.clearRect(0,0,1080,1350); pCtx.beginPath(); pCtx.roundRect ? pCtx.roundRect(0,0,1080,1350,60) : pCtx.rect(0,0,1080,1350); pCtx.clip();
                         pCtx.drawImage(bgImg, 0, 0, 1080, 1350);
-                        const grd = pCtx.createLinearGradient(0, 0, 0, 1350); grd.addColorStop(0, "rgba(0,0,0,0.5)"); grd.addColorStop(1, "rgba(10,10,10,1)"); pCtx.fillStyle = grd; pCtx.fillRect(0,0,1080,1350);
+                        const grd = pCtx.createLinearGradient(0, 0, 0, 1350); grd.addColorStop(0, "rgba(0,0,0,0.6)"); grd.addColorStop(1, "rgba(10,10,10,1)"); pCtx.fillStyle = grd; pCtx.fillRect(0,0,1080,1350);
                         pCtx.fillStyle = "#ffffff"; pCtx.textAlign = "center"; pCtx.textBaseline = "middle"; pCtx.font = "italic 180px Georgia"; pCtx.fillStyle = "rgba(255,255,255,0.15)"; pCtx.fillText("“", 540, 200);
-                        pCtx.font = "900 65px Inter, Arial, sans-serif"; pCtx.fillStyle = "#ffffff";
+                        
+                        let fontSize = text.length > 150 ? 45 : (text.length > 80 ? 55 : 65);
+                        pCtx.font = `900 ${fontSize}px Inter, Arial, sans-serif`; pCtx.fillStyle = "#ffffff";
                         pCtx.shadowColor = "rgba(0, 0, 0, 0.8)"; pCtx.shadowBlur = 20; pCtx.shadowOffsetY = 10;
+                        
                         let lines = []; let currLine = ""; 
                         text.split(' ').forEach(w => { if(w === '\n') { lines.push(currLine.trim()); currLine = ""; return; } let test = currLine + w + " "; if(pCtx.measureText(test).width > 900) { lines.push(currLine.trim()); currLine = w + " "; } else { currLine = test; } }); lines.push(currLine.trim());
-                        let y = 600 - ((lines.length-1)*90)/2; lines.forEach((l) => { pCtx.fillText(l, 540, y); y += 90; });
+                        let y = 600 - ((lines.length-1)*(fontSize + 15))/2; lines.forEach((l) => { pCtx.fillText(l, 540, y); y += (fontSize + 15); });
                         pCtx.shadowColor = "transparent";
                         
                         pCtx.fillStyle = "#111"; pCtx.fillRect(0, 1100, 1080, 250); pCtx.fillStyle = "#0a84ff"; pCtx.fillRect(50, 1100, 980, 10);
                         pCtx.textAlign = "left"; pCtx.fillStyle = "#fff"; pCtx.font = "900 60px Inter, Arial"; pCtx.fillText("National Library", 70, 1180);
                         pCtx.fillStyle = "#888"; pCtx.font = "bold 35px Inter, Arial"; pCtx.fillText("Maharajganj Azamgarh", 70, 1245);
                         
-                        pCtx.drawImage(qrImg, 830, 1120, 200, 200); // Draw QR Code on Poster
+                        pCtx.drawImage(qrImg, 830, 1120, 200, 200); // QR Code
                         
                         document.getElementById('empty-state').style.display = 'none'; posterCanvas.style.display = 'block'; document.getElementById('download-btn').style.display = 'inline-flex';
-                        btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Generate Another'; btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Generate New Quote'; btn.disabled = false;
                     }
                 };
-                
                 bgImg.onload = checkDraw; qrImg.onload = checkDraw;
             } catch(e) { btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Try Again'; btn.disabled = false; }
         }
-        function savePoster() { let a = document.createElement('a'); a.download = `NL_Premium_Poster_${Date.now()}.png`; a.href = posterCanvas.toDataURL("image/png", 1.0); a.click(); }
+        function savePoster() { let a = document.createElement('a'); a.download = `NL_Premium_Quote_${Date.now()}.png`; a.href = posterCanvas.toDataURL("image/png", 1.0); a.click(); }
     </script>
 </body>
 </html>
