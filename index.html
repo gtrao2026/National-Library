@@ -81,7 +81,6 @@
             overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* Max-width expanded to 2560px for flawless Ultra HD / 8K TV displays */
         .app-wrapper {
             max-width: 2560px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column;
             background: var(--bg-body); box-shadow: 0 0 100px rgba(0,0,0,0.2); position: relative; transition: 0.4s ease;
@@ -91,7 +90,7 @@
         .section-title { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 900; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
 
         /* =========================================================
-           3. BENTO GLASSMORPHISM CARDS
+           3. BENTO GLASSMORPHISM CARDS & BUTTONS
            ========================================================= */
         .bento-card {
             background: var(--bg-glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -104,9 +103,6 @@
         .dynamic-sec { padding: clamp(15px, 2.5vw, 40px); animation: fadeIn 0.4s forwards; display: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* =========================================================
-           4. PREMIUM BUTTONS & INPUTS
-           ========================================================= */
         .btn { padding: clamp(12px, 1.5vw, 18px) clamp(20px, 2vw, 30px); border-radius: 12px; font-weight: 700; font-size: clamp(0.95rem, 1.2vw, 1.2rem); border: none; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; outline: none; }
         .btn-primary { background: var(--brand-blue); color: #fff; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
         .btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4); }
@@ -130,45 +126,54 @@
         .toggle-switch-ui input { opacity: 0; width: 0; height: 0; position: absolute; }
         .toggle-knob { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: absolute; top: 1.5px; left: 2px; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .toggle-switch-ui input:checked + .toggle-knob { transform: translateX(24px); background: #fff; }
+
         /* =========================================================
-           5. NAVIGATION & WIDE BUTTONS (Grid, 3-Row, 2-Row & PDFly)
+           4. FIXED WATERMARK (Larger & More Visible)
+           ========================================================= */
+        .secure-receipt-bg {
+            background-color: #ffffff;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 2px, transparent 2px, transparent 12px),
+                url('data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg"><text x="15" y="150" font-size="20" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.07)" transform="rotate(-35 150 150)">NATIONAL LIBRARY ORIGINAL</text><text x="90" y="220" font-size="14" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.05)" transform="rotate(-35 220 220)">SECURE DOCUMENT</text></svg>');
+            background-repeat: repeat;
+        }
+        .hologram-stamp {
+            position: absolute; right: 45px; top: 110px; width: 95px; height: 95px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(212,175,55,0.4) 0%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,0.4) 100%);
+            border: 2.5px dashed #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;
+            color: #d4af37; text-align: center; transform: rotate(-15deg); opacity: 0.95; z-index: 1; box-shadow: 0 0 25px rgba(212,175,55,0.6); line-height: 1.3;
+        }
+        /* =========================================================
+           5. NAVIGATION, 3-BUTTON ROW & 50-50 BUTTONS
            ========================================================= */
         .grid-nav { 
             display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.5vw, 20px); 
-            padding: 0 clamp(10px, 2.5vw, 30px); padding-bottom: 20px; 
+            padding: 0 clamp(10px, 2.5vw, 30px); padding-bottom: 15px; 
         }
         @media (min-width: 768px) { .grid-nav { grid-template-columns: repeat(6, 1fr); } }
         @media (min-width: 1024px) { .grid-nav { grid-template-columns: repeat(8, 1fr); } }
 
-        .nav-item {
+        .nav-item, .action-btn-3, .wide-nav-btn {
             background: var(--bg-glass); backdrop-filter: blur(15px); border: 1.5px solid var(--border-glass); 
             border-radius: clamp(14px, 1.5vw, 18px); padding: clamp(14px, 1.5vw, 20px) 5px; 
             text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             box-shadow: var(--shadow-bento); color: var(--text-main);
         }
-        .nav-item i { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 8px; color: var(--brand-blue); transition: 0.3s; }
-        .nav-item span { font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 800; white-space: nowrap; }
-        .nav-item:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); color: #fff; }
-        .nav-item:hover i { color: #fff; }
+        .nav-item i, .action-btn-3 i { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 8px; color: var(--brand-blue); transition: 0.3s; }
+        .nav-item span, .action-btn-3 span { font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 800; white-space: nowrap; }
+        .nav-item:hover, .action-btn-3:hover, .wide-nav-btn:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); color: #fff; }
+        .nav-item:hover i, .action-btn-3:hover i, .wide-nav-btn:hover i { color: #fff; }
 
-        /* 3-Button Row (Books, Notes, Video) */
-        .action-row-3 { display: flex; gap: clamp(10px, 1.5vw, 15px); margin-bottom: 15px; padding: 0 clamp(10px, 2.5vw, 30px); flex-wrap: wrap; }
-        .action-btn-3 { 
-            flex: 1; min-width: 100px; display: flex; flex-direction: column; align-items: center; gap: 8px; 
-            padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; font-weight: 800; text-align: center; cursor: pointer; 
-            transition: 0.3s; box-shadow: var(--shadow-bento); border: 1.5px solid var(--border-glass); background: var(--bg-glass); color: var(--text-main);
-        }
-        .action-btn-3 i { font-size: clamp(1.3rem, 1.5vw, 1.6rem); color: var(--brand-blue); transition: 0.3s; }
-        .action-btn-3 span { font-size: clamp(0.85rem, 1vw, 1rem); }
-        .action-btn-3:hover { transform: translateY(-3px); border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
-        .action-btn-3:hover i { color: #fff; }
+        /* Nayi 3-Button Row (Books, Notes, Video) */
+        .action-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.5vw, 20px); margin-bottom: 15px; padding: 0 clamp(10px, 2.5vw, 30px); }
+        .action-btn-3 { padding: clamp(16px, 1.5vw, 22px) 5px; }
 
         /* 50-50 Water & Seat Row */
         .wide-action-row { display: flex; gap: clamp(12px, 1.5vw, 20px); margin-bottom: 20px; padding: 0 clamp(10px, 2.5vw, 30px); }
         .wide-nav-btn { flex: 1; flex-direction: row; gap: 12px; padding: clamp(16px, 1.5vw, 22px); }
-        .wide-nav-btn i { margin: 0; font-size: clamp(1.3rem, 1.5vw, 1.6rem); }
-        .wide-nav-btn span { font-size: clamp(1rem, 1.2vw, 1.15rem); }
+        .wide-nav-btn i { margin: 0; font-size: clamp(1.3rem, 1.5vw, 1.6rem); color: var(--brand-blue); transition: 0.3s; }
+        .wide-nav-btn span { font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900; }
 
         .btn-pdfly-full {
             background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); background-size: 200% 200%; animation: gradientAnim 4s ease infinite; 
@@ -194,7 +199,7 @@
         @keyframes seatShake { 0% {transform: rotate(-3deg) scale(1.05);} 100% {transform: rotate(3deg) scale(1.05);} }
 
         /* =========================================================
-           7. 20L RIBBED WATER BOTTLE ANIMATION (REALISTIC)
+           7. 20L RIBBED WATER BOTTLE ANIMATION (ULTRA REALISTIC)
            ========================================================= */
         .water-dashboard { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-end; margin-bottom: 20px; }
         .bottle-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; transition: 0.3s; }
@@ -220,7 +225,7 @@
             position: relative; overflow: hidden; background: rgba(14, 165, 233, 0.05); 
             box-shadow: inset 0 0 25px rgba(14, 165, 233, 0.25); z-index: 1;
         }
-        /* Ribbed Line Effect */
+        /* Lined Ribbed Effect */
         .bottle-body::after { 
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: repeating-linear-gradient(to bottom, transparent, transparent 18%, rgba(14, 165, 233, 0.45) 18%, rgba(14, 165, 233, 0.45) 22%); 
@@ -262,24 +267,7 @@
         @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
 
         /* =========================================================
-           8. SECURE RECEIPT WATERMARKS & ANTI-EDIT DESIGN
-           ========================================================= */
-        .secure-receipt-bg {
-            background-color: #ffffff;
-            background-image: 
-                repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 2px, transparent 2px, transparent 8px),
-                url('data:image/svg+xml;utf8,<svg width="180" height="180" xmlns="http://www.w3.org/2000/svg"><text x="10" y="90" font-size="12" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.035)" transform="rotate(-35 90 90)">NATIONAL LIBRARY ORIGINAL</text><text x="90" y="160" font-size="10" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.02)" transform="rotate(-35 160 160)">SECURE DOCUMENT</text></svg>');
-            background-repeat: repeat;
-        }
-        .hologram-stamp {
-            position: absolute; right: 45px; top: 110px; width: 95px; height: 95px; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(212,175,55,0.4) 0%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,0.4) 100%);
-            border: 2.5px dashed #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;
-            color: #d4af37; text-align: center; transform: rotate(-15deg); opacity: 0.95; z-index: 1; box-shadow: 0 0 25px rgba(212,175,55,0.6); line-height: 1.3;
-        }
-
-        /* =========================================================
-           9. MODALS, LOADERS & MISC CSS
+           8. MODALS, LOADERS & MISC CSS
            ========================================================= */
         .verified-badge { color: #3b82f6; font-size: clamp(1.1rem, 1.5vw, 1.4rem); margin-left: 8px; display: inline-flex; align-items: center; filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.4)); }
         
@@ -332,8 +320,9 @@
                 <button class="btn btn-primary" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openAdminModal()"><i class="fa-solid fa-shield-halved" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i></button>
             </div>
         </header>
+
         <!-- =========================================================
-             SYSTEM MODALS (NOTIFICATIONS, ADMIN, WATER LOGIN, NCERT BOOKS)
+             SYSTEM MODALS (NOTIFICATIONS, ADMIN, WATER, NEW BOOKS MODAL)
              ========================================================= -->
         
         <!-- 1. NOTIFICATION CENTER -->
@@ -346,19 +335,24 @@
             </div>
         </div>
 
-        <!-- 2. NCERT Books Modal -->
+        <!-- 2. NCERT & CONSTITUTION BOOKS MODAL -->
         <div class="modal-overlay" id="booksModal">
-            <div class="bento-card" style="width: 100%; max-width: 460px; text-align: center; position: relative;">
+            <div class="bento-card" style="width: 100%; max-width: 480px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.3rem; color: var(--text-muted);" onclick="document.getElementById('booksModal').style.display='none'"></i>
                 <i class="fa-solid fa-book-bookmark" style="font-size: 3.5rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.4rem;">Digital Library Portal</h3>
-                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Official repository for textbooks from Class 1 to 12.</p>
-                <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://ncert.nic.in/textbook.php', '_blank')">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> NCERT Textbooks PDF (I-XII)
-                </button>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Access official study materials and important documents directly.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://ncert.nic.in/textbook.php', '_blank')">
+                        <i class="fa-solid fa-book"></i> NCERT Textbooks PDF (I-XII)
+                    </button>
+                    <button class="btn btn-success" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://legislative.gov.in/constitution-of-india/', '_blank')">
+                        <i class="fa-solid fa-scale-balanced"></i> Indian Constitution PDF (Hindi)
+                    </button>
+                </div>
             </div>
         </div>
-
         <!-- 3. Admin Control Panel -->
         <div class="modal-overlay" id="adminModal">
             <div class="bento-card" style="width: 100%; max-width: 480px; position: relative;">
@@ -367,7 +361,7 @@
                 
                 <div id="adminLoginArea">
                     <div class="input-group"><label>Security Password</label><input type="password" id="adminPassword" placeholder="Enter Password"></div>
-                    <button class="btn btn-primary" style="width:100%; padding: 16px;" onclick="verifyAdmin()">Login</button>
+                    <button class="btn btn-primary" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyAdmin()">Login</button>
                 </div>
                 
                 <div id="adminDashboardArea" style="display:none;">
@@ -394,7 +388,7 @@
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.5rem;">Verification Required</h3>
                 <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter PIN to access Secure Receipt Engine.</p>
                 <div class="input-group"><input type="password" id="receiptPwdInput" placeholder="Enter PIN" style="text-align:center; letter-spacing: 4px; font-size: 1.3rem; font-weight: 900;"></div>
-                <button class="btn btn-primary" style="width:100%; padding: 16px;" onclick="verifyReceiptPwd()">Unlock Now</button>
+                <button class="btn btn-primary" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyReceiptPwd()">Unlock Now</button>
             </div>
         </div>
 
@@ -417,7 +411,7 @@
                 <h3 style="margin-bottom: 20px; font-weight: 900; text-align: center; font-size: 1.5rem;"><i class="fa-solid fa-qrcode" style="color: var(--brand-blue);"></i> Identity Scanner</h3>
                 <div id="global-qr-reader" style="width: 100%; min-height: 280px; background: #fff; border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; margin-bottom: 15px; color: #000; border: 2px dashed var(--border-glass);"></div>
                 <div style="text-align: center;">
-                    <label class="btn btn-primary" style="cursor: pointer; width: 100%; padding: 16px;"><i class="fa-solid fa-upload"></i> Upload QR Image<input type="file" id="globalQrUpload" accept="image/*" style="display: none;" onchange="handleQRImageUpload(event, false)"></label>
+                    <label class="btn btn-primary" style="cursor: pointer; width: 100%; padding: 16px; border-radius: 12px;"><i class="fa-solid fa-upload"></i> Upload QR Image<input type="file" id="globalQrUpload" accept="image/*" style="display: none;" onchange="handleQRImageUpload(event, false)"></label>
                 </div>
                 <div id="verifiedResultBox" style="display: none; margin-top: 20px; background: rgba(50, 215, 75, 0.1); border: 1px solid var(--success-green); padding: 20px; border-radius: 16px;">
                     <h4 style="color: var(--success-green); text-align: center; margin-bottom: 15px; font-weight: 900; font-size: 1.2rem;"><i class="fa-solid fa-circle-check"></i> Identity Verified</h4>
@@ -494,7 +488,7 @@
                 </div>
             </div>
 
-            <!-- COMPACT GRID NAVIGATION (All Buttons Working) -->
+            <!-- COMPACT GRID NAVIGATION (12 Items) -->
             <div class="grid-nav" id="gridNav">
                 <div class="nav-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
                 <div class="nav-item" onclick="showSection('admission')"><i class="fa-solid fa-user-plus"></i><span>Admission</span></div>
@@ -512,7 +506,7 @@
                 <div class="nav-item" onclick="showSection('tasks')"><i class="fa-solid fa-list-check"></i><span>Tasks</span></div>
             </div>
 
-            <!-- NEW 3-BUTTON ROW (Books, Notes, Video Lecture) -->
+            <!-- NAYI 3-BUTTON ROW (Books, Notes, Video Lecture) -->
             <div class="action-row-3">
                 <div class="action-btn-3" onclick="document.getElementById('booksModal').style.display='flex'">
                     <i class="fa-solid fa-book-open"></i><span>Books</span>
@@ -638,9 +632,9 @@
                                 <div style="color: var(--text-muted); font-style: italic; width: 100%;">No active water supply data available today.</div>
                             </div>
                             
-                            <!-- Disclaimer Added -->
+                            <!-- Detailed Disclaimer Added -->
                             <div style="margin-top: 25px; font-size: 0.85rem; color: var(--danger-red); font-weight: 700; background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; text-align: left; display: inline-block;">
-                                <i class="fa-solid fa-circle-exclamation"></i> Disclaimer: Niche dikhaya gaya pani ka percentage aur bacha hua lagbhag anumanit (approximate) samay hai, jo average consumption par aadharit hai.
+                                <i class="fa-solid fa-circle-exclamation"></i> <strong>Disclaimer:</strong> Niche dikhaya gaya pani ka percentage aur bacha hua samay lagbhag anumanit (approximate) hai. Yeh exact nahi hai, balki average consumption ke hisaab se dikhaya ja raha hai.
                             </div>
                         </div>
 
@@ -775,7 +769,7 @@
             </div>
             
             <!-- =========================================================
-                 SECTION: LEARNERS (2-Column & Categories)
+                 SECTION: LEARNERS (Fixed Overflow 2-Column Categories)
                  ========================================================= -->
             <div id="sec-learners" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-users-rectangle"></i> Registered Learners</h2>
@@ -785,23 +779,40 @@
                     <h3 style="color: var(--success-green); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-medal"></i> Achieved Government Jobs
                     </h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.5vw, 20px);">
-                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
-                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Pradeep</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB ALP</p></div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 1.5vw, 15px);">
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div style="min-width: 0; overflow: hidden;">
+                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pradeep</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB ALP</p>
+                            </div>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
-                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Kanhaiya</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB ALP</p></div>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div style="min-width: 0; overflow: hidden;">
+                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Kanhaiya</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB ALP</p>
+                            </div>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Chandresh</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">UP Police</p></div>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div style="min-width: 0; overflow: hidden;">
+                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chandresh</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">UP Police</p>
+                            </div>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; flex-shrink: 0;"><i class="fa-solid fa-train"></i></div>
-                            <div><h4 style="margin-bottom:2px; font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900;">Sumit</h4><p style="color:var(--text-muted); font-size:clamp(0.8rem, 1vw, 0.95rem); font-weight: 700;">RRB Technician</p></div>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-train"></i></div>
+                            <div style="min-width: 0; overflow: hidden;">
+                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sumit</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB Technician</p>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -810,36 +821,45 @@
                     <h3 style="color: var(--brand-blue); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-book-open-reader"></i> Current Aspirants
                     </h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.5vw, 20px); margin-bottom: 30px;">
-                        <!-- Generated List: Shivam, Banty, Praduman, V Sharma, G Rao, Prakhar, Shavej -->
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Shivam</h4>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 1.5vw, 15px); margin-bottom: 30px;">
+                        
+                        <!-- Generator: Shivam, Banty, Praduman, V Sharma, G Rao, Prakhar, Shavej -->
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Shivam</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Banty</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Banty</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Praduman</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Praduman</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">V Sharma</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">V Sharma</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">G Rao</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">G Rao</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Prakhar</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Prakhar</h4>
                         </div>
-                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 18px); border-radius: 16px; border: 1px solid var(--border-glass); text-align: center;">
-                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; margin: 0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.95rem, 1.1vw, 1.1rem);">Shavej</h4>
+                        
+                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden; grid-column: 1 / -1; justify-content: center;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Shavej</h4>
                         </div>
+                        
                     </div>
                     
                     <div style="text-align: center; color: var(--brand-blue); font-weight: 800; font-size: 1.1rem; animation: pulse 2s infinite;">
@@ -983,7 +1003,20 @@
             </div>
 
             <!-- =========================================================
-                 SECTION: ULTRA-SECURE RECEIPT ENGINE (Anti-Editable Full Fix)
+                 SECTION: ABOUT US
+                 ========================================================= -->
+            <div id="sec-about" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-circle-info"></i> About Us</h2>
+                <div class="bento-card" style="text-align:center; padding: clamp(40px, 5vw, 60px) 20px;">
+                    <i class="fa-solid fa-book-atlas" style="font-size:70px; color:var(--brand-blue); margin-bottom:20px; filter: drop-shadow(0 10px 20px rgba(37,99,235,0.3));"></i>
+                    <p style="font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 900; margin-bottom: 5px; line-height: 1.6;">Welcome to <strong>National Library</strong>, the premier digital study space.</p>
+                    <div class="subtitle" style="margin-bottom: 25px; font-size: 0.9rem;">Maharajganj Azamgarh</div>
+                    <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; font-size: 1.05rem; line-height: 1.8; font-weight: 600;">Strategically located near the Post Office, we provide aspirants with a distraction-free, fully air-conditioned environment, ergonomic seating, high-speed Wi-Fi, pin-drop silence, RO water, and 24/7 CCTV surveillance.</p>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 SECTION: ULTRA-SECURE RECEIPT ENGINE
                  ========================================================= -->
             <div id="sec-receipt" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-file-invoice-dollar"></i> Pro Receipt Engine</h2>
@@ -1014,7 +1047,7 @@
                     <button class="btn btn-primary" style="font-size: clamp(1.15rem, 1.5vw, 1.3rem); padding: 20px 50px; border-radius: 100px; box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download Secure PDF</button>
                 </div>
 
-                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE (Height Cut-off completely Fixed) -->
+                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE -->
                 <div style="overflow-x: auto; padding-bottom: 20px; display: flex; justify-content: center;" id="receiptPrintArea">
                     <div id="receiptPaper" class="secure-receipt-bg" style="width: 100%; min-width: 750px; max-width: 800px; color: #000; padding: 50px 60px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid #ddd; background-color: #fff;">
                         
@@ -1072,7 +1105,7 @@
             </div>
 
             <!-- =========================================================
-                 SECTION: MULTI-LANGUAGE QUOTES MAKER (No Repeats, Height Adjusted)
+                 SECTION: MULTI-LANGUAGE QUOTES MAKER (No Repeats)
                  ========================================================= -->
             <div id="sec-poster" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Quotes Maker</h2>
@@ -1103,7 +1136,7 @@
         </div> <!-- End App Container Content -->
 
         <!-- =========================================================
-             PREMIUM SMART FOOTER (With Modern Verified Badge Identity Reveal)
+             PREMIUM SMART FOOTER (With Modern Verified Badge Reveal)
              ========================================================= -->
         <footer style="background: var(--bg-glass); border-top: 1px solid var(--border-glass); padding: clamp(40px, 6vw, 80px) 20px; text-align: center; margin-top: auto; backdrop-filter: blur(30px);">
             <div style="font-size:clamp(1.6rem, 2.5vw, 2.2rem); font-weight:900; color:var(--brand-blue); letter-spacing: -1px; margin-bottom: 5px;"><i class="fa-solid fa-book-open-reader"></i> National Library</div>
@@ -1133,7 +1166,7 @@
     </div> 
 
     <!-- =========================================================
-         MASTER JAVASCRIPT ENGINE (Water Timer, PDF Fix, AI Quotes Non-Repeat)
+         MASTER JAVASCRIPT ENGINE (Water Timer, PDF Fix, Quotes Non-Repeat)
          ========================================================= -->
     <script>
         // 1. FIREBASE CONFIGURATION
@@ -1335,7 +1368,7 @@
             const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 2 hours strictly per bottle
             
             for(let i = 0; i < bottlesCount; i++) {
-                // Determine start and end time window for each individual bottle
+                // Determine start and end time window for each individual bottle sequentially
                 let drainStart = i * TWO_HOURS_MS;
                 let drainEnd = (i + 1) * TWO_HOURS_MS;
                 
@@ -1344,7 +1377,7 @@
                 let remainingForThisBottle = 0;
 
                 if(elapsedMs >= drainEnd) {
-                    // Time passed this bottle's slot
+                    // Time passed this bottle's slot completely
                     bottleFill = 0; timeStr = "Empty (0%)";
                 } else if (elapsedMs < drainStart) {
                     // Time hasn't reached this bottle yet
@@ -1396,8 +1429,7 @@
             // Midnight Auto Reset
             if(waterData.timestamp === 0 || tsDate.getDate() !== today.getDate() || tsDate.getMonth() !== today.getMonth() || tsDate.getFullYear() !== today.getFullYear()) {
                 document.getElementById('waterBottleCount').innerText = "0 / 0 Bottles Left";
-                document.getElementById('lastWaterUpdateText').innerText = "No delivery logged today.";
-                document.getElementById('waterTimeLeft').innerText = "--";
+                document.getElementById('waterTimeLeft') ? document.getElementById('waterTimeLeft').innerText = "--" : null;
                 renderBottles(0, 0);
                 return;
             }
@@ -1411,16 +1443,11 @@
                 let remaining = totalMs - elapsed;
                 
                 document.getElementById('waterBottleCount').innerText = `Batch: ${waterData.bottles} Bottles (Total ~${waterData.bottles * 2} Hrs)`;
-                document.getElementById('lastWaterUpdateText').innerText = `Arrived at ${tsDate.toLocaleString('en-IN', {hour:'2-digit', minute:'2-digit', hour12:true})}`;
                 
                 if(remaining <= 0) {
                     clearInterval(waterInterval);
-                    document.getElementById('waterTimeLeft').innerText = "All Empty";
                     renderBottles(waterData.bottles, totalMs); 
                 } else {
-                    let remHrs = Math.floor(remaining / (1000 * 60 * 60));
-                    let remMins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                    document.getElementById('waterTimeLeft').innerText = `~${remHrs}h ${remMins}m overall`;
                     renderBottles(waterData.bottles, elapsed);
                 }
             }, 1000);
