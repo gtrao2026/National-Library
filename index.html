@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>National Library | Ultra HD Premium Workspace</title>
+    <title>National Library | Ultra HD Premium Study Space</title>
     
     <meta name="theme-color" content="#ffffff">
     <meta property="og:title" content="National Library - Advanced Digital Space">
@@ -121,20 +121,19 @@
         }
         .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); background: transparent; }
 
-        /* Smooth Custom Toggle Switch */
+        /* Smooth Auto Toggle Switch */
         .toggle-switch-ui { width: 54px; height: 30px; background: var(--input-bg); border-radius: 20px; position: relative; border: 1.5px solid var(--border-glass); cursor: pointer; }
         .toggle-switch-ui input { opacity: 0; width: 0; height: 0; position: absolute; }
         .toggle-knob { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: absolute; top: 1.5px; left: 2px; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .toggle-switch-ui input:checked + .toggle-knob { transform: translateX(24px); background: #fff; }
-
         /* =========================================================
-           4. FIXED WATERMARK (Larger & More Visible)
+           4. SCALED RECEIPT PREVIEW & WATERMARK
            ========================================================= */
         .secure-receipt-bg {
             background-color: #ffffff;
             background-image: 
                 repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 2px, transparent 2px, transparent 12px),
-                url('data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg"><text x="15" y="150" font-size="20" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.07)" transform="rotate(-35 150 150)">NATIONAL LIBRARY ORIGINAL</text><text x="90" y="220" font-size="14" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.05)" transform="rotate(-35 220 220)">SECURE DOCUMENT</text></svg>');
+                url('data:image/svg+xml;utf8,<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><text x="10" y="200" font-size="32" font-family="Arial" font-weight="900" fill="rgba(0,0,0,0.07)" transform="rotate(-35 200 200)">NATIONAL LIBRARY ORIGINAL</text><text x="100" y="280" font-size="22" font-family="Arial" font-weight="bold" fill="rgba(0,0,0,0.05)" transform="rotate(-35 280 280)">SECURE DOCUMENT</text></svg>');
             background-repeat: repeat;
         }
         .hologram-stamp {
@@ -143,8 +142,14 @@
             border: 2.5px dashed #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;
             color: #d4af37; text-align: center; transform: rotate(-15deg); opacity: 0.95; z-index: 1; box-shadow: 0 0 25px rgba(212,175,55,0.6); line-height: 1.3;
         }
+
+        /* Improved Receipt Preview Scaling (Aur chota kiya gaya taaki na kate) */
+        #receiptPreviewContainer { transform: scale(0.48); transform-origin: top center; margin-bottom: -48%; transition: 0.3s; }
+        @media (max-width: 768px) { #receiptPreviewContainer { transform: scale(0.38); margin-bottom: -60%; } }
+        @media (max-width: 480px) { #receiptPreviewContainer { transform: scale(0.32); margin-bottom: -68%; } }
+
         /* =========================================================
-           5. NAVIGATION, 3-BUTTON ROW & 50-50 BUTTONS
+           5. NAVIGATION, NEW 4-BUTTON ROW & 50-50 BUTTONS
            ========================================================= */
         .grid-nav { 
             display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.5vw, 20px); 
@@ -153,21 +158,21 @@
         @media (min-width: 768px) { .grid-nav { grid-template-columns: repeat(6, 1fr); } }
         @media (min-width: 1024px) { .grid-nav { grid-template-columns: repeat(8, 1fr); } }
 
-        .nav-item, .action-btn-3, .wide-nav-btn {
+        .nav-item, .action-btn-4, .wide-nav-btn {
             background: var(--bg-glass); backdrop-filter: blur(15px); border: 1.5px solid var(--border-glass); 
             border-radius: clamp(14px, 1.5vw, 18px); padding: clamp(14px, 1.5vw, 20px) 5px; 
             text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             box-shadow: var(--shadow-bento); color: var(--text-main);
         }
-        .nav-item i, .action-btn-3 i { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 8px; color: var(--brand-blue); transition: 0.3s; }
-        .nav-item span, .action-btn-3 span { font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 800; white-space: nowrap; }
-        .nav-item:hover, .action-btn-3:hover, .wide-nav-btn:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); color: #fff; }
-        .nav-item:hover i, .action-btn-3:hover i, .wide-nav-btn:hover i { color: #fff; }
+        .nav-item i, .action-btn-4 i { font-size: clamp(1.4rem, 2vw, 1.8rem); margin-bottom: 8px; color: var(--brand-blue); transition: 0.3s; }
+        .nav-item span, .action-btn-4 span { font-size: clamp(0.75rem, 1vw, 0.95rem); font-weight: 800; white-space: nowrap; }
+        .nav-item:hover, .action-btn-4:hover, .wide-nav-btn:hover { transform: translateY(-5px); border-color: var(--brand-blue); background: var(--brand-blue); box-shadow: var(--shadow-glow); color: #fff; }
+        .nav-item:hover i, .action-btn-4:hover i, .wide-nav-btn:hover i { color: #fff; }
 
-        /* Nayi 3-Button Row (Books, Notes, Video) */
-        .action-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.5vw, 20px); margin-bottom: 15px; padding: 0 clamp(10px, 2.5vw, 30px); }
-        .action-btn-3 { padding: clamp(16px, 1.5vw, 22px) 5px; }
+        /* Nayi 4-Button Row (Video, Mock Test, Books, Notes) */
+        .action-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 1.5vw, 15px); margin-bottom: 15px; padding: 0 clamp(10px, 2.5vw, 30px); }
+        .action-btn-4 { padding: clamp(16px, 1.5vw, 22px) 5px; }
 
         /* 50-50 Water & Seat Row */
         .wide-action-row { display: flex; gap: clamp(12px, 1.5vw, 20px); margin-bottom: 20px; padding: 0 clamp(10px, 2.5vw, 30px); }
@@ -175,6 +180,7 @@
         .wide-nav-btn i { margin: 0; font-size: clamp(1.3rem, 1.5vw, 1.6rem); color: var(--brand-blue); transition: 0.3s; }
         .wide-nav-btn span { font-size: clamp(1rem, 1.2vw, 1.15rem); font-weight: 900; }
 
+        /* PDFly Button Restore (Pehle jaisa design) */
         .btn-pdfly-full {
             background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); background-size: 200% 200%; animation: gradientAnim 4s ease infinite; 
             color: #fff; width: 100%; padding: clamp(16px, 2vw, 22px); border-radius: 16px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -199,55 +205,50 @@
         @keyframes seatShake { 0% {transform: rotate(-3deg) scale(1.05);} 100% {transform: rotate(3deg) scale(1.05);} }
 
         /* =========================================================
-           7. 20L RIBBED WATER BOTTLE ANIMATION (ULTRA REALISTIC)
+           7. HYPER-REALISTIC WATER BOTTLE & GRID (1 Line Layout)
            ========================================================= */
-        .water-dashboard { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-end; margin-bottom: 20px; }
-        .bottle-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; transition: 0.3s; }
+        .water-dashboard { 
+            display: flex; flex-wrap: wrap; gap: 20px; 
+            justify-content: center; align-items: flex-end; width: 100%; margin-bottom: 20px;
+        }
+        .bottle-wrapper { width: 100%; max-width: 130px; display: flex; flex-direction: column; align-items: center; position: relative; cursor: pointer; transition: 0.3s; }
         .bottle-wrapper:hover { transform: translateY(-5px); filter: drop-shadow(0 15px 25px rgba(14, 165, 233, 0.4)); }
         
-        /* Realistic Plastic Neck */
         .bottle-neck { 
             width: clamp(28px, 3vw, 40px); height: clamp(20px, 2vw, 30px); 
-            background: rgba(14, 165, 233, 0.15); border: 3px solid var(--water-blue); 
-            border-bottom: none; border-radius: 8px 8px 0 0; position: relative; z-index: 2; 
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(14,165,233,0.15) 50%, rgba(255,255,255,0.3) 100%); 
+            border: 3px solid rgba(14, 165, 233, 0.6); border-bottom: none; border-radius: 8px 8px 0 0; position: relative; z-index: 2; 
         }
-        .bottle-neck::before, .bottle-neck::after {
-            content: ''; position: absolute; left: -4px; width: calc(100% + 8px); height: 5px; 
-            background: var(--water-blue); border-radius: 3px;
-        }
-        .bottle-neck::before { top: 2px; }
-        .bottle-neck::after { bottom: 2px; }
+        .bottle-neck::before, .bottle-neck::after { content: ''; position: absolute; left: -4px; width: calc(100% + 8px); height: 5px; background: rgba(14, 165, 233, 0.8); border-radius: 3px; }
+        .bottle-neck::before { top: 2px; } .bottle-neck::after { bottom: 2px; }
         
-        /* Realistic Ribbed Body */
         .bottle-body { 
-            width: clamp(100px, 12vw, 150px); height: clamp(140px, 16vw, 210px); 
-            border: 4px solid var(--water-blue); border-radius: 35px 35px 15px 15px; 
+            width: 100%; height: clamp(130px, 16vw, 170px); 
+            border: 4px solid rgba(14, 165, 233, 0.5); border-radius: 35px 35px 15px 15px; 
             position: relative; overflow: hidden; background: rgba(14, 165, 233, 0.05); 
-            box-shadow: inset 0 0 25px rgba(14, 165, 233, 0.25); z-index: 1;
+            box-shadow: inset -5px -5px 20px rgba(0,0,0,0.1), inset 5px 5px 20px rgba(255,255,255,0.4); z-index: 1;
         }
-        /* Lined Ribbed Effect */
         .bottle-body::after { 
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: repeating-linear-gradient(to bottom, transparent, transparent 18%, rgba(14, 165, 233, 0.45) 18%, rgba(14, 165, 233, 0.45) 22%); 
-            pointer-events: none; z-index: 5; 
+            background: repeating-linear-gradient(to bottom, transparent, transparent 18%, rgba(255, 255, 255, 0.3) 18%, rgba(255, 255, 255, 0.3) 20%); 
+            pointer-events: none; z-index: 5; mix-blend-mode: overlay;
         }
         
-        /* Real Water Wave */
         .water-fill { 
             position: absolute; bottom: 0; width: 100%; 
-            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.85), rgba(2, 132, 199, 0.95)); 
-            transition: height 1s linear; z-index: 1; 
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.75), rgba(2, 132, 199, 0.95)); 
+            transition: height 1s linear; z-index: 1; box-shadow: inset 0 10px 10px rgba(255,255,255,0.2);
         }
         .water-fill::before {
-            content: ''; position: absolute; top: -8px; left: -10%; width: 120%; height: 16px;
-            background: rgba(255, 255, 255, 0.4); border-radius: 50%; animation: liquidMove 2.5s infinite alternate ease-in-out;
+            content: ''; position: absolute; top: -6px; left: -20%; width: 140%; height: 14px;
+            background: rgba(255, 255, 255, 0.5); border-radius: 50%; animation: liquidMove 2.5s infinite alternate ease-in-out;
         }
-        @keyframes liquidMove { 0% { transform: translateX(0) scaleX(0.9); } 100% { transform: translateX(10px) scaleX(1.1); } }
+        @keyframes liquidMove { 0% { transform: translateX(-5%) scaleX(0.9); } 100% { transform: translateX(5%) scaleX(1.1); } }
         
-        .bottle-label { margin-top: 15px; font-weight: 900; font-size: 1rem; color: var(--text-main); }
-        .bottle-time { font-size: 0.85rem; color: var(--text-muted); font-weight: 800; background: var(--input-bg); padding: 6px 14px; border-radius: 100px; margin-top: 5px; border: 1px solid var(--border-glass); }
+        .bottle-label { margin-top: 15px; font-weight: 900; font-size: 1.05rem; color: var(--text-main); }
+        .bottle-liters { font-size: 1.25rem; font-weight: 900; color: var(--water-blue); margin-top: 2px; }
+        .bottle-time { font-size: 0.8rem; color: var(--text-muted); font-weight: 800; background: var(--input-bg); padding: 6px 12px; border-radius: 100px; margin-top: 5px; border: 1px solid var(--border-glass); white-space: nowrap; }
         
-        /* Delete Bottle Tooltip on Hover */
         .bottle-delete-btn {
             position: absolute; top: -15px; right: -15px; background: var(--danger-red); color: #fff;
             width: 32px; height: 32px; border-radius: 50%; display: none; align-items: center; justify-content: center;
@@ -287,16 +288,16 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
     </style>
 </head>
-<body>
+<body id="appBody">
 
     <!-- Water Arrived Popup -->
     <div id="waterPopup"><span style="font-size: 1.6rem;">🥛</span> Fresh Water Arrived Just Now!</div>
 
-    <!-- SMART LOADER -->
+    <!-- SMART FAIL-SAFE LOADER -->
     <div id="loader" onclick="forceCloseLoader()">
         <i class="fa-solid fa-book-open-reader loader-logo"></i>
         <div style="font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -1.5px; text-align: center; background: linear-gradient(135deg, #1e3a8a, #3b82f6, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NATIONAL LIBRARY</div>
-        <div class="subtitle" style="margin-top: 5px; font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 800;">Maharajganj Azamgarh</div>
+        <div class="subtitle" style="margin-top: 5px; font-size: clamp(1rem, 1.5vw, 1.2rem); font-weight: 800;">Study Space - Maharajganj</div>
         <p style="margin-top: 40px; font-size: clamp(0.9rem, 1.2vw, 1.1rem); color: var(--text-muted); font-weight: 700; opacity: 0.6; background: var(--input-bg); padding: 14px 28px; border-radius: 100px; border: 1px solid var(--border-glass);">Tap anywhere to enter instantly</p>
     </div>
 
@@ -308,7 +309,7 @@
                 <i class="fa-solid fa-book-open-reader" style="color: var(--brand-blue); font-size: clamp(1.4rem, 2vw, 1.8rem);"></i>
                 <div style="display: flex; flex-direction: column; justify-content: center;">
                     <span style="font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 900; letter-spacing: -0.5px; line-height: 1;">National Library</span>
-                    <span class="subtitle" style="font-size: clamp(0.65rem, 1vw, 0.75rem); margin-top: 2px;">Maharajganj Azamgarh</span>
+                    <span class="subtitle" style="font-size: clamp(0.65rem, 1vw, 0.75rem); margin-top: 2px;">Study Space</span>
                 </div>
             </div>
             <div style="display:flex; gap: clamp(8px, 1vw, 12px);">
@@ -317,54 +318,106 @@
                     <span id="notifBadge" style="position: absolute; top: 0; right: 0; background: var(--danger-red); width: 12px; height: 12px; border-radius: 50%; display: none; border: 2px solid var(--bg-glass);"></span>
                 </button>
                 <button class="btn btn-outline" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openGlobalScanner()"><i class="fa-solid fa-qrcode" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i></button>
+                <!-- Master Control Center Admin Button -->
                 <button class="btn btn-primary" style="padding: clamp(8px, 1vw, 12px); border-radius: 50%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;" onclick="openAdminModal()"><i class="fa-solid fa-shield-halved" style="font-size: clamp(1rem, 1.2vw, 1.1rem);"></i></button>
             </div>
         </header>
 
         <!-- =========================================================
-             SYSTEM MODALS (NOTIFICATIONS, ADMIN, WATER, NEW BOOKS MODAL)
+             SYSTEM MODALS (MASTER LOGIN, STUDY LINKS, WATER PIN, SCANNER)
              ========================================================= -->
         
-        <!-- 1. NOTIFICATION CENTER -->
+        <!-- 1. NOTIFICATION CENTER (With Manage Option) -->
         <div class="modal-overlay" id="notificationModal">
             <div class="bento-card" style="width: 100%; max-width: 500px; position: relative; max-height: 80vh; display: flex; flex-direction: column;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: var(--text-muted);" onclick="closeNotificationModal()"></i>
-                <h3 style="margin-bottom: 20px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem);"><i class="fa-solid fa-bell" style="color: var(--accent-orange);"></i> Library Updates</h3>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-right: 35px;">
+                    <h3 style="font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem);"><i class="fa-solid fa-bell" style="color: var(--accent-orange);"></i> Library Updates</h3>
+                    <button class="btn btn-outline" style="padding: 8px 14px; font-size: 0.85rem; border-radius: 8px;" onclick="manageNotificationsFromUser()"><i class="fa-solid fa-gear"></i> Manage</button>
+                </div>
+                
                 <div id="notificationList" style="flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px;"></div>
                 <button class="btn btn-outline" style="width: 100%; margin-top: 20px; font-size: 1rem; border-radius: 12px;" onclick="clearAllNotifications()"><i class="fa-solid fa-trash-can"></i> Clear All History</button>
             </div>
         </div>
 
-        <!-- 2. NCERT & CONSTITUTION BOOKS MODAL -->
+        <!-- 2a. BOOKS & NOTES MODAL (NCERT, Constitution, Notes Link) -->
         <div class="modal-overlay" id="booksModal">
             <div class="bento-card" style="width: 100%; max-width: 480px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.3rem; color: var(--text-muted);" onclick="document.getElementById('booksModal').style.display='none'"></i>
                 <i class="fa-solid fa-book-bookmark" style="font-size: 3.5rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.4rem;">Digital Library Portal</h3>
-                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Access official study materials and important documents directly.</p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Access official study materials, notes, and important documents.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://ncert.nic.in/textbook.php', '_blank')">
                         <i class="fa-solid fa-book"></i> NCERT Textbooks PDF (I-XII)
                     </button>
-                    <button class="btn btn-success" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://legislative.gov.in/constitution-of-india/', '_blank')">
-                        <i class="fa-solid fa-scale-balanced"></i> Indian Constitution PDF (Hindi)
+                    <!-- Official Gov Link for Constitution -->
+                    <button class="btn btn-success" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://share.google/g3d5ZsMdXVplSz5Ct', '_blank')">
+                        <i class="fa-solid fa-scale-balanced"></i> Indian Constitution PDF
+                    </button>
+                    <!-- Notes Website Link -->
+                    <button class="btn btn-outline" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.05rem;" onclick="window.open('https://www.allcompetitionclasses.com/books', '_blank')">
+                        <i class="fa-solid fa-file-lines"></i> Free Books & Notes
                     </button>
                 </div>
             </div>
         </div>
-        <!-- 3. Admin Control Panel -->
+
+        <!-- 2b. VIDEO LECTURES MODAL -->
+        <div class="modal-overlay" id="videoModal">
+            <div class="bento-card" style="width: 100%; max-width: 480px; text-align: center; position: relative;">
+                <i class="fa-solid fa-times" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.3rem; color: var(--text-muted);" onclick="document.getElementById('videoModal').style.display='none'"></i>
+                <i class="fa-solid fa-circle-play" style="font-size: 3.5rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.4rem;">Video Lectures</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Access comprehensive video lectures on our trusted portal.</p>
+                <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.1rem;" onclick="window.open('https://www.allcompetitionclasses.com/', '_blank')">
+                    All Competition Classes <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2c. MOCK TEST MODAL -->
+        <div class="modal-overlay" id="mockModal">
+            <div class="bento-card" style="width: 100%; max-width: 480px; text-align: center; position: relative;">
+                <i class="fa-solid fa-times" style="position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.3rem; color: var(--text-muted);" onclick="document.getElementById('mockModal').style.display='none'"></i>
+                <i class="fa-solid fa-laptop-code" style="font-size: 3.5rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.4rem;">Mock Tests</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px;">Practice and evaluate your preparation with online mock tests.</p>
+                <button class="btn btn-primary" style="width: 100%; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 1.1rem;" onclick="window.open('https://taiyari24hour.com/', '_blank')">
+                    Taiyari 24 Hour <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Master Admin Control Panel (With Auto-fill Prompt) -->
         <div class="modal-overlay" id="adminModal">
             <div class="bento-card" style="width: 100%; max-width: 480px; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: var(--text-muted);" onclick="document.getElementById('adminModal').style.display='none'"></i>
-                <h3 style="margin-bottom: 25px; font-weight: 900; font-size: clamp(1.3rem, 2vw, 1.6rem);"><i class="fa-solid fa-user-tie" style="color: var(--brand-blue);"></i> Admin Access</h3>
+                <h3 style="margin-bottom: 25px; font-weight: 900; font-size: clamp(1.3rem, 2vw, 1.6rem);"><i class="fa-solid fa-user-tie" style="color: var(--brand-blue);"></i> Master Control Center</h3>
                 
                 <div id="adminLoginArea">
-                    <div class="input-group"><label>Security Password</label><input type="password" id="adminPassword" placeholder="Enter Password"></div>
-                    <button class="btn btn-primary" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyAdmin()">Login</button>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; font-weight: 600;">Enter Master Credentials to unlock all website access. (Browser save available)</p>
+                    <form onsubmit="return verifyAdminForm(event)">
+                        <div class="input-group">
+                            <label>Master ID</label>
+                            <input type="text" id="adminUsername" placeholder="Enter User ID" autocomplete="username" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Security Password</label>
+                            <input type="password" id="adminPassword" placeholder="Enter Password" autocomplete="current-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%; padding: 16px; border-radius: 12px;"><i class="fa-solid fa-lock-open"></i> Secure Login</button>
+                    </form>
                 </div>
                 
                 <div id="adminDashboardArea" style="display:none;">
+                    <div style="background: rgba(16, 185, 129, 0.1); color: var(--success-green); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: 800; font-size: 0.9rem; text-align: center; border: 1px solid var(--success-green);">
+                        <i class="fa-solid fa-check-circle"></i> Master Access Granted. Website fully unlocked.
+                    </div>
+                    
                     <h4 style="margin-bottom:10px; font-weight: 800; font-size: 1.1rem;">Broadcast Notice (Live)</h4>
                     <div class="input-group"><textarea id="newNoticeText" rows="3" placeholder="Write new announcement..."></textarea></div>
                     <div style="display:flex; align-items:center; justify-content:space-between; padding: 15px; background: var(--input-bg); border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border-glass);">
@@ -372,6 +425,16 @@
                         <input type="checkbox" id="autoDeleteNotice" checked style="width: 20px; height: 20px; accent-color: var(--brand-blue);">
                     </div>
                     <button class="btn btn-success" style="width:100%; margin-bottom: 20px; padding: 16px; border-radius: 12px;" onclick="addNotice()"><i class="fa-solid fa-paper-plane"></i> Publish Now</button>
+                    
+                    <!-- New Quick Access Actions for Admin -->
+                    <h4 style="margin-top: 10px; margin-bottom:10px; font-weight: 800; font-size: 1.1rem;">Quick Master Actions</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                        <button class="btn btn-outline" style="padding: 12px; font-size: 0.95rem; border-radius: 10px;" onclick="document.getElementById('adminModal').style.display='none'; showSection('receipt');"><i class="fa-solid fa-file-invoice"></i> Receipt</button>
+                        <button class="btn btn-outline" style="padding: 12px; font-size: 0.95rem; border-radius: 10px;" onclick="document.getElementById('adminModal').style.display='none'; showSection('idcard');"><i class="fa-solid fa-id-badge"></i> ID Card</button>
+                        <button class="btn btn-outline" style="padding: 12px; font-size: 0.95rem; border-radius: 10px;" onclick="document.getElementById('adminModal').style.display='none'; showSection('seats');"><i class="fa-solid fa-chair"></i> Edit Seats</button>
+                        <button class="btn btn-outline" style="padding: 12px; font-size: 0.95rem; border-radius: 10px;" onclick="document.getElementById('adminModal').style.display='none'; document.getElementById('waterLoginModal').style.display='flex';"><i class="fa-solid fa-droplet"></i> Log Water</button>
+                    </div>
+
                     <div style="display:flex; align-items:center; justify-content:space-between; padding: 15px; background: var(--input-bg); border-radius: 12px; border: 1px solid var(--border-glass);">
                         <span style="font-weight: 700; font-size: 0.95rem;"><i class="fa-solid fa-power-off" style="color: var(--danger-red); margin-right: 8px;"></i> Library Holiday Mode</span>
                         <input type="checkbox" id="holidayToggle" onchange="toggleHoliday()" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--danger-red);">
@@ -379,40 +442,44 @@
                 </div>
             </div>
         </div>
-
-        <!-- 4. Receipt Generator Password -->
+        <!-- 4. Receipt & ID Generator Password Modal -->
         <div class="modal-overlay" id="pwdModal">
             <div class="bento-card" style="width: 100%; max-width: 420px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); font-size: 1.2rem;" onclick="document.getElementById('pwdModal').style.display='none'"></i>
                 <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.5rem;">Verification Required</h3>
-                <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter PIN to access Secure Receipt Engine.</p>
+                <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter PIN to access Secure Generation Engine.</p>
                 <div class="input-group"><input type="password" id="receiptPwdInput" placeholder="Enter PIN" style="text-align:center; letter-spacing: 4px; font-size: 1.3rem; font-weight: 900;"></div>
                 <button class="btn btn-primary" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyReceiptPwd()">Unlock Now</button>
             </div>
         </div>
 
-        <!-- 5. Water Vendor Login Modal -->
+        <!-- 5. Water Vendor Login Modal (4-Digit PIN) -->
         <div class="modal-overlay" id="waterLoginModal">
             <div class="bento-card" style="width: 100%; max-width: 420px; text-align: center; position: relative;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); font-size: 1.2rem;" onclick="document.getElementById('waterLoginModal').style.display='none'"></i>
                 <i class="fa-solid fa-droplet" style="font-size: 3rem; color: var(--water-blue); margin-bottom: 15px;"></i>
                 <h3 style="margin-bottom: 10px; font-weight: 900; font-size: 1.5rem;">Vendor Access</h3>
-                <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter Water Password to update 20L bottle log.</p>
-                <div class="input-group"><input type="password" id="waterPwdInput" placeholder="Enter Password" style="text-align:center; font-size: 1.3rem; font-weight: 900;"></div>
+                <p style="font-size:1rem; color:var(--text-muted); margin-bottom:25px;">Enter 4-Digit Vendor PIN to update 20L log.</p>
+                <div class="input-group">
+                    <input type="password" id="waterPwdInput" placeholder="* * * *" maxlength="4" style="text-align:center; letter-spacing: 8px; font-size: 1.6rem; font-weight: 900;">
+                </div>
                 <button class="btn btn-water" style="width:100%; padding: 16px; border-radius: 12px;" onclick="verifyWaterLogin()">Login</button>
             </div>
         </div>
 
-        <!-- 6. Global Identity Scanner Modal -->
+        <!-- 6. Global Identity Scanner Modal (With Open Camera Option) -->
         <div class="modal-overlay" id="globalQrModal">
             <div class="bento-card" style="width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto;">
                 <i class="fa-solid fa-times" style="position: absolute; top: clamp(15px, 2vw, 25px); right: clamp(15px, 2vw, 25px); cursor: pointer; color: var(--text-muted); z-index: 10; font-size: 1.2rem;" onclick="closeGlobalScanner()"></i>
                 <h3 style="margin-bottom: 20px; font-weight: 900; text-align: center; font-size: 1.5rem;"><i class="fa-solid fa-qrcode" style="color: var(--brand-blue);"></i> Identity Scanner</h3>
                 <div id="global-qr-reader" style="width: 100%; min-height: 280px; background: #fff; border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; margin-bottom: 15px; color: #000; border: 2px dashed var(--border-glass);"></div>
-                <div style="text-align: center;">
-                    <label class="btn btn-primary" style="cursor: pointer; width: 100%; padding: 16px; border-radius: 12px;"><i class="fa-solid fa-upload"></i> Upload QR Image<input type="file" id="globalQrUpload" accept="image/*" style="display: none;" onchange="handleQRImageUpload(event, false)"></label>
+                
+                <div style="display: flex; gap: 15px;">
+                    <label class="btn btn-outline" style="cursor: pointer; flex: 1; padding: 14px; border-radius: 12px; font-size: 1rem;"><i class="fa-solid fa-upload"></i> Upload Image<input type="file" id="globalQrUpload" accept="image/*" style="display: none;" onchange="handleQRImageUpload(event, false)"></label>
+                    <button class="btn btn-primary" style="flex: 1; padding: 14px; border-radius: 12px; font-size: 1rem;" onclick="startCameraScan()"><i class="fa-solid fa-camera"></i> Open Camera</button>
                 </div>
+
                 <div id="verifiedResultBox" style="display: none; margin-top: 20px; background: rgba(50, 215, 75, 0.1); border: 1px solid var(--success-green); padding: 20px; border-radius: 16px;">
                     <h4 style="color: var(--success-green); text-align: center; margin-bottom: 15px; font-weight: 900; font-size: 1.2rem;"><i class="fa-solid fa-circle-check"></i> Identity Verified</h4>
                     <div style="line-height: 2; font-weight: 700; font-size: 1.05rem;">
@@ -436,7 +503,7 @@
                 <marquee id="liveMarquee" style="color: var(--accent-orange); font-size: clamp(0.95rem, 1.2vw, 1.1rem); font-weight: 800; letter-spacing: 0.5px; height: 100%;">Connecting to Live Library Servers... Updates will appear here.</marquee>
             </div>
             
-            <!-- Utilities: Clock & Theme Toggle -->
+            <!-- Utilities: Clock & Auto-Theme Toggle -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px;">
                 <div class="bento-card" style="padding: 10px 20px; font-size: clamp(0.95rem, 1.2vw, 1.1rem); font-weight: 800; border-radius: 100px; display: flex; align-items: center; box-shadow: var(--shadow-bento);">
                     <i class="fa-solid fa-clock" style="color: var(--brand-blue); margin-right: 10px; font-size: 1.2rem;"></i> <span id="realTimeClock">Loading...</span>
@@ -444,8 +511,8 @@
                 
                 <div class="bento-card" style="padding: 10px; border-radius: 100px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-bento);">
                     <i class="fa-solid fa-sun" style="color: var(--accent-orange); font-size: 1.2rem; padding-left: 6px;"></i>
-                    <label class="toggle-switch-ui">
-                        <input type="checkbox" id="themeToggleCheckbox" onchange="toggleTheme()">
+                    <label class="toggle-switch-ui" title="Auto changes at 7 AM & 6 PM">
+                        <input type="checkbox" id="themeToggleCheckbox" onchange="toggleThemeManual()">
                         <div class="toggle-knob" id="themeKnob"></div>
                     </label>
                     <i class="fa-solid fa-moon" style="color: var(--brand-blue); font-size: 1.2rem; padding-right: 6px;"></i>
@@ -493,9 +560,9 @@
                 <div class="nav-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
                 <div class="nav-item" onclick="showSection('admission')"><i class="fa-solid fa-user-plus"></i><span>Admission</span></div>
                 <div class="nav-item" onclick="showSection('payment')"><i class="fa-solid fa-indian-rupee-sign"></i><span>Fee Pay</span></div>
-                <div class="nav-item" onclick="promptReceiptPwd()"><i class="fa-solid fa-file-invoice"></i><span>Receipt</span></div>
+                <div class="nav-item" onclick="promptReceiptPwd('receipt')"><i class="fa-solid fa-file-invoice"></i><span>Receipt</span></div>
                 
-                <div class="nav-item" onclick="showSection('idcard')"><i class="fa-solid fa-id-badge"></i><span>ID Card</span></div>
+                <div class="nav-item" onclick="promptReceiptPwd('idcard')"><i class="fa-solid fa-id-badge"></i><span>ID Card</span></div>
                 <div class="nav-item" onclick="showSection('learners')"><i class="fa-solid fa-users"></i><span>Learners</span></div>
                 <div class="nav-item" onclick="openQuotesGenerator()"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Quotes</span></div>
                 <div class="nav-item" onclick="showSection('facilities')"><i class="fa-solid fa-star"></i><span>Facilities</span></div>
@@ -506,16 +573,19 @@
                 <div class="nav-item" onclick="showSection('tasks')"><i class="fa-solid fa-list-check"></i><span>Tasks</span></div>
             </div>
 
-            <!-- NAYI 3-BUTTON ROW (Books, Notes, Video Lecture) -->
-            <div class="action-row-3">
-                <div class="action-btn-3" onclick="document.getElementById('booksModal').style.display='flex'">
+            <!-- NEW 4-BUTTON ROW (Video Lectures, Mock Test, Books, Notes) -->
+            <div class="action-row-4">
+                <div class="action-btn-4" onclick="document.getElementById('videoModal').style.display='flex'">
+                    <i class="fa-solid fa-circle-play"></i><span>Video Lectures</span>
+                </div>
+                <div class="action-btn-4" onclick="document.getElementById('mockModal').style.display='flex'">
+                    <i class="fa-solid fa-laptop-code"></i><span>Mock Test</span>
+                </div>
+                <div class="action-btn-4" onclick="document.getElementById('booksModal').style.display='flex'">
                     <i class="fa-solid fa-book-open"></i><span>Books</span>
                 </div>
-                <div class="action-btn-3" onclick="showSection('tools'); document.getElementById('docType').value='pdf'; document.getElementById('topicInput').focus();">
+                <div class="action-btn-4" onclick="document.getElementById('booksModal').style.display='flex'">
                     <i class="fa-solid fa-file-lines"></i><span>Notes</span>
-                </div>
-                <div class="action-btn-3" onclick="showSection('tools'); document.getElementById('docType').value='video'; document.getElementById('topicInput').focus();">
-                    <i class="fa-solid fa-circle-play"></i><span>Video Lecture</span>
                 </div>
             </div>
 
@@ -535,6 +605,7 @@
                     <i class="fa-solid fa-file-pdf"></i> PDFly Tools
                 </button>
             </div>
+
             <!-- =========================================================
                  SECTION: HOME DASHBOARD
                  ========================================================= -->
@@ -543,7 +614,7 @@
                 <!-- Status Card -->
                 <div class="bento-card" style="margin-bottom: clamp(20px, 3vw, 30px); position: relative; overflow: hidden;">
                     <i class="fa-regular fa-clock" style="position: absolute; right: -20px; top: -20px; font-size: clamp(150px, 20vw, 250px); opacity: 0.03; color: var(--text-main);"></i>
-                    <h4 style="font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 900; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Workspace Status</h4>
+                    <h4 style="font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 900; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Study Space Status</h4>
                     <div class="subtitle" style="margin-bottom: 20px;">Maharajganj Azamgarh</div>
                     
                     <div style="width: 100%; height: clamp(20px, 2vw, 28px); background: var(--input-bg); border-radius: 100px; overflow: hidden; margin-bottom: 20px; border: 1px inset var(--border-glass);">
@@ -612,7 +683,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- =========================================================
                  SECTION: LIVE WATER STATUS (ADVANCED ANIMATED ENGINE)
                  ========================================================= -->
@@ -622,7 +692,7 @@
                     
                     <div style="display: flex; flex-wrap: wrap; gap: clamp(30px, 4vw, 50px); align-items: flex-start; justify-content: center; margin-bottom: 20px;">
                         
-                        <!-- Animated Bottles Dashboard (Batch System) -->
+                        <!-- Animated Bottles Dashboard (1-Line Layout via Flex/Grid) -->
                         <div style="flex: 1.5; min-width: 300px; text-align: center; background: rgba(14, 165, 233, 0.05); padding: 25px; border-radius: 20px; border: 1px dashed rgba(14, 165, 233, 0.3);">
                             <h4 style="font-weight: 900; font-size: clamp(1.2rem, 1.5vw, 1.4rem); margin-bottom: 5px;">20L Drinking Water Supply</h4>
                             <p style="font-size: 0.95rem; color: var(--text-muted); font-weight: 700; margin-bottom: 25px;" id="waterBottleCount">Connecting to server...</p>
@@ -634,11 +704,11 @@
                             
                             <!-- Detailed Disclaimer Added -->
                             <div style="margin-top: 25px; font-size: 0.85rem; color: var(--danger-red); font-weight: 700; background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; text-align: left; display: inline-block;">
-                                <i class="fa-solid fa-circle-exclamation"></i> <strong>Disclaimer:</strong> Niche dikhaya gaya pani ka percentage aur bacha hua samay lagbhag anumanit (approximate) hai. Yeh exact nahi hai, balki average consumption ke hisaab se dikhaya ja raha hai.
+                                <i class="fa-solid fa-circle-exclamation"></i> <strong>Disclaimer:</strong> Niche dikhaya gaya pani ka percentage, liters aur bacha hua samay lagbhag anumanit (approximate) hai. Yeh exact nahi hai, balki average daily consumption ke hisaab se live calculate ho raha hai.
                             </div>
                         </div>
 
-                        <!-- Info & Vendor Update Panel -->
+                        <!-- Info Panel -->
                         <div style="flex: 1; min-width: 280px; max-width: 500px;">
                             <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.2); padding: clamp(20px, 2.5vw, 30px); border-radius: 20px; margin-bottom: 20px;">
                                 <h4 style="font-weight: 900; font-size: clamp(1.1rem, 1.3vw, 1.2rem); margin-bottom: 12px; color: var(--water-blue);"><i class="fa-solid fa-clock-rotate-left"></i> Delivery History</h4>
@@ -721,7 +791,7 @@
             </div>
 
             <!-- =========================================================
-                 SECTION: PREMIUM FEE GATEWAY (1 to 6 Months)
+                 SECTION: PREMIUM FEE GATEWAY
                  ========================================================= -->
             <div id="sec-payment" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-indian-rupee-sign"></i> Fee Gateway</h2>
@@ -769,95 +839,104 @@
             </div>
             
             <!-- =========================================================
-                 SECTION: LEARNERS (Fixed Overflow 2-Column Categories)
+                 SECTION: LEARNERS (Fixed Overflow 1-Col & 2-Col Categories)
                  ========================================================= -->
             <div id="sec-learners" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-users-rectangle"></i> Registered Learners</h2>
                 
-                <!-- Category 1: Selected / Achieved Government Jobs -->
+                <!-- Category 1: Selected / Achieved Government Jobs (1-COLUMN) -->
                 <div class="bento-card" style="margin-bottom: 30px; border-top: 5px solid var(--success-green);">
                     <h3 style="color: var(--success-green); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-medal"></i> Achieved Government Jobs
                     </h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 1.5vw, 15px);">
+                    
+                    <!-- 1 Column Grid Layout -->
+                    <div style="display: grid; grid-template-columns: 1fr; gap: clamp(10px, 1.5vw, 15px);">
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
-                            <div style="min-width: 0; overflow: hidden;">
-                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pradeep</h4>
-                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB ALP</p>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div>
+                                <h4 style="margin-bottom:2px; font-size: clamp(1.05rem, 1.3vw, 1.2rem); font-weight: 900;">Pradeep</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.85rem, 1.1vw, 1rem); font-weight: 700;">RRB ALP</p>
                             </div>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
-                            <div style="min-width: 0; overflow: hidden;">
-                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Kanhaiya</h4>
-                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB ALP</p>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div>
+                                <h4 style="margin-bottom:2px; font-size: clamp(1.05rem, 1.3vw, 1.2rem); font-weight: 900;">Kanhaiya</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.85rem, 1.1vw, 1rem); font-weight: 700;">RRB ALP</p>
                             </div>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div style="min-width: 0; overflow: hidden;">
-                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chandresh</h4>
-                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">UP Police</p>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; flex-shrink: 0;"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <h4 style="margin-bottom:2px; font-size: clamp(1.05rem, 1.3vw, 1.2rem); font-weight: 900;">Chandresh</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.85rem, 1.1vw, 1rem); font-weight: 700;">UP Police</p>
                             </div>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-train"></i></div>
-                            <div style="min-width: 0; overflow: hidden;">
-                                <h4 style="margin-bottom:2px; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sumit</h4>
-                                <p style="color:var(--text-muted); font-size:clamp(0.75rem, 1vw, 0.85rem); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RRB Technician</p>
+                        <div style="background: var(--input-bg); padding: clamp(15px, 2vw, 20px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, var(--success-green), #059669); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; flex-shrink: 0;"><i class="fa-solid fa-train"></i></div>
+                            <div>
+                                <h4 style="margin-bottom:2px; font-size: clamp(1.05rem, 1.3vw, 1.2rem); font-weight: 900;">Sumit</h4>
+                                <p style="color:var(--text-muted); font-size:clamp(0.85rem, 1.1vw, 1rem); font-weight: 700;">RRB Technician</p>
                             </div>
                         </div>
                         
                     </div>
                 </div>
 
-                <!-- Category 2: Current Aspirants -->
+                <!-- Category 2: Current Aspirants (2-COLUMN) -->
                 <div class="bento-card">
                     <h3 style="color: var(--brand-blue); margin-bottom: 25px; font-weight: 900; font-size: clamp(1.2rem, 1.8vw, 1.5rem); display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-book-open-reader"></i> Current Aspirants
                     </h3>
                     
+                    <!-- 2 Column Grid Layout -->
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 1.5vw, 15px); margin-bottom: 30px;">
                         
-                        <!-- Generator: Shivam, Banty, Praduman, V Sharma, G Rao, Prakhar, Shavej -->
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <!-- List: Shivam, Banty, Praduman, Dheeraj, V Sharma, G Rao, Prakhar, Shavej -->
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Shivam</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Shivam</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Banty</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Banty</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Praduman</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Praduman</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <!-- New Name Added: Dheeraj -->
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">V Sharma</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Dheeraj</h4>
+                        </div>
+
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">V Sharma</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">G Rao</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">G Rao</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden;">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">Prakhar</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Prakhar</h4>
                         </div>
                         
-                        <div style="background: var(--input-bg); padding: clamp(10px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px; overflow: hidden; grid-column: 1 / -1; justify-content: center;">
+                        <div style="background: var(--input-bg); padding: clamp(12px, 1.5vw, 15px); border-radius: 16px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 10px;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-blue), #1e3a8a); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1rem; flex-shrink: 0;"><i class="fa-solid fa-user"></i></div>
-                            <h4 style="font-weight: 900; font-size: clamp(0.85rem, 1.1vw, 1rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Shavej</h4>
+                            <h4 style="font-weight: 900; font-size: clamp(0.9rem, 1.1vw, 1.05rem);">Shavej</h4>
                         </div>
                         
                     </div>
@@ -886,59 +965,6 @@
                     <div class="bento-card" style="text-align:center; padding: 30px 20px; display: flex; flex-direction: column; justify-content: center;"><i class="fa-solid fa-video" style="font-size:40px; color:var(--brand-blue); margin-bottom:15px;"></i><h3 style="font-size:1.1rem; font-weight: 900;">CCTV Secure</h3></div>
                 </div>
             </div>
-            <!-- =========================================================
-                 SECTION: SMART ID ENGINE (Fixed & Working)
-                 ========================================================= -->
-            <div id="sec-idcard" class="dynamic-sec">
-                <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Smart ID Engine</h2>
-                <div class="bento-card" style="display:flex; flex-wrap:wrap; gap:40px; justify-content:center;">
-                    <div style="flex:1; min-width: 320px;">
-                        <h4 style="font-weight: 900; font-size: 1.3rem; margin-bottom: 25px;"><i class="fa-solid fa-pen-to-square" style="color: var(--brand-blue);"></i> Identity Details</h4>
-                        <div class="input-group"><label>Full Name</label><input type="text" id="idName" oninput="updateID()" placeholder="Enter Name"></div>
-                        <div class="input-group"><label>Date of Birth</label><input type="date" id="idDob" oninput="updateID()"></div>
-                        <div class="input-group"><label>Mobile Number</label><input type="tel" id="idMob" oninput="updateID()" maxlength="10" placeholder="10 Digits"></div>
-                        <div class="input-group"><label>Seat Assigned</label><input type="text" id="idSeat" oninput="updateID()" placeholder="Seat No."></div>
-                        <div class="input-group"><label>Address</label><textarea id="idAddress" oninput="updateID()" placeholder="City/Town" rows="2"></textarea></div>
-                        <div onclick="document.getElementById('idPhotoInput').click()" style="padding: 35px 20px; border: 2px dashed var(--border-glass); border-radius: 16px; text-align: center; cursor: pointer; background: var(--input-bg); transition: 0.3s; margin-top: 15px;">
-                            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 3rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
-                            <p style="font-weight: 800; font-size: 1.1rem;">Upload Portrait Photo</p>
-                            <input type="file" id="idPhotoInput" accept="image/*" style="display:none;" onchange="previewPhoto(event)">
-                        </div>
-                    </div>
-                    <div style="flex:1; min-width: 320px; display: flex; flex-direction: column; align-items: center;">
-                        <h4 style="font-weight: 900; font-size: 1.3rem; margin-bottom: 25px;"><i class="fa-solid fa-eye" style="color: var(--success-green);"></i> Live Preview</h4>
-                        <div id="idCardHTML" style="width: 290px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif; color: #111; border: 1px solid #ddd; position: relative;">
-                            <div style="background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); color: white; text-align: center; padding: 22px 10px 28px; border-radius: 0 0 25px 25px; position: relative; z-index: 1;">
-                                <h3 style="font-size: 18px; margin: 0; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fa-solid fa-book-open"></i> National Library</h3>
-                                <p style="font-size: 9px; margin-top: 4px; font-weight: 700; opacity: 0.9; text-transform: uppercase;">Maharajganj Azamgarh</p>
-                            </div>
-                            <div style="padding: 22px 18px 18px; margin-top: -18px; position: relative; z-index: 2; background: #fff; border-radius: 22px 22px 0 0;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
-                                    <div style="position: relative;"><img src="https://via.placeholder.com/120x140?text=Photo" id="cardPhoto" crossorigin="anonymous" style="width: 85px; height: 110px; object-fit: cover; border: 3.5px solid #2563eb; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></div>
-                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: flex-end;">
-                                        <i class="fa-solid fa-microchip" style="color: #d4af37; font-size: 26px; margin-bottom: 10px;"></i>
-                                        <div style="border: 2px solid #f0f0f0; padding: 4px; border-radius: 8px; background: #fff;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Library" id="cardQR" crossorigin="anonymous" style="width: 60px; height: 60px;"></div>
-                                        <div style="background: linear-gradient(135deg, #ef4444, #f59e0b); color: white; padding: 5px 16px; border-radius: 100px; font-size: 12px; margin-top: 12px; font-weight: 900; box-shadow: 0 5px 12px rgba(239, 68, 68, 0.4);">Seat: <span id="cardSeat">N/A</span></div>
-                                    </div>
-                                </div>
-                                <div style="border: 1.5px solid #f8fafc; border-radius: 12px; padding: 14px; margin-bottom: 14px; background: #f8fafc;">
-                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Name</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">: <span id="cardName">--</span></div></div>
-                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">DOB</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px;">: <span id="cardDob">--</span></div></div>
-                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Mob</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px;">: <span id="cardMob">--</span></div></div>
-                                    <div style="display: flex; font-size: 12px;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Add</div><div style="flex: 1; font-weight: 700; color: #000; font-size: 12px; line-height: 1.3;">: <span id="cardAddress">--</span></div></div>
-                                </div>
-                                <div style="text-align: center; margin: 15px 0 5px;"><img id="cardBarcode" src="https://bwipjs-api.metafloor.com/?bcid=code128&text=NL20261234&scale=2&height=10&includetext=true" alt="Barcode" crossorigin="anonymous" style="width: 160px; height: 30px; mix-blend-mode: multiply;"></div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 18px; border-top: 4px solid #2563eb; background: #f1f5f9;">
-                                <div style="font-size: 9px; color: #2563eb; font-weight: 900; line-height: 1.5;"><div style="margin-bottom: 2px;">OFFICIAL IDENTITY CARD</div><div style="color: #64748b;">VALID FOR ENTRY ONLY</div></div>
-                                <div style="text-align: right;"><div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 20px; color: #000; margin-bottom: 2px;">Ravi Prakash</div><div style="font-size: 8px; color: #475569; letter-spacing: 0.5px; font-weight: 900; border-top: 2px solid #ccc; padding-top: 4px;">LIBRARY MANAGER</div></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="downloadID()" style="width: 100%; max-width: 290px; margin-top: 25px; border-radius: 12px; padding: 16px; font-size: 1.1rem;"><i class="fa-solid fa-download"></i> Download HD ID</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- =========================================================
                  SECTION: GALLERY
                  ========================================================= -->
@@ -1016,7 +1042,7 @@
             </div>
 
             <!-- =========================================================
-                 SECTION: ULTRA-SECURE RECEIPT ENGINE
+                 SECTION: ULTRA-SECURE RECEIPT ENGINE (Scaled Preview View)
                  ========================================================= -->
             <div id="sec-receipt" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-file-invoice-dollar"></i> Pro Receipt Engine</h2>
@@ -1047,57 +1073,58 @@
                     <button class="btn btn-primary" style="font-size: clamp(1.15rem, 1.5vw, 1.3rem); padding: 20px 50px; border-radius: 100px; box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);" onclick="downloadPDF()"><i class="fa-solid fa-file-pdf"></i> Download Secure PDF</button>
                 </div>
 
-                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE -->
-                <div style="overflow-x: auto; padding-bottom: 20px; display: flex; justify-content: center;" id="receiptPrintArea">
-                    <div id="receiptPaper" class="secure-receipt-bg" style="width: 100%; min-width: 750px; max-width: 800px; color: #000; padding: 50px 60px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid #ddd; background-color: #fff;">
-                        
-                        <!-- Hologram Stamp -->
-                        <div class="hologram-stamp"><div>SECURE<br><span style="font-size: 16px;">✓</span><br>ORIGINAL</div></div>
-                        
-                        <div style="text-align: center; margin-bottom: 30px; border-bottom: 4px double #000; padding-bottom: 25px; position: relative; z-index: 2;">
-                            <h2 style="font-size: 38px; font-weight: 900; margin-bottom: 6px; letter-spacing: 2px; color: #0f172a;">NATIONAL LIBRARY</h2>
-                            <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569;">Maharajganj Azamgarh</div>
-                            <p style="font-size: 13px; margin: 4px 0; color: #1e293b;">Near Post Office Maharajganj, Azamgarh UP-276137</p>
-                            <p style="font-size: 13px; margin: 4px 0; font-weight: 900; color: #0f172a;">+91 87950 11001 | demo@nationallibrary.in</p>
-                        </div>
-                        
-                        <div style="text-align: center; margin: 35px 0; position: relative; z-index: 2;">
-                            <span style="font-size: 22px; font-weight: 900; border: 3px solid #0f172a; padding: 12px 35px; border-radius: 8px; letter-spacing: 4px; background: rgba(15, 23, 42, 0.05); color: #0f172a;">OFFICIAL FEE RECEIPT</span>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; margin-bottom: 25px; position: relative; z-index: 2; color: #000;">
-                            <span id="outDate">Date: --</span><span id="outRcptNo">Receipt No: --</span>
-                        </div>
-                        
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 16px; border: 2px solid #0f172a; position: relative; z-index: 2; background: rgba(255,255,255,0.95);">
-                            <tbody>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; width: 40%; font-weight: 800;">ID Card No:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; color: #2563eb;" id="dispId">NL--</td></tr>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Student Name:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; text-transform: uppercase;" id="dispName">--</td></tr>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Seat Number:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispSeat">--</td></tr>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Shift Assigned:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispShift">Full Shift (7 AM - 9 PM)</td></tr>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Fee Duration:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMonth">--</td></tr>
-                                <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Mode:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMode">Online / UPI</td></tr>
-                                <tr id="rowTxnDate"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Date/Time:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispTxnDate">--</td></tr>
-                                <tr id="rowTxn"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Transaction ID:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; font-family: monospace; font-size: 18px;" id="dispTxn">--</td></tr>
-                            </tbody>
-                        </table>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; border: 3px solid #0f172a; padding: 25px 30px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.03); position: relative; z-index: 2;">
-                            <div><div style="font-size: 20px; font-weight: 900; color: #0f172a;">Total Fee Received</div><div style="font-size: 15px; margin-top:6px; font-weight: 800;" id="dispSubTotal">(₹400 x 1 Month)</div></div>
-                            <div style="font-size: 40px; font-weight: 900; color: #10b981; text-shadow: 1px 1px 0 #000;">₹<span id="dispTotal">400.00</span></div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; position: relative; z-index: 2;">
-                            <div style="flex: 1; font-size: 13px; line-height: 1.6; color: #334155; font-weight: 700;">
-                                <strong style="color: #000; font-size: 14px;">Official Document</strong><br>This system-generated receipt serves<br>as the official proof of fee payment.<br>Please retain for your records.
+                <!-- HD HIGH SECURITY PDF RECEIPT TEMPLATE (Preview Scaled Down) -->
+                <div style="overflow-x: hidden; display: flex; justify-content: center;" id="receiptPrintArea">
+                    <div id="receiptPreviewContainer">
+                        <div id="receiptPaper" class="secure-receipt-bg" style="width: 800px; color: #000; padding: 50px 60px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-shadow: 0 30px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid #ddd; background-color: #fff;">
+                            
+                            <div class="hologram-stamp"><div>SECURE<br><span style="font-size: 16px;">✓</span><br>ORIGINAL</div></div>
+                            
+                            <div style="text-align: center; margin-bottom: 30px; border-bottom: 4px double #000; padding-bottom: 25px; position: relative; z-index: 2;">
+                                <h2 style="font-size: 38px; font-weight: 900; margin-bottom: 6px; letter-spacing: 2px; color: #0f172a;">NATIONAL LIBRARY</h2>
+                                <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; color: #475569;">Maharajganj Azamgarh</div>
+                                <p style="font-size: 13px; margin: 4px 0; color: #1e293b;">Near Post Office Maharajganj, Azamgarh UP-276137</p>
+                                <p style="font-size: 13px; margin: 4px 0; font-weight: 900; color: #0f172a;">+91 87950 11001 | demo@nationallibrary.in</p>
                             </div>
-                            <div style="text-align: center; flex: 0.5;">
-                                <img src="" id="outQR" crossorigin="anonymous" alt="QR Code" style="width: 100px; height: 100px; margin-bottom: 8px; border: 2px solid #000; padding: 2px; border-radius: 4px; background:#fff;">
-                                <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px;">SCAN VERIFY</div>
+                            
+                            <div style="text-align: center; margin: 35px 0; position: relative; z-index: 2;">
+                                <span style="font-size: 22px; font-weight: 900; border: 3px solid #0f172a; padding: 12px 35px; border-radius: 8px; letter-spacing: 4px; background: rgba(15, 23, 42, 0.05); color: #0f172a;">OFFICIAL FEE RECEIPT</span>
                             </div>
-                            <div style="text-align: right; flex: 1;">
-                                <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 38px; color: #0f172a; margin-bottom: 8px;">Ravi Prakash</div>
-                                <div style="font-weight: 900; font-size: 12px; border-top: 2px solid #0f172a; display: inline-block; padding-top: 8px; letter-spacing: 1px;">MANAGER SIGNATURE</div>
+                            
+                            <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; margin-bottom: 25px; position: relative; z-index: 2; color: #000;">
+                                <span id="outDate">Date: --</span><span id="outRcptNo">Receipt No: --</span>
+                            </div>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 16px; border: 2px solid #0f172a; position: relative; z-index: 2; background: rgba(255,255,255,0.95);">
+                                <tbody>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; width: 40%; font-weight: 800;">ID Card No:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; color: #2563eb;" id="dispId">NL--</td></tr>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Student Name:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; text-transform: uppercase;" id="dispName">--</td></tr>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Seat Number:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispSeat">--</td></tr>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Shift Assigned:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispShift">Full Shift (7 AM - 9 PM)</td></tr>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Fee Duration:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMonth">--</td></tr>
+                                    <tr><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Mode:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispMode">Online / UPI</td></tr>
+                                    <tr id="rowTxnDate"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Payment Date/Time:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900;" id="dispTxnDate">--</td></tr>
+                                    <tr id="rowTxn"><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 800;">Transaction ID:</td><td style="border: 1px solid #cbd5e1; padding: 16px; font-weight: 900; font-family: monospace; font-size: 18px;" id="dispTxn">--</td></tr>
+                                </tbody>
+                            </table>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; border: 3px solid #0f172a; padding: 25px 30px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.03); position: relative; z-index: 2;">
+                                <div><div style="font-size: 20px; font-weight: 900; color: #0f172a;">Total Fee Received</div><div style="font-size: 15px; margin-top:6px; font-weight: 800;" id="dispSubTotal">(₹400 x 1 Month)</div></div>
+                                <div style="font-size: 40px; font-weight: 900; color: #10b981; text-shadow: 1px 1px 0 #000;">₹<span id="dispTotal">400.00</span></div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; position: relative; z-index: 2;">
+                                <div style="flex: 1; font-size: 13px; line-height: 1.6; color: #334155; font-weight: 700;">
+                                    <strong style="color: #000; font-size: 14px;">Official Document</strong><br>This system-generated receipt serves<br>as the official proof of fee payment.<br>Please retain for your records.
+                                </div>
+                                <div style="text-align: center; flex: 0.5;">
+                                    <img src="" id="outQR" crossorigin="anonymous" alt="QR Code" style="width: 100px; height: 100px; margin-bottom: 8px; border: 2px solid #000; padding: 2px; border-radius: 4px; background:#fff;">
+                                    <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px;">SCAN VERIFY</div>
+                                </div>
+                                <div style="text-align: right; flex: 1;">
+                                    <div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 38px; color: #0f172a; margin-bottom: 8px;">Ravi Prakash</div>
+                                    <div style="font-weight: 900; font-size: 12px; border-top: 2px solid #0f172a; display: inline-block; padding-top: 8px; letter-spacing: 1px;">MANAGER SIGNATURE</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1105,7 +1132,60 @@
             </div>
 
             <!-- =========================================================
-                 SECTION: MULTI-LANGUAGE QUOTES MAKER (No Repeats)
+                 SECTION: SMART ID ENGINE (Fixed Download Access)
+                 ========================================================= -->
+            <div id="sec-idcard" class="dynamic-sec">
+                <h2 class="section-title"><i class="fa-solid fa-id-badge"></i> Smart ID Engine</h2>
+                <div class="bento-card" style="display:flex; flex-wrap:wrap; gap:40px; justify-content:center;">
+                    <div style="flex:1; min-width: 320px;">
+                        <h4 style="font-weight: 900; font-size: 1.3rem; margin-bottom: 25px;"><i class="fa-solid fa-pen-to-square" style="color: var(--brand-blue);"></i> Identity Details</h4>
+                        <div class="input-group"><label>Full Name</label><input type="text" id="idName" oninput="updateID()" placeholder="Enter Name"></div>
+                        <div class="input-group"><label>Date of Birth</label><input type="date" id="idDob" oninput="updateID()"></div>
+                        <div class="input-group"><label>Mobile Number</label><input type="tel" id="idMob" oninput="updateID()" maxlength="10" placeholder="10 Digits"></div>
+                        <div class="input-group"><label>Seat Assigned</label><input type="text" id="idSeat" oninput="updateID()" placeholder="Seat No."></div>
+                        <div class="input-group"><label>Address</label><textarea id="idAddress" oninput="updateID()" placeholder="City/Town" rows="2"></textarea></div>
+                        <div onclick="document.getElementById('idPhotoInput').click()" style="padding: 35px 20px; border: 2px dashed var(--border-glass); border-radius: 16px; text-align: center; cursor: pointer; background: var(--input-bg); transition: 0.3s; margin-top: 15px;">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 3rem; color: var(--brand-blue); margin-bottom: 15px;"></i>
+                            <p style="font-weight: 800; font-size: 1.1rem;">Upload Portrait Photo</p>
+                            <input type="file" id="idPhotoInput" accept="image/*" style="display:none;" onchange="previewPhoto(event)">
+                        </div>
+                    </div>
+                    <div style="flex:1; min-width: 320px; display: flex; flex-direction: column; align-items: center;">
+                        <h4 style="font-weight: 900; font-size: 1.3rem; margin-bottom: 25px;"><i class="fa-solid fa-eye" style="color: var(--success-green);"></i> Live Preview</h4>
+                        <div id="idCardHTML" style="width: 290px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif; color: #111; border: 1px solid #ddd; position: relative;">
+                            <div style="background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); color: white; text-align: center; padding: 22px 10px 28px; border-radius: 0 0 25px 25px; position: relative; z-index: 1;">
+                                <h3 style="font-size: 18px; margin: 0; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fa-solid fa-book-open"></i> National Library</h3>
+                                <p style="font-size: 9px; margin-top: 4px; font-weight: 700; opacity: 0.9; text-transform: uppercase;">Study Space Maharajganj</p>
+                            </div>
+                            <div style="padding: 22px 18px 18px; margin-top: -18px; position: relative; z-index: 2; background: #fff; border-radius: 22px 22px 0 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+                                    <div style="position: relative;"><img src="https://via.placeholder.com/120x140?text=Photo" id="cardPhoto" crossorigin="anonymous" style="width: 85px; height: 110px; object-fit: cover; border: 3.5px solid #2563eb; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></div>
+                                    <div style="text-align: center; display: flex; flex-direction: column; align-items: flex-end;">
+                                        <i class="fa-solid fa-microchip" style="color: #d4af37; font-size: 26px; margin-bottom: 10px;"></i>
+                                        <div style="border: 2px solid #f0f0f0; padding: 4px; border-radius: 8px; background: #fff;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Library" id="cardQR" crossorigin="anonymous" style="width: 60px; height: 60px;"></div>
+                                        <div style="background: linear-gradient(135deg, #ef4444, #f59e0b); color: white; padding: 5px 16px; border-radius: 100px; font-size: 12px; margin-top: 12px; font-weight: 900; box-shadow: 0 5px 12px rgba(239, 68, 68, 0.4);">Seat: <span id="cardSeat">N/A</span></div>
+                                    </div>
+                                </div>
+                                <div style="border: 1.5px solid #f8fafc; border-radius: 12px; padding: 14px; margin-bottom: 14px; background: #f8fafc;">
+                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Name</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">: <span id="cardName">--</span></div></div>
+                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">DOB</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px;">: <span id="cardDob">--</span></div></div>
+                                    <div style="display: flex; margin-bottom: 8px; font-size: 12px; align-items: center;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Mob</div><div style="flex: 1; border-bottom: 1px dotted #ccc; padding-bottom: 3px; font-weight: 800; color: #000; font-size: 13px;">: <span id="cardMob">--</span></div></div>
+                                    <div style="display: flex; font-size: 12px;"><div style="width: 48px; color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase;">Add</div><div style="flex: 1; font-weight: 700; color: #000; font-size: 12px; line-height: 1.3;">: <span id="cardAddress">--</span></div></div>
+                                </div>
+                                <div style="text-align: center; margin: 15px 0 5px;"><img id="cardBarcode" src="https://bwipjs-api.metafloor.com/?bcid=code128&text=NL20261234&scale=2&height=10&includetext=true" alt="Barcode" crossorigin="anonymous" style="width: 160px; height: 30px; mix-blend-mode: multiply;"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 18px; border-top: 4px solid #2563eb; background: #f1f5f9;">
+                                <div style="font-size: 9px; color: #2563eb; font-weight: 900; line-height: 1.5;"><div style="margin-bottom: 2px;">OFFICIAL IDENTITY CARD</div><div style="color: #64748b;">VALID FOR ENTRY ONLY</div></div>
+                                <div style="text-align: right;"><div style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 20px; color: #000; margin-bottom: 2px;">Ravi Prakash</div><div style="font-size: 8px; color: #475569; letter-spacing: 0.5px; font-weight: 900; border-top: 2px solid #ccc; padding-top: 4px;">MANAGER</div></div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="downloadID()" style="width: 100%; max-width: 290px; margin-top: 25px; border-radius: 12px; padding: 16px; font-size: 1.1rem;"><i class="fa-solid fa-download"></i> Download HD ID</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 SECTION: MULTI-LANGUAGE QUOTES MAKER
                  ========================================================= -->
             <div id="sec-poster" class="dynamic-sec">
                 <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Quotes Maker</h2>
@@ -1136,11 +1216,11 @@
         </div> <!-- End App Container Content -->
 
         <!-- =========================================================
-             PREMIUM SMART FOOTER (With Modern Verified Badge Reveal)
+             PREMIUM SMART FOOTER (With GT Rao Reveal)
              ========================================================= -->
         <footer style="background: var(--bg-glass); border-top: 1px solid var(--border-glass); padding: clamp(40px, 6vw, 80px) 20px; text-align: center; margin-top: auto; backdrop-filter: blur(30px);">
             <div style="font-size:clamp(1.6rem, 2.5vw, 2.2rem); font-weight:900; color:var(--brand-blue); letter-spacing: -1px; margin-bottom: 5px;"><i class="fa-solid fa-book-open-reader"></i> National Library</div>
-            <div class="subtitle" style="margin-bottom: 30px; font-size: clamp(0.9rem, 1.2vw, 1.05rem);">Maharajganj Azamgarh</div>
+            <div class="subtitle" style="margin-bottom: 30px; font-size: clamp(0.9rem, 1.2vw, 1.05rem);">Study Space - Maharajganj Azamgarh</div>
             <div style="margin: 0 auto 35px; display: flex; flex-direction: column; gap: 15px; font-weight: 800; font-size: clamp(1.05rem, 1.3vw, 1.15rem);">
                 <a href="https://maps.app.goo.gl/XeBc1K8wHnk1ixiv6" target="_blank" style="color: var(--text-main); text-decoration: none; transition: 0.3s;"><i class="fa-solid fa-location-dot" style="color: var(--accent-orange); margin-right: 10px;"></i> Near Post Office Maharajganj, Azamgarh UP - 276137</a>
                 <a href="mailto:demo@nationallibrary.in" style="color: var(--text-main); text-decoration: none; transition: 0.3s;"><i class="fa-solid fa-envelope" style="color: var(--warning-yellow); margin-right: 10px;"></i> demo@nationallibrary.in</a>
@@ -1148,16 +1228,14 @@
             </div>
             
             <div style="border-top: 1px solid var(--border-glass); padding-top: 35px; font-weight: 700; color: var(--text-muted); font-size: clamp(0.95rem, 1.1vw, 1.05rem);">
-                © 2026 National Library. Ultra Premium Workspace.<br>
+                © 2026 National Library. Ultra Premium Study Space.<br>
                 
-                <!-- Modern Secret Developer Reveal Button -->
                 <div style="margin-top: 25px; font-size: clamp(1rem, 1.2vw, 1.1rem); font-weight: 800; background: var(--bg-glass); padding: 12px 24px; border-radius: 100px; display: inline-flex; align-items: center; border: 1.5px solid var(--border-glass); transition: 0.3s; box-shadow: var(--shadow-bento); backdrop-filter: blur(10px);">
                     <span id="devTextBase" style="color: var(--text-muted);">Developed by Library Students</span> 
                     <i id="devEyeIcon" class="fa-solid fa-eye" style="margin-left: 12px; cursor: pointer; color: var(--brand-blue); font-size: 1.2rem; padding: 4px;" onclick="revealDev()"></i>
                     
                     <span id="devNameReveal" style="display: none; align-items: center; margin-left: 8px; color: var(--brand-blue); font-weight: 900; letter-spacing: 0.5px;">
                         GT Rao
-                        <!-- Original Blue Verified Badge -->
                         <svg class="verified-badge" viewBox="0 0 24 24" style="width:22px; height:22px; margin-left:6px;"><circle cx="12" cy="12" r="12" fill="#1D9BF0"/><path d="M16.5 8L10.5 14L7.5 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
                     </span>
                 </div>
@@ -1166,7 +1244,7 @@
     </div> 
 
     <!-- =========================================================
-         MASTER JAVASCRIPT ENGINE (Water Timer, PDF Fix, Quotes Non-Repeat)
+         MASTER JAVASCRIPT ENGINE (All Logic automated and integrated)
          ========================================================= -->
     <script>
         // 1. FIREBASE CONFIGURATION
@@ -1189,6 +1267,7 @@
         let notifications = [];
         let waterData = { bottles: 0, timestamp: 0, history: [] };
         let waterInterval;
+        let isMasterLoggedIn = false; 
 
         // Force Close Loader Method
         function forceCloseLoader() {
@@ -1209,13 +1288,11 @@
         // 2. WINDOW ONLOAD INITIALIZATION
         window.onload = () => {
             const savedTheme = localStorage.getItem('theme');
-            const checkbox = document.getElementById('themeToggleCheckbox');
-            if (savedTheme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if(checkbox) checkbox.checked = true;
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                document.getElementById('themeToggleCheckbox').checked = (savedTheme === 'dark');
             } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                if(checkbox) checkbox.checked = false;
+                autoThemeCheck(); 
             }
 
             const now = new Date();
@@ -1223,24 +1300,38 @@
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('inpTxnDate').value = now.toISOString().slice(0, 16);
             
-            // Receipt Exact Number
             const exactRcpt = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0') + now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0');
             document.getElementById('outRcptNo').innerText = `Receipt No: ${exactRcpt}`;
             document.getElementById('outDate').innerText = `Date: ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 
-            initializeSeats(); renderBottles(0, 0); renderNotifications();
-            updatePreview(); generatePaymentData(); updateRealTimeClock(); setInterval(updateRealTimeClock, 1000);
+            initializeSeats(); renderBottles(0, 0, "--", 0); renderNotifications();
+            updatePreview(); generatePaymentData(); updateRealTimeClock(); 
+            
+            setInterval(() => {
+                updateRealTimeClock();
+                if(!localStorage.getItem('theme')) autoThemeCheck(); 
+            }, 1000);
+            
             loadTasks(); loadExpenses(); initFirebaseSync();
             setTimeout(forceCloseLoader, 3000);
         };
 
-        // 3. UI Navigation & Time
-        function toggleTheme() {
+        // 3. UI Navigation, Theme & Time
+        function autoThemeCheck() {
+            let hour = new Date().getHours();
+            let isDark = (hour >= 18 || hour < 7);
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeToggleCheckbox').checked = isDark;
+        }
+
+        function toggleThemeManual() {
             const checkbox = document.getElementById('themeToggleCheckbox');
             let newTheme = checkbox.checked ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            localStorage.setItem('theme', newTheme); 
         }
+
+        let currentTargetSection = '';
         function showSection(secId) {
             document.querySelectorAll('.dynamic-sec').forEach(el => el.style.display = 'none');
             const target = document.getElementById('sec-' + secId);
@@ -1248,6 +1339,7 @@
             if(secId === 'home') document.getElementById('homeQuotesSec').style.display = 'flex'; else document.getElementById('homeQuotesSec').style.display = 'none';
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
         function updateRealTimeClock() {
             document.getElementById('realTimeClock').innerText = new Date().toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             let bar = document.getElementById('timeProgress'); let txt = document.getElementById('timeStatusText');
@@ -1259,7 +1351,7 @@
             else { bar.style.width = ((elapsedSecs/totalSecs)*100) + '%'; let rem = totalSecs - elapsedSecs; txt.innerText = `Closes in ${Math.floor(rem / 3600)}h ${Math.floor((rem % 3600) / 60)}m`; bar.style.background = 'linear-gradient(90deg, var(--success-green), #059669)'; }
         }
 
-        // 4. FIREBASE ENGINE
+        // 4. FIREBASE ENGINE & MASTER LOGIN
         function initFirebaseSync() {
             db.ref('library/seats').on('value', (snapshot) => { if (snapshot.exists()) { seatData = snapshot.val(); initializeSeats(); } else { db.ref('library/seats').set(seatData); } });
             db.ref('library/notifications').on('value', (snapshot) => { if (snapshot.exists()) { notifications = snapshot.val() || []; processAndRenderNotifications(); } });
@@ -1276,10 +1368,49 @@
         }
 
         function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-        function verifyAdmin() { if(document.getElementById('adminPassword').value === "NL@2026") { document.getElementById('adminLoginArea').style.display = 'none'; document.getElementById('adminDashboardArea').style.display = 'block'; } else alert("Access Denied!"); }
+        
+        function verifyAdminForm(e) {
+            e.preventDefault();
+            let u = document.getElementById('adminUsername').value;
+            let p = document.getElementById('adminPassword').value;
+            if(u === "National_Library" && p === "NLRS@2050") {
+                isMasterLoggedIn = true;
+                document.getElementById('adminLoginArea').style.display = 'none'; 
+                document.getElementById('adminDashboardArea').style.display = 'block';
+            } else {
+                alert("Incorrect Master Credentials!");
+            }
+            return false;
+        }
+
         function toggleHoliday() { isHoliday = document.getElementById('holidayToggle').checked; db.ref('library/holiday').set(isHoliday); }
-        function promptReceiptPwd() { document.getElementById('pwdModal').style.display = 'flex'; document.getElementById('receiptPwdInput').value = ''; }
-        function verifyReceiptPwd() { if(document.getElementById('receiptPwdInput').value === "NLRS@2050") { document.getElementById('pwdModal').style.display = 'none'; showSection('receipt'); } else alert("Access Denied!"); }
+        
+        function promptReceiptPwd(target) { 
+            if(isMasterLoggedIn) { showSection(target); return; } 
+            currentTargetSection = target;
+            document.getElementById('pwdModal').style.display = 'flex'; 
+            document.getElementById('receiptPwdInput').value = ''; 
+        }
+        function verifyReceiptPwd() { 
+            if(document.getElementById('receiptPwdInput').value === "NLRS@2050") { 
+                document.getElementById('pwdModal').style.display = 'none'; 
+                showSection(currentTargetSection); 
+            } else alert("Access Denied!"); 
+        }
+
+        // Notification Management (Direct Manage Button Logic)
+        function manageNotificationsFromUser() {
+            if(!isMasterLoggedIn) {
+                let pwd = prompt("Enter Notification Admin Password:");
+                if(pwd !== "NL@2026") return alert("Incorrect Password.");
+            }
+            document.getElementById('notificationModal').style.display = 'none';
+            document.getElementById('adminModal').style.display = 'flex';
+            if(isMasterLoggedIn) {
+                document.getElementById('adminLoginArea').style.display = 'none';
+                document.getElementById('adminDashboardArea').style.display = 'block';
+            }
+        }
 
         function initializeSeats() {
             const container = document.getElementById('seatGridContainer'); if(!container) return; container.innerHTML = ''; let avail = 0;
@@ -1292,8 +1423,11 @@
         }
         function toggleSeatEditMode() {
             if(!seatEditMode) {
-                let pwd = prompt("Enter Admin Password:");
-                if(pwd === "NL@2026") { seatEditMode = true; document.getElementById('seatGridContainer').classList.add('edit-mode'); document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-save'></i> Save Updates"; document.getElementById('editSeatsBtn').classList.replace('btn-outline', 'btn-danger'); } else alert("Incorrect.");
+                if(!isMasterLoggedIn) {
+                    let pwd = prompt("Enter Seat Admin Password:");
+                    if(pwd !== "NL@2026") return alert("Incorrect.");
+                }
+                seatEditMode = true; document.getElementById('seatGridContainer').classList.add('edit-mode'); document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-save'></i> Save Updates"; document.getElementById('editSeatsBtn').classList.replace('btn-outline', 'btn-danger');
             } else {
                 seatEditMode = false; document.getElementById('seatGridContainer').classList.remove('edit-mode'); document.getElementById('editSeatsBtn').innerHTML = "<i class='fa-solid fa-pen'></i> Manage Seats"; document.getElementById('editSeatsBtn').classList.replace('btn-danger', 'btn-outline'); db.ref('library/seats').set(seatData); 
             }
@@ -1322,11 +1456,18 @@
             if(badge) badge.style.display = 'block'; document.getElementById('liveMarquee').innerText = notifications.map(n => n.text).join("  |  ");
             list.innerHTML = notifications.map(n => `<div style="background: var(--input-bg); padding: 16px; border-radius: 12px; border: 1px solid var(--border-glass);"><p style="font-weight: 700; font-size: 1rem; margin-bottom: 8px;">${n.text}</p><div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;"><i class="fa-regular fa-clock"></i> ${new Date(n.time).toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})} ${n.autoDelete ? '<span style="color:var(--danger-red); margin-left: 10px;">(Auto-deletes 24h)</span>' : ''}</div></div>`).join('');
         }
-        function clearAllNotifications() { if(confirm("Clear all global history?")) { notifications = []; db.ref('library/notifications').set(notifications); } }
+        function clearAllNotifications() { 
+            if(!isMasterLoggedIn) { let pwd = prompt("Enter Password to Clear:"); if(pwd !== "NL@2026") return alert("Denied."); }
+            if(confirm("Clear all global history?")) { notifications = []; db.ref('library/notifications').set(notifications); } 
+        }
 
-        // 5. ADVANCED WATER ENGINE (Exact Real-Time Batch Drain Logic)
+        // 5. ADVANCED WATER ENGINE (SIMULTANEOUS DRAIN LOGIC & PIN)
         function verifyWaterLogin() {
-            if(document.getElementById('waterPwdInput').value === "WATER2026") { document.getElementById('waterLoginModal').style.display = 'none'; document.getElementById('waterVendorPanel').style.display = 'block'; document.getElementById('waterPwdInput').value = ''; } else alert("Incorrect Vendor Password.");
+            if(isMasterLoggedIn || document.getElementById('waterPwdInput').value === "2026") { 
+                document.getElementById('waterLoginModal').style.display = 'none'; 
+                document.getElementById('waterVendorPanel').style.display = 'block'; 
+                document.getElementById('waterPwdInput').value = ''; 
+            } else alert("Incorrect 4-Digit Vendor PIN.");
         }
         function changeBottleCount(amount) {
             let el = document.getElementById('vendorBottleInput'); let newVal = (parseInt(el.value) || 1) + amount;
@@ -1355,51 +1496,29 @@
             el.ontouchend = () => { clearTimeout(pressTimer); };
         }
         function deleteWaterData() {
+            if(!isMasterLoggedIn) { let pwd = prompt("Enter PIN to delete:"); if(pwd !== "2026") return alert("Denied."); }
             if(confirm("Delete this active water session?")) {
                 db.ref('library/water').set({ bottles: 0, timestamp: 0, history: waterData.history || [] });
             }
         }
 
-        function renderBottles(bottlesCount, elapsedMs) {
+        // Exact logic for simultaneous draining
+        function renderBottles(bottlesCount, bottleFillPercentage, timeStr, remainingLitersPerBottle) {
             const container = document.getElementById('bottlesContainer');
             if(bottlesCount === 0) { container.innerHTML = `<div style="color: var(--text-muted); font-style: italic; width: 100%;">No active water supply data available today.</div>`; return; }
             
             let html = '';
-            const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 2 hours strictly per bottle
-            
             for(let i = 0; i < bottlesCount; i++) {
-                // Determine start and end time window for each individual bottle sequentially
-                let drainStart = i * TWO_HOURS_MS;
-                let drainEnd = (i + 1) * TWO_HOURS_MS;
-                
-                let bottleFill = 0;
-                let timeStr = "";
-                let remainingForThisBottle = 0;
-
-                if(elapsedMs >= drainEnd) {
-                    // Time passed this bottle's slot completely
-                    bottleFill = 0; timeStr = "Empty (0%)";
-                } else if (elapsedMs < drainStart) {
-                    // Time hasn't reached this bottle yet
-                    bottleFill = 100; timeStr = "Full (100%)";
-                } else {
-                    // Active bottle draining exactly now
-                    remainingForThisBottle = drainEnd - elapsedMs;
-                    bottleFill = (remainingForThisBottle / TWO_HOURS_MS) * 100;
-                    let remHrs = Math.floor(remainingForThisBottle / (1000 * 60 * 60));
-                    let remMins = Math.floor((remainingForThisBottle % (1000 * 60 * 60)) / (1000 * 60));
-                    timeStr = `~${remHrs}h ${remMins}m (${Math.floor(bottleFill)}%)`;
-                }
-
                 html += `
                 <div class="bottle-wrapper" id="bottleItem${i}">
                     <div class="bottle-delete-btn" onclick="deleteWaterData()" title="Long press to delete session"><i class="fa-solid fa-times"></i></div>
                     <div class="bottle-neck"></div>
                     <div class="bottle-body">
-                        <div class="water-fill" style="height: ${bottleFill}%"></div>
+                        <div class="water-fill" style="height: ${bottleFillPercentage}%"></div>
                     </div>
                     <div class="bottle-label">Bottle ${i+1}</div>
-                    <div class="bottle-time">${timeStr}</div>
+                    <div class="bottle-liters">${remainingLitersPerBottle.toFixed(1)}L</div>
+                    <div class="bottle-time">${timeStr} (${Math.floor(bottleFillPercentage)}%)</div>
                 </div>`;
             }
             container.innerHTML = html;
@@ -1426,14 +1545,13 @@
                 }).join('') || '<span style="color: var(--text-muted);">No history for today.</span>';
             } else { historyEl.innerHTML = '<span style="color: var(--text-muted);">No history for today.</span>'; }
 
-            // Midnight Auto Reset
             if(waterData.timestamp === 0 || tsDate.getDate() !== today.getDate() || tsDate.getMonth() !== today.getMonth() || tsDate.getFullYear() !== today.getFullYear()) {
                 document.getElementById('waterBottleCount').innerText = "0 / 0 Bottles Left";
-                document.getElementById('waterTimeLeft') ? document.getElementById('waterTimeLeft').innerText = "--" : null;
-                renderBottles(0, 0);
+                renderBottles(0, 0, "--", 0);
                 return;
             }
             
+            // Simultaneous Drain Logic: All bottles drain equally over (Bottles * 2) hours.
             const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
             let totalMs = waterData.bottles * TWO_HOURS_MS; 
             
@@ -1446,9 +1564,14 @@
                 
                 if(remaining <= 0) {
                     clearInterval(waterInterval);
-                    renderBottles(waterData.bottles, totalMs); 
+                    renderBottles(waterData.bottles, 0, "Empty", 0); 
                 } else {
-                    renderBottles(waterData.bottles, elapsed);
+                    let bottleFillPercentage = (remaining / totalMs) * 100;
+                    let remainingLitersPerBottle = 20 * (bottleFillPercentage / 100);
+                    let remHrs = Math.floor(remaining / (1000 * 60 * 60));
+                    let remMins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    let timeStr = `~${remHrs}h ${remMins}m`;
+                    renderBottles(waterData.bottles, bottleFillPercentage, timeStr, remainingLitersPerBottle);
                 }
             }, 1000);
         }
@@ -1497,19 +1620,38 @@
             return "Please ask a specific question like 'What are the fees?' or 'Who is APJ Abdul Kalam?'";
         }
 
-        // Global Scanner
+        // Global Scanner & Camera Integration
         function openGlobalScanner() { document.getElementById('globalQrModal').style.display = 'flex'; }
-        function closeGlobalScanner() { document.getElementById('globalQrModal').style.display = 'none'; }
+        function closeGlobalScanner() { document.getElementById('globalQrModal').style.display = 'none'; if(html5QrCode) { html5QrCode.stop().catch(()=>{}); html5QrCode.clear(); } }
+        
+        let html5QrCode;
+        function startCameraScan() {
+            document.getElementById('global-qr-reader').innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; color:var(--brand-blue);"></i><p style="margin-top:10px; font-weight:700;">Starting Camera...</p></div>';
+            html5QrCode = new Html5Qrcode("global-qr-reader");
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => { processScanResult(decodedText); html5QrCode.stop(); },
+                (err) => { }
+            ).catch(err => {
+                document.getElementById('global-qr-reader').innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger-red);"><i class="fa-solid fa-camera-slash" style="font-size:2rem;"></i><p style="margin-top:10px; font-weight:700;">Camera error. Try upload.</p></div>`;
+            });
+        }
+        
         function handleQRImageUpload(event) {
             if(event.target.files.length == 0) return; 
             document.getElementById('global-qr-reader').innerHTML = '<div style="padding:20px; text-align:center;"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; color:var(--brand-blue);"></i><p style="margin-top:10px; font-weight:700;">Analyzing Image...</p></div>';
-            const html5QrCode = new Html5Qrcode('global-qr-reader');
+            if(!html5QrCode) html5QrCode = new Html5Qrcode('global-qr-reader');
             html5QrCode.scanFile(event.target.files[0], true).then(text => { 
-                html5QrCode.clear(); document.getElementById('global-qr-reader').innerHTML = ''; 
-                let d = { id: '--', name: '--', dob: '--', mob: '--', seat: '--', add: '--' };
-                text.split('\n').forEach(line => { const l = line.toLowerCase(); const v = line.substring(line.indexOf(':') + 1).trim(); if(l.startsWith('id:')) d.id=v; if(l.startsWith('name:')) d.name=v; if(l.startsWith('dob:')) d.dob=v; if(l.startsWith('seat:')) d.seat=v; });
-                document.getElementById('vResId').innerText=d.id; document.getElementById('vResName').innerText=d.name; document.getElementById('vResDob').innerText=d.dob; document.getElementById('vResSeat').innerText=d.seat; document.getElementById('verifiedResultBox').style.display = 'block';
+                processScanResult(text); html5QrCode.clear();
             }).catch(e => { html5QrCode.clear(); document.getElementById('global-qr-reader').innerHTML = `<div style="padding:20px; text-align:center; color:var(--danger-red);"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;"></i><p style="margin-top:10px; font-weight:700;">QR not detected!</p></div>`; });
+        }
+
+        function processScanResult(text) {
+            document.getElementById('global-qr-reader').innerHTML = ''; 
+            let d = { id: '--', name: '--', dob: '--', mob: '--', seat: '--', add: '--' };
+            text.split('\n').forEach(line => { const l = line.toLowerCase(); const v = line.substring(line.indexOf(':') + 1).trim(); if(l.startsWith('id:')) d.id=v; if(l.startsWith('name:')) d.name=v; if(l.startsWith('dob:')) d.dob=v; if(l.startsWith('seat:')) d.seat=v; });
+            document.getElementById('vResId').innerText=d.id; document.getElementById('vResName').innerText=d.name; document.getElementById('vResDob').innerText=d.dob; document.getElementById('vResSeat').innerText=d.seat; document.getElementById('verifiedResultBox').style.display = 'block';
         }
 
         // Admissions & Payment
@@ -1518,7 +1660,7 @@
         function generatePaymentData() { let amt = parseInt(document.getElementById('payMonths').value) * 400; let upi = `upi://pay?pa=raviprakash4281@oksbi&pn=Ravi%20Prakash&am=${amt}&cu=INR`; document.getElementById('displayAmount').innerText = `₹${amt}`; document.getElementById('dynamicQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upi)}`; document.getElementById('autoPayLink').href = upi; }
         function copyUPI() { navigator.clipboard.writeText('raviprakash4281@oksbi').then(() => alert("UPI Copied!")); }
 
-        // 7. ULTRA-SECURE PDF GENERATION (Perfect A4 Height Scale)
+        // 7. ULTRA-SECURE PDF GENERATION (Perfect Scaled Capture)
         function updatePreview() {
             const mob = document.getElementById('inpIdMobile').value.trim(); const idNo = mob ? `NL${mob}` : "NL--"; 
             const name = document.getElementById('inpName').value || "--";
@@ -1537,7 +1679,6 @@
             else { document.getElementById('rowTxnDate').style.display = "table-row"; document.getElementById('txnDateGroup').style.display = "block"; document.getElementById('dispTxnDate').innerText = document.getElementById('inpTxnDate').value ? new Date(document.getElementById('inpTxnDate').value).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true}) : "--"; document.getElementById('rowTxn').style.display = "table-row"; document.getElementById('txnGroup').style.display = "block"; document.getElementById('dispTxn').innerText = document.getElementById('inpTxn').value || "--"; }
             document.getElementById('dispSubTotal').innerText = `(₹400 x ${dur} Month${dur>1?'s':''})`; document.getElementById('dispTotal').innerText = `${amount}.00`;
             
-            // Detail Exact Receipt No and QR
             let tDate = document.getElementById('inpTxnDate').value ? new Date(document.getElementById('inpTxnDate').value) : new Date();
             const exactRcpt = tDate.getFullYear().toString() + (tDate.getMonth()+1).toString().padStart(2,'0') + tDate.getDate().toString().padStart(2,'0') + tDate.getHours().toString().padStart(2,'0') + tDate.getMinutes().toString().padStart(2,'0');
             document.getElementById('outRcptNo').innerText = `Receipt No: ${exactRcpt}`;
@@ -1549,26 +1690,38 @@
         function downloadPDF() {
             const btn = document.querySelector('#sec-receipt .btn-primary'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF...'; btn.disabled = true;
             
-            const printArea = document.getElementById('receiptPrintArea');
+            const printArea = document.getElementById('sec-receipt');
+            const paperContainer = document.getElementById('receiptPreviewContainer');
             const paper = document.getElementById('receiptPaper');
+            
+            // Temporarily remove CSS scaling to get exact HD A4 render
+            paperContainer.style.transform = 'scale(1)';
+            paperContainer.style.marginBottom = '0';
+            
             window.scrollTo(0, 0); 
             
-            html2canvas(paper, { scale: 3, useCORS: true, backgroundColor: '#ffffff', scrollY: 0 }).then(canvas => {
-                const pdf = new window.jspdf.jsPDF('p', 'mm', 'a4'); 
-                const w = pdf.internal.pageSize.getWidth(); const m = 10; 
-                let h = (canvas.height * (w - m*2)) / canvas.width;
-                
-                // Strict A4 fit mapping: Prevents height from exceeding max printable area bounds.
-                h = Math.min(h, 277); 
-                
-                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', m, m, w - m*2, h); 
-                pdf.save(`NL_Secure_Receipt_${document.getElementById('outRcptNo').innerText.split(': ')[1]}.pdf`);
-                btn.innerHTML = orig; btn.disabled = false;
-                window.scrollTo(0, printArea.offsetTop); 
-            });
+            setTimeout(() => {
+                html2canvas(paper, { scale: 3, useCORS: true, backgroundColor: '#ffffff', scrollY: 0 }).then(canvas => {
+                    const pdf = new window.jspdf.jsPDF('p', 'mm', 'a4'); 
+                    const w = pdf.internal.pageSize.getWidth(); const m = 10; 
+                    let h = (canvas.height * (w - m*2)) / canvas.width;
+                    
+                    h = Math.min(h, 277); // Max A4 limit
+                    
+                    pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', m, m, w - m*2, h); 
+                    pdf.save(`NL_Secure_Receipt_${document.getElementById('outRcptNo').innerText.split(': ')[1]}.pdf`);
+                    
+                    // Restore original CSS scaling for mobile view
+                    paperContainer.style.transform = '';
+                    paperContainer.style.marginBottom = '';
+                    
+                    btn.innerHTML = orig; btn.disabled = false;
+                    window.scrollTo(0, printArea.offsetTop); 
+                });
+            }, 500);
         }
         
-        // 8. ID CARD DOWNLOAD FIX
+        // 8. ID CARD DOWNLOAD
         function updateID() {
             let m = document.getElementById('idMob').value || '--'; let idNo = m !== '--' ? `NL${m}` : 'NL--';
             document.getElementById('cardName').innerText = document.getElementById('idName').value || '--'; document.getElementById('cardDob').innerText = document.getElementById('idDob').value || '--'; document.getElementById('cardMob').innerText = m; document.getElementById('cardSeat').innerText = document.getElementById('idSeat').value || 'N/A'; document.getElementById('cardAddress').innerText = document.getElementById('idAddress').value || '--';
@@ -1643,7 +1796,6 @@
         
         let lastQuoteIndexes = { hi: -1, hinglish: -1 };
 
-        // Helper function for anti-repeat logic
         function getUniqueQuote(quotesArray, type) {
             if (quotesArray.length <= 1) return quotesArray[0];
             let newIndex;
@@ -1697,9 +1849,9 @@
                         
                         pCtx.fillStyle = "#111"; pCtx.fillRect(0, 1100, 1080, 250); pCtx.fillStyle = "#0a84ff"; pCtx.fillRect(50, 1100, 980, 10);
                         pCtx.textAlign = "left"; pCtx.fillStyle = "#fff"; pCtx.font = "900 60px Inter, Arial"; pCtx.fillText("National Library", 70, 1180);
-                        pCtx.fillStyle = "#888"; pCtx.font = "bold 35px Inter, Arial"; pCtx.fillText("Maharajganj Azamgarh", 70, 1245);
+                        pCtx.fillStyle = "#888"; pCtx.font = "bold 35px Inter, Arial"; pCtx.fillText("Study Space - Maharajganj", 70, 1245);
                         
-                        pCtx.drawImage(qrImg, 830, 1120, 200, 200); // QR Code
+                        pCtx.drawImage(qrImg, 830, 1120, 200, 200);
                         
                         document.getElementById('empty-state').style.display = 'none'; posterCanvas.style.display = 'block'; document.getElementById('download-btn').style.display = 'inline-flex';
                         btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Generate New Quote'; btn.disabled = false;
