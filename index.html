@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" data-theme="light">
+<html lang="hi" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -208,7 +208,7 @@ body{background:linear-gradient(180deg,color-mix(in srgb,var(--br) 11%,var(--bg)
  <div class="stats" id="stats"></div>
  <h3 class="h"><i class="fa-solid fa-bolt" style="color:var(--acc)"></i> Quick actions</h3><div class="tiles" id="quick"></div>
  <h3 class="h"><i class="fa-solid fa-grip" style="color:var(--br)"></i> Explore</h3><div class="cats" id="tiles"></div>
- <a class="card pdfly" href="https://pdflytools.github.io/Home/" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf big"></i><div style="flex:1"><b>PDFly Tools</b><small>PDF ke saare free tools ek jagah</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+ <a class="card pdfly" href="https://pdflytools.github.io/Home/" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf big"></i><div style="flex:1"><b>All Tools in One Place</b><small>Totally free · No login · No sign-up</small></div><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
  
  
  <div class="card mgr2"><img src="ravi_prakash.png" alt="Ravi Prakash" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Ravi+Prakash&background=4f46e5&color=fff&size=200&bold=true'"><div class="mg-i"><h3>Ravi Prakash <i class="fa-solid fa-circle-check" style="color:#1d9bf0"></i></h3><div class="mg-r"><i class="fa-solid fa-user-tie"></i> Library Manager</div><a class="mg-n" href="tel:+918795011001"><i class="fa-solid fa-phone"></i> +91 87950 11001</a></div><div class="mg-b"><a class="btn ok" href="https://wa.me/918795011001" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a><a class="btn p" href="tel:+918795011001"><i class="fa-solid fa-phone"></i> Call</a></div></div>
@@ -1017,7 +1017,7 @@ async function msgEdit(k){const m=chatMsgs.find(x=>x.k===k);$('chAct').style.dis
 
 /* ===== Init ===== */
 document.addEventListener('DOMContentLoaded',()=>{
- document.documentElement.dataset.theme=ls('nl_theme',matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+ document.documentElement.dataset.theme=ls('nl_theme','dark');
  $('tiles').innerHTML=TILES.map(t=>`<div class="tile" role="button" tabindex="0" onclick="go('${t[0]}')" onkeydown="if(event.key==='Enter')go('${t[0]}')"><i class="fa-solid fa-${t[1]}"></i>${t[2]}</div>`).join('');
  $('pM').innerHTML=$('rDur').innerHTML=[1,2,3,4,5,6,7,8,9,10,11,12].map(n=>`<option value="${n}">${n} Month${n>1?'s':''} (₹${n*CFG.fee})</option>`).join('');
  const n=new Date(),o=new Date(n-n.getTimezoneOffset()*6e4);$('rMonth').value=o.toISOString().slice(0,7);$('rDate').value=o.toISOString().slice(0,16);$('vD').value=o.toISOString().slice(0,16);
@@ -1358,6 +1358,63 @@ input:focus,select:focus,textarea:focus{outline:2px solid color-mix(in srgb,var(
 /* group AI toggle */
 .aib{display:inline-flex!important;align-items:center;gap:6px;width:auto!important;padding:0 10px!important;border-radius:99px!important;font-size:.68rem;font-weight:800}
 .aib.on{background:rgba(16,185,129,.18);color:#059669}.aib.off{background:rgba(100,116,139,.18);color:#64748b}
+/* ===== v12 ===== */
+html{-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+img,canvas,svg{max-width:100%}img{image-rendering:auto}
+.up,.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:14px;align-items:start}.up>.card,.tg>.card{margin-bottom:0}
+.sec iframe{max-width:100%}
+.g,.g2{flex-wrap:wrap}
+@media(min-width:768px){main{padding:20px 24px}.tiles{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))!important}.cats{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))!important}}
+@media(min-width:1200px){main,.mq{max-width:1280px}}
+@media(min-width:1600px){body{zoom:1.15}}
+@media(min-width:2000px){body{zoom:1.4}main,.mq{max-width:1400px}}
+@media(min-width:2600px){body{zoom:1.8}}
+@media(min-width:3400px){body{zoom:2.4}}
+@media(max-width:380px){main{padding:10px}.card{padding:14px!important}h2.st{font-size:1.15rem}}
+.modal .mbox,#modal .mbox{max-height:92vh;overflow:auto}
+
+/* Constitution AI */
+#s-const{max-width:860px;margin-inline:auto}
+.cxw{display:flex;flex-direction:column;gap:14px}.cxw .card{margin:0}
+.cxs{padding:14px!important}
+.cxb{display:flex;align-items:center;gap:10px;background:var(--in);border:1px solid var(--bd);border-radius:16px;padding:6px 6px 6px 14px}
+.cxb>i{color:var(--mu)}.cxb input{flex:1;min-width:0;border:0!important;background:transparent!important;outline:0!important;padding:10px 4px;font-size:1rem}
+.cxb .btn{padding:10px 18px;flex:none}
+.cxg{display:flex;gap:6px;margin:12px 0 4px;background:var(--in);padding:4px;border-radius:14px;width:fit-content;max-width:100%}
+.cxg button{border:0;background:transparent;padding:7px 16px;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--mu)}
+.cxg button.on{background:var(--br);color:#fff;box-shadow:0 6px 14px -6px var(--br)}
+.cxc{display:flex;gap:8px;overflow-x:auto;padding:8px 2px 4px;scrollbar-width:none;scroll-snap-type:x proximity}.cxc::-webkit-scrollbar{display:none}
+@media(min-width:900px){.cxc{flex-wrap:wrap;overflow:visible}}
+.cxc button{flex:none;scroll-snap-align:start;border:1px solid var(--bd);background:var(--sf);color:var(--tx);padding:7px 14px;border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+.cxc button:hover{border-color:var(--br);color:var(--br)}
+.cres{min-height:160px}
+.cxe{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:26px 10px;color:var(--mu)}.cxe i{font-size:2.2rem;color:var(--br)}.cxe b{color:var(--tx)}
+.cx{line-height:1.75;font-size:.95rem;word-break:break-word}.cx b{color:var(--br)}
+.cx hr{border:0;border-top:1px solid var(--bd);margin:8px 0}
+
+/* previous papers */
+.pyr{flex-wrap:wrap;gap:8px}.pyb{display:flex;flex-wrap:wrap;gap:6px}.pyb .btn{padding:6px 12px;font-size:.78rem;text-decoration:none}
+
+/* maths grids */
+.mbt{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.mbt .btn{padding:10px 6px;font-size:.8rem}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:6px;margin-top:10px;max-height:56vh;overflow:auto}
+.mgrid>div{background:var(--in);border-radius:10px;padding:6px 4px;text-align:center}.mgrid small{display:block;color:var(--mu);font-size:.68rem;font-weight:700}.mgrid b{font-size:.86rem}.mgrid .pf{background:color-mix(in srgb,var(--br) 16%,var(--in))}.mgrid .pf b{color:var(--br)}
+
+/* ID card (larger photo, QR, barcode) */
+#idc{width:560px!important;height:353px!important;border-radius:24px!important}
+#idc .ic-top{height:58px;padding:0 20px}
+#idc .ic-brand i{font-size:1.8rem}#idc .ic-brand b{font-size:1.15rem}#idc .ic-brand small{font-size:.58rem}
+#idc .ic-tag{font-size:.7rem;padding:5px 12px}
+#idc .ic-body{gap:18px;padding:14px 20px 6px}
+#idc .ic-ph{width:118px;height:150px;border-radius:16px;border-width:3px}
+#idc .ic-n{font-size:1.3rem}
+#idc .ic-id span{font-size:.62rem}#idc .ic-id b{font-size:.95rem}
+#idc .ic-r{font-size:.8rem;padding:2px 0}#idc .ic-r span{width:44px;font-size:.62rem}
+#idc .ic-q img{width:112px;height:112px;border-radius:14px;padding:5px}
+#idc .ic-seat{font-size:.7rem;padding:5px 16px}#idc .ic-seat b{font-size:.9rem}
+#idc .ic-ft{height:80px;padding:6px 20px 10px;gap:16px}
+#idc .ic-bc svg{height:44px}#idc .ic-bc small{font-size:.6rem}
+#idc .ic-sg .sig{font-size:1.2rem}#idc .ic-sg small{font-size:.52rem}
 </style>
 <script>
 /* ================= v10 : Gemini AI + fee approval + tools + UI upgrades ================= */
@@ -1496,16 +1553,8 @@ function admSaveCred(u,p){try{localStorage.setItem('nl_adm',JSON.stringify({u:b6
 const _oa0=openAdmin;openAdmin=function(){_oa0.apply(this,arguments);if(admin)return;const u=$('aU'),w=$('aW');if(!u||!w)return;
  u.name='username';u.setAttribute('autocomplete','username');w.name='password';w.setAttribute('autocomplete','current-password');
  const s=ls('nl_adm',null);if(s){u.value=ub64(s.u);w.value=ub64(s.p)}else{(async()=>{try{if(window.PasswordCredential){const c=await navigator.credentials.get({password:true,mediation:'optional'});if(c&&c.type==='password'&&!u.value){u.value=c.id;w.value=c.password}}}catch{}})()}
- const mb=document.querySelector('#modal .mbox');if(mb&&!mb.querySelector('#pkRow'))mb.insertAdjacentHTML('beforeend','<div id="pkRow" class="g2" style="margin-top:10px"><button class="btn o" onclick="pkLogin()"><i class="fa-solid fa-fingerprint"></i> Passkey login</button><button class="btn o" onclick="pkRegister()"><i class="fa-solid fa-key"></i> Passkey banao</button></div><p class="mu" style="margin-top:8px">Login ke baad ID/password is phone me save ho jayega (aur Google Password Manager me bhi).</p>')};
+ const mb=document.querySelector('#modal .mbox');if(mb&&!mb.querySelector('#pkNote'))mb.insertAdjacentHTML('beforeend','<p id="pkNote" class="mu" style="margin-top:10px">Your ID and password are saved on this phone and in Google Password Manager after login.</p>')};
 const _al0=adminLogin;adminLogin=function(){const u=(($('aU')||{}).value||'').trim(),p=(($('aW')||{}).value||'').trim();_al0.apply(this,arguments);if(admin){admSaveCred(u,p);feeWatch();tgStart()}};
-const rnd=n=>crypto.getRandomValues(new Uint8Array(n));
-async function pkRegister(){try{if(!window.PublicKeyCredential)return toast('Is browser me passkey support nahi hai');const u=($('aU').value||'').trim(),p=($('aW').value||'').trim();if(u!==CFG.admin.u||p!==CFG.admin.p)return toast('Pehle sahi Master ID aur password bharo');
- const c=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'National Library',id:location.hostname},user:{id:rnd(16),name:'master',displayName:'Master Admin'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{residentKey:'preferred',userVerification:'required'},timeout:60000}});
- sv('nl_pk',btoa(String.fromCharCode(...new Uint8Array(c.rawId))));admSaveCred(u,p);toast('✅ Passkey ban gayi. Ab fingerprint / screen-lock se login hoga')}catch(e){toast('Passkey nahi bani: '+(e.name||e.message))}}
-async function pkLogin(){try{const id=ls('nl_pk','');if(!id||!window.PublicKeyCredential)return toast('Pehle "Passkey banao" dabao');const raw=Uint8Array.from(atob(id),c=>c.charCodeAt(0));
- await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:raw}],userVerification:'required',timeout:60000,rpId:location.hostname}});
- const s=ls('nl_adm',null);if(!s)return toast('Saved login nahi mila, ek baar ID/password se login karo');$('aU').value=ub64(s.u);$('aW').value=ub64(s.p);adminLogin()}catch(e){toast('Passkey login fail: '+(e.name||e.message))}}
-
 /* ---- QR codes with full details ---- */
 const stOf=m=>(typeof studs!=='undefined'&&studs[m])||(PT.s&&PT.m===m?PT.s:null)||{};
 function qrUrl(l,sz){return'https://api.qrserver.com/v1/create-qr-code/?size='+sz+'x'+sz+'&margin=0&ecc=L&data='+encodeURIComponent(l.filter(Boolean).join('\n'))}
@@ -1659,7 +1708,7 @@ async function netOK(){let st={};try{st=(await DB.ref('library/settings').once('
  if(l.some(x=>sameNet(x.ip,ip)))return true;logSec('wifi-block',PT.m);closeModal();wifiMsg('You are not on the Library Wi-Fi',names);return false}
 function ckModal(){const ss=sess(PT.at[day(new Date())]),open=ss.some(x=>!x.out),mac=(PT.s&&PT.s.mac)||'';
  modal('📍 Check-in / out',`<div class="li pendrow"><span><i class="fa-solid fa-wifi"></i> You must be on the Library Wi-Fi to check in or out.</span></div><div class="li"><span>Today's sessions</span><b>${ss.length}</b></div>${ss.map((x,i)=>`<div class="li ${x.out?'':'pendrow'}"><span>#${i+1} · ${fmtT(x.in)} → ${x.out?fmtT(x.out):'<b>inside now</b>'}</span><small>${x.out?((x.out-x.in)/36e5).toFixed(1)+'h':''}</small></div>`).join('')}<div class="g2"><button class="btn ok" ${open?'disabled':''} onclick="ckDo(1)"><i class="fa-solid fa-right-to-bracket"></i> Check-in</button><button class="btn er" ${open?'':'disabled'} onclick="ckDo(0)"><i class="fa-solid fa-right-from-bracket"></i> Check-out</button></div>
- <h4 class="grp" style="margin-top:14px">My device MAC ID (optional)</h4><div class="g2"><input class="inp" id="ckMac" placeholder="AA:BB:CC:DD:EE:FF" value="${esc(mac)}"><button class="btn o" style="flex:0" onclick="macSelf()">Save</button></div><p class="mu">Phone Settings → About phone → Wi-Fi MAC address.</p>`)}
+ `)}
 const macFmt=v=>{v=String(v||'').trim().toUpperCase().replace(/[^0-9A-F]/g,'');return v.length===12?v.match(/.{2}/g).join(':'):''};
 async function macSelf(){const v=($('ckMac').value||'').trim(),f=v?macFmt(v):'';if(v&&!f)return toast('Enter a valid MAC address (12 hex digits)');if(!await ensureDB())return;try{await DB.ref('library/students/'+PT.m+'/mac').set(f||null);toast('MAC saved ✅')}catch(e){toast('Not saved: '+errMsg(e))}}
 async function macMgr(){modal('🔖 Student MAC IDs','<div id="mcB"><p class="mu">Loading...</p></div>',true);if(!await ensureDB())return;let S={};try{S=(await DB.ref('library/students').once('value')).val()||{}}catch{}
@@ -1669,18 +1718,6 @@ async function macSaveAll(){const u={};let bad=0;document.querySelectorAll('.mac
 async function wifiReg(n){const ip=await getIP(true);if(!ip)return toast('IP not found. Connect to the library Wi-Fi and retry.');await DB.ref('library/settings/wifi/'+ip.replace(/[.:]/g,'_')).set({ip,label:n,time:Date.now()});toast(n+' registered ✅');tg(`📶 <b>Library network registered</b>\n${esc(n)} · ${esc(ip)}`);wifiMgr()}
 async function wifiMgr(){modal('📶 Library Wi-Fi','<div id="wf"><p class="mu">Loading...</p></div>',true);if(!DB)return;const ip=await getIP(true),st=(await DB.ref('library/settings').once('value')).val()||{},l=Object.entries(st.wifi||{}),e=$('wf');if(!e)return;
  e.innerHTML=`<p class="mu" style="margin-bottom:10px">Browsers cannot read a Wi-Fi name or MAC. So check-in works by the library's internet connection (public IP). Connect this phone to each library Wi-Fi and register it below.</p><div class="li"><span>Current IP<br><small>${esc(ip||'unknown')}</small></span></div><div class="fvm">${['EPSON_4G','EPSON_5G','NATIONAL LIBRARY_4G','NATIONAL LIBRARY 5G'].map(n=>`<button class="fvc" onclick="wifiReg('${n}')">Register as ${n}</button>`).join('')}</div><h4 class="grp">Registered networks</h4>${l.map(([k,x])=>`<div class="li"><span>${esc(x.label||'')} <small>${esc(x.ip)}</small></span><i class="fa-solid fa-trash" style="color:var(--er);cursor:pointer" onclick="wifiDel('${esc(k)}')"></i></div>`).join('')||'<p class="mu">No network registered. Check-in will be blocked for everyone until you register one (or switch the restriction off).</p>'}<label class="li" style="text-transform:none;font-size:.9rem;margin-top:12px"><span>Wi-Fi restriction ON</span><input type="checkbox" style="width:22px;margin:0" ${st.wifiOn===false?'':'checked'} onchange="DB.ref('library/settings/wifiOn').set(this.checked)"></label><button class="btn o w" style="margin-top:10px" onclick="macMgr()"><i class="fa-solid fa-id-card-clip"></i> Student MAC IDs</button>`}
-
-/* ---- Passkey (fixed) ---- */
-async function pkRegister(){try{if(!window.PublicKeyCredential||!navigator.credentials)return toast('Passkeys are not supported in this browser');if(!window.isSecureContext)return toast('Passkey needs a secure (https) site');
- let u=($('aU').value||'').trim(),p=($('aW').value||'').trim();const sv0=ls('nl_adm',null);if((!u||!p)&&sv0){u=ub64(sv0.u);p=ub64(sv0.p)}
- if(u!==CFG.admin.u||p!==CFG.admin.p)return toast('First enter the correct Master ID and password');
- const c=await navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'National Library',id:location.hostname},user:{id:rnd(16),name:'master',displayName:'Master Admin'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',residentKey:'discouraged',requireResidentKey:false,userVerification:'preferred'},attestation:'none',timeout:120000}});
- if(!c)return toast('Passkey was not created');sv('nl_pk',btoa(String.fromCharCode(...new Uint8Array(c.rawId))));admSaveCred(u,p);toast('✅ Passkey created. Use "Passkey login" next time')}
- catch(e){toast(e.name==='NotAllowedError'?'Passkey cancelled or no screen lock set on this phone':e.name==='SecurityError'?'Passkey blocked: open the site in Chrome via https':'Passkey failed: '+(e.name||e.message))}}
-async function pkLogin(){try{const id=ls('nl_pk','');if(!id||!window.PublicKeyCredential)return toast('Create a passkey first');const raw=Uint8Array.from(atob(id),c=>c.charCodeAt(0));
- await navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{type:'public-key',id:raw,transports:['internal']}],userVerification:'preferred',timeout:120000,rpId:location.hostname}});
- const s=ls('nl_adm',null);if(!s)return toast('No saved login. Sign in once with ID and password');$('aU').value=ub64(s.u);$('aW').value=ub64(s.p);adminLogin()}
- catch(e){toast(e.name==='NotAllowedError'?'Passkey cancelled or timed out':'Passkey login failed: '+(e.name||e.message))}}
 
 /* ---- Fee Pay: up to 12 months ---- */
 function feeCardHtml(){return ''}
@@ -1787,10 +1824,8 @@ function bmi(){const w=+$('bW').value,h=+$('bH').value/100;if(!w||!h)return toas
 const _fcd0=fcDraw;fcDraw=function(){_fcd0.apply(this,arguments);const e=$('fcb');if(e&&!e.querySelector('#fcAI'))e.insertAdjacentHTML('beforeend','<div id="fcAI" class="g2" style="margin-top:12px"><input class="inp" id="fcT" placeholder="AI cards on a topic, e.g. Fundamental Rights"><button class="btn p" style="flex:0 0 auto" onclick="fcAIgo()"><i class="fa-solid fa-wand-magic-sparkles"></i> Make</button></div>')};
 async function fcAIgo(){const t=($('fcT')||{}).value.trim();if(!t)return toast('Enter a topic');toast('Creating cards...');const r=await gem(`Make 8 short flashcards on "${t}" for Indian competitive exams in simple Hinglish. Return ONLY JSON [{"q":"question","a":"short answer"}]`,'You output only valid JSON.',{json:true,max:2000});
  try{JSON.parse(/\[[\s\S]*\]/.exec(r)[0]).forEach(x=>{if(x.q&&x.a)fc.push({id:Date.now()+Math.random(),q:String(x.q),a:String(x.a),due:Date.now(),n:0})});sv('nl_fc',fc);fcF=0;fcDraw();toast('Cards added ✅')}catch{toast('Could not create cards')}}
-/* AI tip on home */
-try{$('stats').insertAdjacentHTML('afterend','<div class="card aitip" id="aiTip"><small class="mu"><i class="fa-solid fa-lightbulb"></i> AI STUDY TIP OF THE DAY</small><div id="aiTipT" style="margin-top:4px;font-weight:600">Loading...</div></div>')}catch{}
-async function aiTipLoad(){const k='nl_tip_'+day(new Date()),e=$('aiTipT');if(!e)return;let t=ls(k,'');if(!t){t=await gem(`Give one practical, specific study tip for an Indian competitive-exam student in 2 short sentences, in simple Hinglish. Seed ${Math.random()}.`,'You are a concise mentor.',{max:200,t:1});if(t)sv(k,t)}e.textContent=t||'Study in focused 25-minute blocks with a 5-minute break, and revise the same day.'}
-addEventListener('DOMContentLoaded',()=>setTimeout(()=>{aiTipLoad();idFit()},600));
+function aiTipLoad(){}
+addEventListener('DOMContentLoaded',()=>setTimeout(idFit,600));
 
 /* ---- Useful links: more government sites, auto-numbered ---- */
 MAT2.splice(12,0,
@@ -1805,6 +1840,186 @@ CATS[2][4]=[['Learn',['ncert','video','mock','syllabus','material','papers']],['
 CATS[2][3]='AI assistant, quiz, news, tracker, tools & more';
 try{buildHome()}catch{}
 
+</script>
+<script>
+/* ================= v12 ================= */
+/* ---- Gemini: reliable client (editable key, retries, diagnostics) ---- */
+const gkey=()=>ls('nl_gkey','')||GKEY;
+const gerr=(c,m)=>({400:'API key invalid or request rejected',401:'API key not accepted',403:'API key blocked or restricted (check key restrictions)',404:'Model not available',429:'AI quota reached, try again later',500:'AI server error',503:'AI server busy'}[c]||('HTTP '+c))+(m?' — '+String(m).slice(0,110):'');
+async function gPost(url,body,key,sig){
+ let r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body,signal:sig});
+ if(r.status===401||r.status===403){try{const r2=await fetch(url+'?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body,signal:sig});if(r2.ok)return r2;if(r2.status!==401&&r2.status!==403)return r2}catch{}}
+ return r}
+async function gModels(){const c=ls('nl_gml',null),key=gkey();if(c&&c.k===key&&Date.now()-c.t<432e5&&c.l&&c.l.length)return c.l;let l=[];
+ try{let r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200',{headers:{'x-goog-api-key':key}});if(!r.ok)r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key='+encodeURIComponent(key));
+  if(r.ok){const j=await r.json();l=(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/','')).filter(n=>/^gemini-[\d.]+-flash(-preview.*)?$/.test(n));
+   const v=x=>parseFloat((x.match(/gemini-([\d.]+)/)||[0,0])[1]);l.sort((a,b)=>v(b)-v(a)||(/preview/.test(a)?1:0)-(/preview/.test(b)?1:0))}else{let j={};try{j=await r.json()}catch{}gem.err=gerr(r.status,(j.error||{}).message)}}catch{gem.err='No internet / blocked'}
+ l=l.slice(0,4);if(l.length)sv('nl_gml',{t:Date.now(),k:key,l});return l}
+async function gem(q,sys,o){o=o||{};gem.err='';const key=gkey(),last=ls('nl_gm','');let ms=[last,...await gModels(),'gemini-flash-latest','gemini-3.7-flash','gemini-3.6-flash','gemini-3-flash-preview','gemini-2.5-flash-lite'].filter(Boolean);ms=[...new Set(ms)].slice(0,6);
+ const body=JSON.stringify({contents:[{role:'user',parts:[{text:q}]}],...(sys?{systemInstruction:{parts:[{text:sys}]}}:{}),generationConfig:{temperature:o.t??.7,maxOutputTokens:o.max||2048,...(o.json?{responseMimeType:'application/json'}:{})},...(o.search?{tools:[{google_search:{}}]}:{})});
+ for(const m of ms){for(let a=0;a<2;a++){let to;try{const c=new AbortController();to=setTimeout(()=>c.abort(),o.search?55000:35000);
+   const r=await gPost('https://generativelanguage.googleapis.com/v1beta/models/'+m+':generateContent',body,key,c.signal);clearTimeout(to);
+   if(!r.ok){let j={};try{j=await r.json()}catch{}gem.err=gerr(r.status,(j.error||{}).message);if(r.status===404&&m===last)sv('nl_gm','');if(r.status===429||r.status>=500){await new Promise(z=>setTimeout(z,1200*(a+1)));continue}break}
+   const j=await r.json(),cn=((j.candidates||[])[0]||{}).content,s=cn&&(cn.parts||[]).map(p=>p.text||'').join('').trim();
+   if(s){sv('nl_gm',m);gem.model=m;return s}gem.err='Empty reply';break}catch(e){clearTimeout(to);gem.err=e&&e.name==='AbortError'?'Timeout':'No internet / blocked';break}}}
+ if(o.search)return gem(q,sys,{...o,search:false});return''}
+async function aiTest(){const R=$('aiTR');if(R)R.innerHTML='<span class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Testing...</span>';const t=await gem('Reply with exactly: OK','Reply briefly.',{max:20,t:0});
+ if(R)R.innerHTML=t?`<div class="li"><span><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> AI is working</span><b>${esc(gem.model||'')}</b></div>`:`<div class="li pendrow"><span><i class="fa-solid fa-triangle-exclamation" style="color:var(--er)"></i> AI not working</span><b>${esc(gem.err||'unknown')}</b></div>`;return!!t}
+ITEMS.aiset=['robot','AI settings'];
+ACT.aiset=()=>{modal('🤖 AI settings',`<p class="mu" style="margin-bottom:10px">All AI features use one Gemini API key. If AI stops working, paste a new key from Google AI Studio here. It is saved for every device.</p><label>Gemini API key<input id="aiK" value="${esc(ls('nl_gkey','')||'')}" placeholder="AQ.… or AIza…" autocomplete="off"></label><div class="g2"><button class="btn p" onclick="aiKeySave()"><i class="fa-solid fa-floppy-disk"></i> Save key</button><button class="btn o" onclick="aiTest()"><i class="fa-solid fa-vial"></i> Test AI</button></div><div id="aiTR" style="margin-top:10px"></div><p class="mu" style="margin-top:8px">Tip: in Google Cloud → API key restrictions, allow your website address (HTTP referrer) and the Generative Language API.</p>`)};
+async function aiKeySave(){const k=($('aiK').value||'').trim();sv('nl_gkey',k);sv('nl_gml',null);sv('nl_gm','');if(admin&&DB){try{await DB.ref('library/settings/gkey').set(k||null)}catch(e){toast('Cloud save failed: '+errMsg(e))}}aiTest()}
+try{CATS[3][4].forEach(g=>{if(g[1].includes('wifi')&&!g[1].includes('aiset'))g[1].push('aiset')})}catch{}
+setTimeout(async()=>{try{if(await ensureDB()){const k=(await DB.ref('library/settings/gkey').once('value')).val();if(k&&k!==ls('nl_gkey',''))sv('nl_gkey',k)}}catch{}},1800);
+
+/* ---- Remove home tip ---- */
+try{const e=$('aiTip');if(e)e.remove()}catch{}aiTipLoad=function(){};
+
+/* ---- Constitution AI: clean, perfectly fitting UI ---- */
+try{$('s-const').innerHTML=`<h2 class="st"><i class="fa-solid fa-scale-balanced"></i> Constitution AI</h2><div class="cxw"><div class="card cxs"><div class="cxb"><i class="fa-solid fa-magnifying-glass"></i><input id="cq" placeholder="Article 21, Preamble, 7th Schedule..." autocomplete="off" onkeydown="if(event.key==='Enter')constGo()"><button class="btn p" onclick="constGo()">Ask</button></div><div class="cxg" id="cSeg"></div><select id="cLg" hidden><option value="hinglish">Hinglish</option><option value="en">English</option><option value="hi">हिन्दी</option></select><select id="cl" hidden><option value="en">English</option><option value="hi">हिन्दी</option></select><div class="cxc">${CCH.map(x=>`<button type="button" onclick="constQ('${x}')">${x}</button>`).join('')}</div></div>
+<div id="cr" class="card cres"><div class="cxe"><i class="fa-solid fa-landmark"></i><b>Ask anything about the Indian Constitution</b><span>Articles, Parts, Schedules, amendments, rights and duties, with case laws and exam points.</span></div></div>
+<div class="card"><h3 class="h"><i class="fa-solid fa-file-pdf"></i> Indian Constitution PDF</h3><div class="g2"><a class="btn p" href="${CONST_PDF}" target="_blank" rel="noopener"><i class="fa-solid fa-up-right-from-square"></i> Open PDF</a><button class="btn o" onclick="constPdf()"><i class="fa-solid fa-eye"></i> View here</button></div><div id="cpv"></div></div></div>`;cSegDraw()}catch{}
+function cSegDraw(){const v=$('cLg').value;$('cSeg').innerHTML=[['hinglish','Hinglish'],['en','English'],['hi','हिन्दी']].map(x=>`<button type="button" class="${x[0]===v?'on':''}" onclick="$('cLg').value='${x[0]}';$('cl').value='${x[0]==='hi'?'hi':'en'}';cSegDraw()">${x[1]}</button>`).join('')}
+
+/* ---- Previous year papers: real question-paper pages ---- */
+const g=q=>'https://www.google.com/search?q='+encodeURIComponent(q+' filetype:pdf');
+const PYQ2=[['SSC',[['SSC CGL','https://career.aglasem.com/ssc/ssc-cgl/previous-papers','SSC CGL previous year question paper','https://www.adda247.com/jobs/ssc-cgl-previous-year-question-papers-pdfs/'],['SSC CHSL','','SSC CHSL previous year question paper'],['SSC GD Constable','','SSC GD constable previous year question paper'],['SSC MTS','','SSC MTS havaldar previous year question paper'],['SSC CPO / SI','','SSC CPO previous year question paper']]],
+['Railway',[['RRB NTPC','','RRB NTPC previous year question paper'],['RRB Group D','','RRB Group D previous year question paper'],['RRB ALP / Technician','','RRB ALP technician previous year question paper'],['RPF Constable / SI','','RPF constable SI previous year question paper']]],
+['UP Exams',[['UP Police Constable','','UP Police constable previous year question paper'],['UP Police SI','','UP Police sub inspector previous year question paper'],['UPSSSC PET','','UPSSSC PET previous year question paper'],['UPPSC PCS Prelims','','UPPSC PCS prelims previous year question paper'],['UP TET / Super TET','','UP TET previous year question paper'],['UP Board Class 10','','UP Board class 10 previous year question paper'],['UP Board Class 12','','UP Board class 12 previous year question paper']]],
+['Teaching',[['BPSC TRE (Bihar Teacher)','','BPSC TRE teacher previous year question paper'],['CTET','','CTET previous year question paper'],['KVS / NVS Teacher','','KVS PRT TGT previous year question paper']]],
+['Bank & Insurance',[['IBPS PO','','IBPS PO previous year question paper'],['IBPS Clerk','','IBPS Clerk previous year question paper'],['SBI PO','','SBI PO previous year question paper'],['SBI Clerk','','SBI Clerk junior associate previous year question paper']]],
+['UPSC & Defence',[['UPSC CSE Prelims / Mains','https://upsc.gov.in/examinations/previous-question-papers','UPSC CSE prelims previous year question paper',''],['NDA / NA','','NDA previous year question paper'],['CDS','','CDS previous year question paper'],['Agniveer','','Agniveer previous year question paper']]],
+['Entrance',[['NEET UG','','NEET UG previous year question paper'],['JEE Main','','JEE Main previous year question paper'],['CUET UG','','CUET UG previous year question paper']]]];
+function pyqDraw(){const q=norm((($('pyQ')||{}).value)||'');$('pyL').innerHTML=PYQ2.map(([t,L])=>{const f=L.filter(x=>!q||norm(t+' '+x[0]).includes(q));return f.length?`<h4 class="grp">${t}</h4>`+f.map(x=>`<div class="li pyr"><b>${x[0]}</b><span class="pyb"><a class="btn p" href="${x[1]||g(x[2])}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> Papers</a>${x[3]?`<a class="btn o" href="${x[3]}" target="_blank" rel="noopener">More</a>`:''}${x[1]?`<a class="btn o" href="${g(x[2])}" target="_blank" rel="noopener">PDF search</a>`:''}</span></div>`).join(''):''}).join('')||'<p class="mu">Nothing found</p>'}
+try{$('s-papers').innerHTML=`<h2 class="st"><i class="fa-solid fa-file-circle-question"></i> Previous Year Papers</h2><p class="mu" style="margin:-6px 0 10px">Tap "Papers" to open real question papers of past exams (PDF results). Always match the final answer with the official answer key.</p><label style="margin-bottom:10px"><i class="fa-solid fa-magnifying-glass"></i> Search exam<input id="pyQ" oninput="pyqDraw()" placeholder="SSC, UP Police, NEET..." autocomplete="off"></label><div id="pyL"></div><button class="btn p w" style="margin-top:14px" onclick="ACT.tquiz()"><i class="fa-solid fa-bolt"></i> Make a practice test with AI</button>`;pyqDraw()}catch{}
+
+/* ---- Maths tools ---- */
+const gridN=(f,d)=>{let h='<div class="mgrid">';for(let i=1;i<=100;i++){const v=f(i),ok=Number.isInteger(+v);h+=`<div class="${ok?'pf':''}"><small>${d(i)}</small><b>${v}</b></div>`}return h+'</div>'};
+function tbMode(m){const e=$('tbR');if(m==='sq')e.innerHTML=gridN(i=>i*i,i=>i+'²');if(m==='cu')e.innerHTML=gridN(i=>i*i*i,i=>i+'³');if(m==='sr')e.innerHTML=gridN(i=>{const r=Math.sqrt(i);return Number.isInteger(r)?r:r.toFixed(3)},i=>'√'+i);if(m==='cr')e.innerHTML=gridN(i=>{const r=Math.cbrt(i);return Number.isInteger(r)?r:r.toFixed(3)},i=>'∛'+i)}
+function tbDraw(){const n=+$('tbN').value||0;$('tbR').innerHTML=`<div style="font-weight:600;line-height:1.7">${[...Array(20)].map((_,i)=>`${n} × ${i+1} = <b>${n*(i+1)}</b>`).join('<br>')}<br><br>Square: <b>${n*n}</b> · Cube: <b>${n*n*n}</b> · √: <b>${+Math.sqrt(Math.abs(n)).toFixed(4)}</b> · ∛: <b>${+Math.cbrt(n).toFixed(4)}</b></div>`}
+try{[...$('s-utils').querySelectorAll('.card')].forEach(c=>{const h=(c.querySelector('h3')||{}).textContent||'';if(/Tables/.test(h))c.innerHTML=`<h3>🔢 Tables &amp; Squares</h3><div class="g2"><input class="inp" id="tbN" type="number" value="7" oninput="tbDraw()"><button class="btn p" style="flex:0" onclick="tbDraw()">Table</button></div><div class="mbt"><button class="btn o" onclick="tbMode('sq')">Squares 1–100</button><button class="btn o" onclick="tbMode('cu')">Cubes 1–100</button><button class="btn o" onclick="tbMode('sr')">Square roots 1–100</button><button class="btn o" onclick="tbMode('cr')">Cube roots 1–100</button></div><div class="res" id="tbR"></div>`})}catch{}
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function mLcm(){const a=($('lcI').value.match(/\d+/g)||[]).map(Number).filter(x=>x>0);if(a.length<2)return $('lcR').textContent='Enter at least two numbers, e.g. 12, 18, 24';const h=a.reduce(gcd),l=a.reduce((x,y)=>x/gcd(x,y)*y);$('lcR').innerHTML=`HCF = <b>${h}</b><br>LCM = <b>${l.toLocaleString('en-IN')}</b>`}
+function mPrime(){const n=Math.floor(+$('prI').value);if(!(n>=1)||n>1e12)return $('prR').textContent='Enter a whole number from 1 to 10^12';let m=n,f=[],d=2;while(d*d<=m){while(m%d===0){f.push(d);m/=d}d+=d===2?1:2}if(m>1)f.push(m);const all=[];for(let i=1;i*i<=n&&all.length<400;i++)if(n%i===0){all.push(i);if(i!==n/i)all.push(n/i)}all.sort((a,b)=>a-b);
+ $('prR').innerHTML=`${n} is <b>${n>1&&f.length===1?'a prime number':n===1?'neither prime nor composite':'composite'}</b><br>Prime factors: <b>${n===1?'—':f.join(' × ')}</b><br>Factors (${all.length}): ${all.join(', ')}`}
+function mGst(k){const a=+$('gsA').value,r=+$('gsR').value;if(!(a>0)||!(r>=0))return $('gsRs').textContent='Enter amount and rate';const f=x=>'₹'+(+x.toFixed(2)).toLocaleString('en-IN');
+ $('gsRs').innerHTML=k===1?`Tax = <b>${f(a*r/100)}</b><br>Total = <b>${f(a*(1+r/100))}</b>`:k===2?`Original = <b>${f(a/(1+r/100))}</b><br>Tax = <b>${f(a-a/(1+r/100))}</b>`:`Discount = <b>${f(a*r/100)}</b><br>You pay = <b>${f(a*(1-r/100))}</b>`}
+function mSdt(){const s=$('sdS').value,d=$('sdD').value,t=$('sdT').value,f=x=>+x.toFixed(3);let o='';if(s&&d&&!t)o=`Time = <b>${f(d/s)}</b> h (${f(d/s*60)} min)`;else if(s&&t&&!d)o=`Distance = <b>${f(s*t)}</b> km`;else if(d&&t&&!s)o=`Speed = <b>${f(d/t)}</b> km/h = <b>${f(d/t*5/18)}</b> m/s`;else o='Fill any two boxes, leave one empty';$('sdR').innerHTML=o}
+function n2w(n){const o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];const b=x=>x<20?o[x]:t[Math.floor(x/10)]+(x%10?' '+o[x%10]:''),c=x=>x>99?o[Math.floor(x/100)]+' Hundred'+(x%100?' '+b(x%100):''):b(x);if(n===0)return'Zero';let r='';const P=[[1e7,'Crore'],[1e5,'Lakh'],[1e3,'Thousand']];for(const[v,w]of P){if(n>=v){r+=c(Math.floor(n/v))+' '+w+' ';n%=v}}if(n)r+=c(n);return r.trim()}
+function mWords(){const v=Math.floor(+$('nwI').value);if(!(v>=0)||v>=1e10)return $('nwR').textContent='Enter a whole number below 1,000 crore';$('nwR').innerHTML=`<b>${n2w(v)}</b><br><small class="mu">${v.toLocaleString('en-IN')}</small>`}
+try{$('s-utils').querySelector('.up').insertAdjacentHTML('beforeend',`<div class="card"><h3>➗ LCM &amp; HCF</h3><input class="inp" id="lcI" placeholder="12, 18, 24" onkeydown="if(event.key==='Enter')mLcm()"><button class="btn p w" style="margin-top:8px" onclick="mLcm()">Find</button><div class="res" id="lcR"></div></div>
+<div class="card"><h3>#️⃣ Prime &amp; Factors</h3><input class="inp" id="prI" type="number" placeholder="e.g. 360" onkeydown="if(event.key==='Enter')mPrime()"><button class="btn p w" style="margin-top:8px" onclick="mPrime()">Check</button><div class="res" id="prR"></div></div>
+<div class="card"><h3>🧾 GST / Discount</h3><div class="g2"><input class="inp" id="gsA" type="number" placeholder="Amount ₹"><input class="inp" id="gsR" type="number" placeholder="Rate %"></div><div class="g2" style="margin-top:8px"><button class="btn o" onclick="mGst(1)">Add GST</button><button class="btn o" onclick="mGst(2)">Remove GST</button><button class="btn o" onclick="mGst(3)">Discount</button></div><div class="res" id="gsRs"></div></div>
+<div class="card"><h3>🚗 Speed · Distance · Time</h3><div class="g2"><input class="inp" id="sdS" type="number" placeholder="Speed km/h"><input class="inp" id="sdD" type="number" placeholder="Distance km"><input class="inp" id="sdT" type="number" placeholder="Time h"></div><button class="btn p w" style="margin-top:8px" onclick="mSdt()">Calculate</button><div class="res" id="sdR"></div></div>
+<div class="card"><h3>🔤 Number to Words</h3><input class="inp" id="nwI" type="number" placeholder="e.g. 4523000" oninput="mWords()"><div class="res" id="nwR"></div></div>`)}catch{}
+[['t_lcm','divide','LCM & HCF','LCM'],['t_prime','hashtag','Prime & factors','Prime'],['t_gst','receipt','GST / Discount','GST'],['t_sdt','gauge-high','Speed · Distance · Time','Speed'],['t_n2w','language','Number to words','Number to']].forEach(t=>{ITEMS[t[0]]=[t[1],t[2]];ACT[t[0]]=()=>toolOpen('utils',t[3],t[2])});
+ACT.t_wc=()=>toolOpen('utils','Word counter','Word counter');
+Object.assign(KEYS,{t_lcm:'lcm hcf gcd',t_prime:'prime factor',t_gst:'gst discount tax',t_sdt:'speed distance time',t_n2w:'number words lakh crore',t_tab:'table square cube root'});
+CATS[2][4]=[['Learn',['ncert','video','mock','syllabus','material','papers']],['Daily',['news','quotes','wiki','t_wotd']],['AI Study',['askai','tquiz','const']],['Practice',['quiz','typing','flash','t_stc','map']],['Track',['t_trk','t_exam','tt']],['Maths Tools',['t_calc','t_pct','t_unit','t_int','t_tab','t_lcm','t_prime','t_gst','t_sdt','t_n2w']],['Study Tools',['t_timer','t_date','t_cgpa','t_bmi','t_age','t_wc','t_dict','t_notes','t_task','t_exp']],['More',['pdfly']]];
+
+/* ---- Wi-Fi: one entry for all 4 routers ---- */
+const _wm0=wifiMgr;wifiMgr=async function(){await _wm0.apply(this,arguments);const e=$('wf');if(e&&!e.querySelector('#wfAll'))e.insertAdjacentHTML('afterbegin','<button id="wfAll" class="btn ok w" onclick="wifiReg(\'Library Wi-Fi (all routers)\')"><i class="fa-solid fa-wifi"></i> Register this connection as Library network</button><p class="mu" style="margin:6px 0 10px">All 4 routers use one cable and one provider, so they share one public IP. One registration covers all of them.</p>')};
+
+/* ---- ID card: bigger photo, QR and barcode ---- */
+function idQR(){const m=$('iM').value.trim(),S=stOf(m);$('iQ').src=qrUrl(['NATIONAL LIBRARY - STUDENT ID','ID No: '+$('cI').textContent,'Name: '+$('cN').textContent,'DOB: '+$('cB').textContent,'Mobile: '+m,'Seat: '+$('cS').textContent,'Shift: '+$('iSh').value,'Address: '+$('cA').textContent,S.joined?'Joined: '+new Date(S.joined).toLocaleDateString('en-IN'):'',S.paidTill?'Fee paid till: '+mname(S.paidTill):'',S.prep?'Preparing: '+S.prep:'','Issued: '+new Date().toLocaleDateString('en-IN'),'Verify: '+$('cV').textContent,'Issuer: National Library, Maharajganj Azamgarh 276137 | +91 87950 11001'],560)}
+function idFit(){const c=$('idc');if(c)c.style.zoom=Math.min(1,(Math.min(innerWidth,760)-44)/560)}
+idCanvas=async function(){const c=$('idc').cloneNode(true);c.style.boxShadow='none';c.style.zoom=1;const box=document.createElement('div');box.id='offBox2';box.style.cssText='position:fixed;left:-10000px;top:0;width:560px;pointer-events:none';box.appendChild(c);document.body.appendChild(box);
+ try{await Promise.all([...c.querySelectorAll('img')].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,6000)})));
+  const cv=await html2canvas(c,{scale:4,useCORS:true,backgroundColor:null,onclone:d=>{const b=d.getElementById('offBox2');if(b)b.style.left='0'}});
+  const o=document.createElement('canvas');o.width=cv.width;o.height=cv.height;const x=o.getContext('2d');rrPath(x,o.width,o.height,24*4);x.clip();x.drawImage(cv,0,0);return o}finally{box.remove()}};
+setTimeout(()=>{try{idu();idFit()}catch{}},400);addEventListener('resize',idFit);
+
+
+/* ================= v11 : Gemini fix, Updates, Custom Mock, Thoughts, UI polish ================= */
+(function(){
+const css=document.createElement('style');css.textContent=`
+#idc{width:300px;max-width:100%;aspect-ratio:3/5;display:flex;flex-direction:column;border-radius:20px}
+#idc .nid-h{padding:18px 10px 40px}#idc .nid-h b{font-size:1.25rem}
+#idc .nid-m{margin-top:-28px;position:relative;z-index:2;padding:0 18px}
+#idc .nid-p{width:92px;height:112px;background:#fff;box-shadow:0 6px 14px rgba(0,0,0,.2)}
+#idc .nid-d{flex:1;display:flex;flex-direction:column;justify-content:space-around;margin:8px 16px 0;font-size:.78rem}
+#idc .nid-bc{padding:6px 20px 12px}
+.cx{line-height:1.75;font-size:.95rem;word-break:break-word}.cx p{margin:0 0 .75em}.cx h1,.cx h2,.cx h3,.cx h4{margin:1em 0 .4em;line-height:1.3}.cx ul,.cx ol{padding-left:1.3em;margin:.4em 0 .8em}.cx li{margin:.25em 0}.cx b,.cx strong{font-weight:700}
+.bt{width:64px}.bt .neck{width:26px;height:14px;border-radius:5px 5px 0 0;background:repeating-linear-gradient(90deg,#1d4ed8 0 3px,#3b82f6 3px 6px);opacity:1;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15)}
+.bt .body{position:relative;overflow:hidden;border-radius:14px 14px 12px 12px;border:2px solid rgba(255,255,255,.55);background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(255,255,255,.05) 40%,rgba(255,255,255,.22));box-shadow:inset 0 0 10px rgba(255,255,255,.25),0 6px 14px rgba(0,0,0,.2)}
+.bt .body::after{content:"";position:absolute;left:8px;top:6px;bottom:10px;width:6px;border-radius:6px;background:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,0));z-index:3;pointer-events:none}
+.bt .fill{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,#38bdf8,#0369a1);transition:height 1s ease}
+.bt .fill::before,.bt .fill::after{content:"";position:absolute;left:-50%;width:200%;height:14px;top:-9px;border-radius:42%;background:rgba(125,211,252,.85);animation:wv 3.2s linear infinite}
+.bt .fill::after{top:-6px;background:rgba(2,132,199,.55);animation-duration:4.6s;animation-direction:reverse}
+@keyframes wv{to{transform:translateX(25%)}}
+.bt .bub{position:absolute;bottom:0;border-radius:50%;background:rgba(255,255,255,.65);animation:bb 3s ease-in infinite;z-index:2}
+@keyframes bb{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+.upc{display:flex;gap:10px;align-items:flex-start;margin:8px 0}.upc img{width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0}.upc .t{flex:1;font-size:.9rem;line-height:1.5}
+.mqo{display:block;width:100%;text-align:left;margin:6px 0}.mqo.sel{outline:2px solid var(--acc,#2563eb)}.mqo.right{background:#16a34a!important;color:#fff!important}.mqo.wrong{background:#dc2626!important;color:#fff!important}
+`;document.head.appendChild(css);
+
+/* --- bottle realism: add bubbles after every redraw --- */
+const _dw=drawWater;drawWater=function(){_dw.apply(this,arguments);document.querySelectorAll('.bt .body').forEach(b=>{if(b.querySelector('.bub'))return;for(let i=0;i<4;i++){const e=document.createElement('i');e.className='bub';const z=3+Math.random()*4;e.style.cssText=`left:${10+Math.random()*60}%;width:${z}px;height:${z}px;animation-delay:${(Math.random()*3).toFixed(1)}s`;b.appendChild(e)}})};try{drawWater()}catch{}
+
+/* --- Gemini: AQ. keys are Vertex AI Express keys -> different endpoint --- */
+const _gp=gPost;gPost=async function(url,body,key,sig){
+ if(/^AQ\./.test(key||'')){const m=(url.match(/models\/([^:]+):/)||[])[1];
+  if(m){const r=await fetch('https://aiplatform.googleapis.com/v1/publishers/google/models/'+m+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body,signal:sig});
+   if(r.ok||r.status===404||r.status===429||r.status>=500)return r;
+   const r2=await fetch('https://aiplatform.googleapis.com/v1/publishers/google/models/'+m+':generateContent?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body,signal:sig});return r2}}
+ return _gp(url,body,key,sig)};
+const _gm=gModels;gModels=async function(){if(/^AQ\./.test(gkey()))return['gemini-2.5-flash','gemini-flash-latest','gemini-2.0-flash'];return _gm()};
+
+/* --- gem(): one extra retry + offline word-of-the-day so it is never "busy" --- */
+const WFB=[['Ephemeral','adjective','Lasting a very short time','क्षणभंगुर','The fame of a viral post is ephemeral.','transient, fleeting, brief','permanent, lasting'],['Benevolent','adjective','Kind and generous','परोपकारी','A benevolent donor funded the library.','kind, charitable, generous','cruel, selfish'],['Candid','adjective','Honest and straightforward','स्पष्टवादी','She gave a candid opinion.','frank, open, honest','evasive, deceitful'],['Diligent','adjective','Hard-working and careful','परिश्रमी','A diligent student revises daily.','industrious, assiduous, hardworking','lazy, careless'],['Obsolete','adjective','No longer in use','अप्रचलित','Floppy disks are obsolete.','outdated, archaic, extinct','current, modern'],['Pragmatic','adjective','Practical, not idealistic','व्यावहारिक','Take a pragmatic approach to study.','practical, realistic, sensible','idealistic, impractical'],['Resilient','adjective','Able to recover quickly','लचीला','Resilient people bounce back from failure.','tough, flexible, hardy','fragile, weak'],['Scrutinize','verb','To examine closely','बारीकी से जाँचना','Scrutinize every option before answering.','inspect, examine, analyse','ignore, overlook']];
+const _g=gem;gem=async function(q,s,o){let r=await _g(q,s,o);if(!r){await new Promise(z=>setTimeout(z,1200));r=await _g(q,s,o)}
+ if(!r&&/useful English word/.test(q)){const w=WFB[Math.random()*WFB.length|0];r=JSON.stringify({w:w[0],pos:w[1],en:w[2],hi:w[3],ex:w[4],syn:w[5],ant:w[6]})}
+ gem.err=_g.err;gem.model=_g.model;return r};
+const _al=window.aiLLM;if(typeof _al==='function'){aiLLM=async function(q){let a=await _al(q);if(!a){await new Promise(z=>setTimeout(z,1000));a=await _al(q)}return a}}
+
+/* --- Thoughts: add saints & social reformers with Wikipedia photos --- */
+QUOTES.push(
+['Apna deepak khud bano (Atta Deepo Bhava).','Gautam Buddha','#d97706'],['Man hi sab kuch hai, jo tum sochte ho, wahi ban jaate ho.','Gautam Buddha','#d97706'],
+['Bura jo dekhan main chala, bura na miliya koi; jo dil khoja aapna, mujhse bura na koi.','Sant Kabir','#0f766e'],['Pothi padh padh jag mua, pandit bhaya na koy; dhai aakhar prem ka, padhe so pandit hoy.','Sant Kabir','#0f766e'],
+['Man changa to kathauti mein Ganga.','Sant Ravidas','#7c2d12'],['Jaat-paat ke pher mein, uljhi rahe sab log; manushta ko khaat hai, Ravidas kar jog.','Sant Ravidas','#7c2d12'],
+['Vidya bina mati gayi, mati bina niti gayi, niti bina gati gayi, gati bina vitt gaya.','Jotirao Phule','#be123c'],['Sabko shiksha ka adhikar milna chahiye, yahi samaj ki neev hai.','Jotirao Phule','#be123c'],
+['Jiski jitni sankhya bhaari, uski utni bhagidari.','Kanshi Ram','#1d4ed8']);
+Object.assign(QW,{'Gautam Buddha':'Gautama_Buddha','Sant Kabir':'Kabir','Sant Ravidas':'Ravidas','Jotirao Phule':'Jyotirao_Phule','Kanshi Ram':'Kanshi_Ram'});
+HQ.push(...QUOTES.slice(-9).map(q=>[q[0],q[1]]));try{qPhotos()}catch{}
+
+/* --- Quote Maker: dark/night default + richer palette --- */
+QST.night=['#1e293b','#020617'];QST.midnight=['#312e81','#030712'];
+try{const s=$('qSt');if(s){if(![...s.options].some(o=>o.value==='midnight'))s.add(new Option('Midnight','midnight'));s.value='night'}}catch{}
+
+/* --- Updates (Library > Links): admin posts text / image link, delete + sort --- */
+ITEMS.updates=['bullhorn','Updates'];
+const UP=()=>DB.ref('library/updates');
+ACT.updates=async function(){modal('📢 Updates',`<div id="upBox"><p class="mu">Loading...</p></div>`,true);if(!await ensureDB())return;
+ const draw=async()=>{let L=[];try{const v=(await UP().once('value')).val()||{};L=Object.entries(v).map(([k,x])=>({k,...x}))}catch{}
+  const srt=(window.upSort||'new');L.sort((a,b)=>srt==='old'?a.t-b.t:srt==='img'?(!!b.img-!!a.img)||b.t-a.t:b.t-a.t);
+  const B=$('upBox');if(!B)return;
+  B.innerHTML=(admin?`<div class="card" style="margin-bottom:10px"><textarea class="inp" id="upT" rows="2" placeholder="Update text"></textarea><input class="inp" id="upI" placeholder="Image link (optional)" style="margin-top:6px"><button class="btn p w" style="margin-top:8px" onclick="upAdd()">Post update</button></div>`:'')
+  +`<label>Sort<select id="upS" onchange="window.upSort=this.value;ACT.updates()"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="img">With images first</option></select></label>`
+  +(L.length?L.map(x=>`<div class="li upc">${x.img?`<img src="${esc(x.img)}" alt="" onerror="this.style.display='none'">`:''}<div class="t">${esc(x.text||'')}<br><small class="mu">${new Date(x.t).toLocaleString()}</small></div>${admin?`<button class="btn er" style="flex:0" onclick="upDel('${x.k}')"><i class="fa-solid fa-trash"></i></button>`:''}</div>`).join(''):'<p class="mu">Abhi koi update nahi hai.</p>');
+  const s=$('upS');if(s)s.value=srt};window.upDraw=draw;draw()};
+window.upAdd=async function(){const t=($('upT').value||'').trim(),i=($('upI').value||'').trim();if(!t&&!i)return toast('Text ya image link daalo');if(i&&!/^https?:\/\//i.test(i))return toast('Image link https:// se shuru hona chahiye');try{await UP().push({text:t,img:i,t:Date.now()});toast('Update post ho gaya ✅');window.upDraw()}catch(e){toast('Save nahi hua: '+(e.message||e))}};
+window.upDel=async function(k){if(!confirm('Delete this update?'))return;try{await UP().child(k).remove();window.upDraw()}catch(e){toast('Delete nahi hua')}};
+try{const g=CATS[1][4].find(x=>x[0]==='Links');if(g&&!g[1].includes('updates'))g[1].push('updates')}catch{}
+
+/* --- Free mock tests + Generate Custom Mock test (AI, exam pattern) --- */
+let MK=null;
+ACT.mock=function(){modal('📝 Mock Tests (Free)',`<a class="btn p w mqo" href="${LINKS.mock}" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Real free mock tests (Taiyari24Hour)</a>
+<a class="btn o w mqo" href="https://testbook.com/" target="_blank" rel="noopener">Testbook – free tests</a>
+<h4 class="grp" style="margin-top:14px">⚡ Generate Custom Mock Test</h4>
+<label>Exam<select id="mkE"><option>SSC CGL</option><option>SSC CHSL / GD</option><option>Banking (IBPS/SBI)</option><option>Railway (RRB NTPC/Group D)</option><option>UP Police / UPSSSC PET</option><option>UPSC Prelims</option></select></label>
+<label>Subject<select id="mkS"><option>Full mixed (all sections)</option><option>Quant / Maths</option><option>Reasoning</option><option>General Awareness / GK</option><option>Current Affairs (latest)</option><option>English</option><option>Hindi</option></select></label>
+<div class="g2"><label>Questions<select id="mkN"><option>10</option><option selected>20</option><option>30</option></select></label><label>Level<select id="mkL"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></label></div>
+<button class="btn ok w" id="mkB" style="margin-top:10px" onclick="mkGen()"><i class="fa-solid fa-bolt"></i> Generate & start</button>`,true)};
+window.mkGen=async function(){const b=$('mkB'),n=+$('mkN').value,ex=$('mkE').value,sb=$('mkS').value,lv=$('mkL').value;b.disabled=true;b.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Creating test...';
+ const p=`Create a ${n}-question ${lv} multiple-choice mock test for the Indian exam "${ex}", subject: "${sb}". Follow the latest official exam pattern and recent trends (today is ${new Date().toDateString()}). Mix Hindi/English as the real exam does. Return ONLY a JSON array of exactly ${n} objects {"q":"question","o":["A","B","C","D"],"a":0,"e":"one-line explanation"} where a is the 0-based correct index. Every answer must be factually correct.`;
+ let L=null;for(let k=0;k<2&&!L;k++){const t=await gem(p,'You output only valid JSON.',{json:true,max:7000,t:.5,search:/Current|Full/.test(sb)});try{const j=JSON.parse(t.replace(/```json|```/g,'').trim());if(Array.isArray(j)&&j.length&&j.every(x=>x.q&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(x.a)))L=j}catch{}}
+ if(!L){b.disabled=false;b.innerHTML='Generate & start';return toast('Test nahi bana ('+(gem.err||'AI busy')+'). Dobara try karo')}
+ MK={L,i:0,s:0,a:[],end:Date.now()+L.length*60000,t:ex+' · '+sb};mkShow();MK.tm=setInterval(mkTick,1000)};
+function mkTick(){const e=$('mkT');if(!e||!MK){clearInterval(MK&&MK.tm);return}const r=Math.max(0,MK.end-Date.now());e.textContent=Math.floor(r/6e4)+':'+String(Math.floor(r/1e3)%60).padStart(2,'0');if(!r)mkDone()}
+function mkShow(){const q=MK.L[MK.i];modal('📝 '+MK.t,`<div class="row"><b>Q ${MK.i+1}/${MK.L.length}</b><b id="mkT"></b></div><p style="margin:10px 0;font-weight:600;line-height:1.6">${esc(q.q)}</p>${q.o.map((o,k)=>`<button class="btn o mqo ${MK.a[MK.i]===k?'sel':''}" onclick="mkPick(${k})">${'ABCD'[k]}. ${esc(o)}</button>`).join('')}<div class="g2" style="margin-top:10px"><button class="btn o" ${MK.i?'':'disabled'} onclick="MK.i--;mkShow()">◀ Prev</button>${MK.i<MK.L.length-1?'<button class="btn p" onclick="MK.i++;mkShow()">Next ▶</button>':'<button class="btn ok" onclick="mkDone()">Submit</button>'}</div>`,true);mkTick()}
+window.mkPick=k=>{MK.a[MK.i]=k;mkShow()};
+window.mkDone=function(){if(!MK)return;clearInterval(MK.tm);let s=0,w=0;MK.L.forEach((q,i)=>{if(MK.a[i]==null)return;MK.a[i]===q.a?s++:w++});const sc=s-w*.25;
+ modal('🏁 Result',`<div class="card" style="text-align:center"><h2>${sc.toFixed(2)} / ${MK.L.length}</h2><p class="mu">Correct ${s} · Wrong ${w} · Skipped ${MK.L.length-s-w} (−0.25 negative marking)</p></div>`+MK.L.map((q,i)=>`<div class="li" style="display:block"><b>${i+1}. ${esc(q.q)}</b><br><span style="color:${MK.a[i]===q.a?'#16a34a':'#dc2626'}">Your: ${MK.a[i]==null?'—':esc(q.o[MK.a[i]])}</span> · <b>Ans: ${esc(q.o[q.a]||'')}</b><br><small class="mu">${esc(q.e||'')}</small></div>`).join(''),true);MK=null};
+})();
 </script>
 </body>
 </html>
