@@ -255,7 +255,7 @@ body{background:linear-gradient(180deg,color-mix(in srgb,var(--br) 11%,var(--bg)
 <section id="s-idcard" class="sec"><h2 class="st"><i class="fa-solid fa-id-badge"></i> Smart ID Card</h2><div id="idNote" class="li pendrow" style="display:none"><span><i class="fa-solid fa-lock"></i> Ye ID card admin dwara bhare gaye data se bana hai. Badlav ke liye Profile → Edit se admin ko request bhejo.</span></div>
  <div class="card" style="display:flex;gap:30px;flex-wrap:wrap;justify-content:center"><div style="flex:1;min-width:260px">
   <label><i class="fa-solid fa-user"></i> Full name<input id="iN" oninput="idu()"></label><label><i class="fa-solid fa-id-card"></i> ID card number<input id="iI" oninput="idu()" placeholder="e.g. NL9876543210"></label><label><i class="fa-solid fa-cake-candles"></i> Date of birth<input id="iB" type="date" oninput="idu()"></label><label><i class="fa-solid fa-mobile-screen"></i> Mobile<input id="iM" type="tel" oninput="idu()"></label><label><i class="fa-solid fa-chair"></i> Seat<input id="iS" oninput="idu()"></label><label><i class="fa-solid fa-sun"></i> Shift<select id="iSh" onchange="idu()"><option>Full Shift (7 AM - 9 PM)</option><option>Morning Shift (7 AM - 2 PM)</option><option>Evening Shift (2 PM - 9 PM)</option></select></label><label><i class="fa-solid fa-location-dot"></i> Address<textarea id="iA" rows="2" oninput="idu()"></textarea></label><label><i class="fa-solid fa-camera"></i> Portrait photo<input type="file" accept="image/*" onchange="idPhoto(event)"></label></div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:16px"><div id="idc"><div class="wm idwm"></div><div class="nid-h"><b><i class="fa-solid fa-book-open"></i> National Library</b><small>MAHARAJGANJ AZAMGARH</small></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px"><div id="idc"><div class="nid-h"><b><i class="fa-solid fa-book-open"></i> National Library</b><small>MAHARAJGANJ AZAMGARH</small></div>
    <div class="nid-m"><div class="nid-p"><img id="iPh" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect fill='%23e2e8f0' width='96' height='96'/%3E%3C/svg%3E"></div><div class="nid-r"><div class="nid-chip"></div><div class="nid-q"><img id="iQ" crossorigin="anonymous" alt="QR"></div></div></div>
    <div class="nid-seat">Seat <span id="cS">N/A</span></div>
    <div class="nid-d"><div class="nid-id"><span>ID</span><b>: <i id="cI" style="font-style:normal">--</i></b></div><div><span>NAME</span><b>: <i id="cN" style="font-style:normal">--</i></b></div><div><span>DOB</span><b>: <i id="cB" style="font-style:normal">--</i></b></div><div><span>MOB</span><b>: <i id="cM" style="font-style:normal">--</i></b></div><div><span>ADD</span><b>: <i id="cA" style="font-style:normal">--</i></b></div><div><span>SHIFT</span><b>: <i id="cSh" style="font-style:normal">--</i></b></div></div>
@@ -362,7 +362,7 @@ function initFB(){try{firebase.initializeApp(CFG.fb);DB=firebase.database()}catc
 const fbSet=(p,v)=>DB?DB.ref(p).set(v).catch(e=>toast('Could not save: '+errMsg(e))):toast('Server is not connected');
 
 /* ===== Telegram ===== */
-const TG=`https://api.telegram.org/bot${CFG.tg.token}/`;
+let TG=`https://api.telegram.org/bot${CFG.tg.token}/`;
 let TGQ=Promise.resolve();const tgEnq=f=>{const p=TGQ.then(f).catch(()=>false);TGQ=p.then(()=>0,()=>0);return p};
 const tg=t=>tgEnq(()=>fetch(TG+'sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CFG.tg.chat,text:tgFmt(t),parse_mode:'HTML'})}).then(r=>r.ok).catch(()=>false));
 const tgPhoto=(f,c)=>tgEnq(()=>{const d=new FormData();d.append('chat_id',CFG.tg.chat);d.append('photo',f);d.append('caption',tgFmt(c));d.append('parse_mode','HTML');return fetch(TG+'sendPhoto',{method:'POST',body:d}).then(r=>r.ok).catch(()=>false)});
@@ -552,7 +552,7 @@ async function genQuote(){const b=$('qB');b.disabled=true;b.innerHTML='<i class=
  x.textAlign='center';x.fillStyle='rgba(255,255,255,.15)';x.font='italic 220px Georgia';x.fillText('“',540,280);
  const fs=q.length>150?46:q.length>80?56:66;x.font=`700 ${fs}px "Noto Sans Devanagari",Inter,sans-serif`;x.fillStyle='#fff';const L=[];let c='';q.split(' ').forEach(w=>{const t=c?c+' '+w:w;if(x.measureText(t).width>880&&c){L.push(c);c=w}else c=t});L.push(c);
  let y=600-(L.length-1)*(fs+18)/2;L.forEach(l=>{x.fillText(l,540,y);y+=fs+18});x.font='600 40px Inter,sans-serif';x.fillStyle='#fbbf24';x.fillText('— '+a,540,y+30);
- x.fillStyle='#0b1020';x.fillRect(0,1100,1080,250);x.fillStyle='#2563eb';x.fillRect(0,1100,1080,8);x.textAlign='left';x.fillStyle='#fff';x.font='800 60px Inter,sans-serif';x.fillText('National Library',70,1190);x.fillStyle='#94a3b8';x.font='600 34px Inter,sans-serif';x.fillText('Maharajganj Azamgarh',70,1250);if(qi)x.drawImage(qi,830,1120,200,200);
+ x.shadowBlur=0;{const fg=x.createLinearGradient(0,1100,0,1350);fg.addColorStop(0,'#0f172a');fg.addColorStop(1,'#020617');x.fillStyle=fg}x.fillRect(0,1100,1080,250);x.fillStyle='#2563eb';x.fillRect(0,1100,1080,8);x.textAlign='left';x.fillStyle='#fff';x.font='800 60px Inter,sans-serif';x.fillText('National Library',70,1190);x.fillStyle='#94a3b8';x.font='600 34px Inter,sans-serif';x.fillText('Maharajganj Azamgarh',70,1250);if(qi)x.drawImage(qi,830,1120,200,200);
  $('qS').style.display='';b.disabled=false;b.innerHTML='<i class="fa-solid fa-bolt"></i> Generate another'}
 function saveQuote(){try{const a=document.createElement('a');a.download='NL_Quote_'+Date.now()+'.png';a.href=$('cv').toDataURL('image/png');a.click()}catch{toast('Could not save, screenshot le lo')}}
 
@@ -1725,7 +1725,7 @@ try{const q=document.querySelector('#payB .fvq');if(q){q.insertAdjacentHTML('bef
 const _fc0=fvChips;fvChips=function(){_fc0();const n=fvNeed(),s=$('vMs');if(s)s.value=n?String(n):''};
 
 /* ---- ID card: standard card ratio (85.6 x 54) ---- */
-try{$('idc').innerHTML=`<div class="wm idwm"></div><div class="ic-top"><div class="ic-brand"><i class="fa-solid fa-book-open"></i><div><b>NATIONAL LIBRARY</b><small>MAHARAJGANJ AZAMGARH</small></div></div><span class="ic-tag">STUDENT ID</span></div>
+try{$('idc').innerHTML=`<div class="ic-top"><div class="ic-brand"><i class="fa-solid fa-book-open"></i><div><b>NATIONAL LIBRARY</b><small>MAHARAJGANJ AZAMGARH</small></div></div><span class="ic-tag">STUDENT ID</span></div>
 <div class="ic-body"><div class="ic-ph"><img id="iPh" alt="" src="${BLANK}"></div><div class="ic-dt"><div class="ic-n" id="cN">--</div><div class="ic-id"><span>ID</span><b id="cI">--</b></div><div class="ic-r"><span>DOB</span><b id="cB">--</b></div><div class="ic-r"><span>MOB</span><b id="cM">--</b></div><div class="ic-r"><span>SHIFT</span><b id="cSh">--</b></div><div class="ic-r"><span>ADD</span><b id="cA">--</b></div></div>
 <div class="ic-q"><img id="iQ" crossorigin="anonymous" alt="QR"><div class="ic-seat">SEAT <b id="cS">N/A</b></div></div></div>
 <div class="ic-ft"><div class="ic-bc"><svg id="cBar" preserveAspectRatio="none"></svg><small id="cBt">--</small></div><div class="ic-sg"><i class="sig">Ravi Prakash</i><small>LIBRARY MANAGER</small></div></div><span id="cV" style="display:none"></span>`}catch{}
@@ -1762,8 +1762,8 @@ genQuote=async function(){const b=$('qB');b.disabled=true;b.innerHTML='<i class=
  try{await document.fonts.load('700 40px "Noto Sans Devanagari"')}catch{}
  const qi=await img('https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=1&color=ffffff&bgcolor=0b1020&data='+encodeURIComponent(CFG.site)).catch(()=>null);
  const x=$('cv').getContext('2d'),g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,st[0]);g.addColorStop(1,st[1]);x.fillStyle=g;x.fillRect(0,0,1080,1350);
- x.fillStyle='rgba(255,255,255,.07)';x.beginPath();x.arc(940,180,260,0,7);x.fill();x.beginPath();x.arc(120,980,300,0,7);x.fill();
- x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=4;x.strokeRect(50,50,980,1000);
+ [[940,180,380,'rgba(255,255,255,.16)'],[120,980,420,'rgba(0,0,0,.28)'],[540,560,520,'rgba(255,255,255,.06)']].forEach(([cx,cy,r,c])=>{const rg=x.createRadialGradient(cx,cy,0,cx,cy,r);rg.addColorStop(0,c);rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,1080,1100)});
+ x.strokeStyle='rgba(255,255,255,.4)';x.lineWidth=4;x.beginPath();x.roundRect?x.roundRect(50,50,980,1000,28):x.rect(50,50,980,1000);x.stroke();x.strokeStyle='rgba(253,230,138,.55)';x.lineWidth=2;x.beginPath();x.roundRect?x.roundRect(68,68,944,964,20):x.rect(68,68,944,964);x.stroke();x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=14;
  x.textAlign='center';x.fillStyle='rgba(255,255,255,.22)';x.font='italic 260px Georgia';x.fillText('“',540,330);
  const fs=q.length>150?46:q.length>90?54:64;x.font=`700 ${fs}px "Noto Sans Devanagari",Inter,sans-serif`;x.fillStyle='#fff';const L=[];let c='';q.split(' ').forEach(w=>{const t=c?c+' '+w:w;if(x.measureText(t).width>840&&c){L.push(c);c=w}else c=t});L.push(c);
  let y=560-(L.length-1)*(fs+20)/2;L.forEach(l=>{x.fillText(l,540,y);y+=fs+20});x.fillStyle='rgba(255,255,255,.6)';x.fillRect(480,y+4,120,4);x.font='600 40px Inter,sans-serif';x.fillStyle='#fde68a';x.fillText(a,540,y+66);
@@ -1966,10 +1966,10 @@ const _gm=gModels;gModels=async function(){if(/^AQ\./.test(gkey()))return['gemin
 
 /* --- gem(): one extra retry + offline word-of-the-day so it is never "busy" --- */
 const WFB=[['Ephemeral','adjective','Lasting a very short time','क्षणभंगुर','The fame of a viral post is ephemeral.','transient, fleeting, brief','permanent, lasting'],['Benevolent','adjective','Kind and generous','परोपकारी','A benevolent donor funded the library.','kind, charitable, generous','cruel, selfish'],['Candid','adjective','Honest and straightforward','स्पष्टवादी','She gave a candid opinion.','frank, open, honest','evasive, deceitful'],['Diligent','adjective','Hard-working and careful','परिश्रमी','A diligent student revises daily.','industrious, assiduous, hardworking','lazy, careless'],['Obsolete','adjective','No longer in use','अप्रचलित','Floppy disks are obsolete.','outdated, archaic, extinct','current, modern'],['Pragmatic','adjective','Practical, not idealistic','व्यावहारिक','Take a pragmatic approach to study.','practical, realistic, sensible','idealistic, impractical'],['Resilient','adjective','Able to recover quickly','लचीला','Resilient people bounce back from failure.','tough, flexible, hardy','fragile, weak'],['Scrutinize','verb','To examine closely','बारीकी से जाँचना','Scrutinize every option before answering.','inspect, examine, analyse','ignore, overlook']];
-const _g=gem;gem=async function(q,s,o){let r=await _g(q,s,o);if(!r){await new Promise(z=>setTimeout(z,1200));r=await _g(q,s,o)}
+const _g=gem;gem=async function(q,s,o){let r='';if(Date.now()<window.GF)r=await FB(q,s,o);if(!r){let dn=0;const A=_g(q,s,o).then(v=>{dn=1;return v||''}),TM=new Promise(res=>setTimeout(async()=>{res(dn?'':await FB(q,s,o))},7000));r=await Promise.race([A.then(v=>v||FB(q,s,o)),TM.then(v=>v||A)]);if(!r){window.GF=Date.now()+9e4;r=await FB(q,s,o)}}
  if(!r&&/useful English word/.test(q)){const w=WFB[Math.random()*WFB.length|0];r=JSON.stringify({w:w[0],pos:w[1],en:w[2],hi:w[3],ex:w[4],syn:w[5],ant:w[6]})}
  gem.err=_g.err;gem.model=_g.model;return r};
-const _al=window.aiLLM;if(typeof _al==='function'){aiLLM=async function(q){let a=await _al(q);if(!a){await new Promise(z=>setTimeout(z,1000));a=await _al(q)}return a}}
+const _al=window.aiLLM;if(typeof _al==='function'){aiLLM=async function(q){let a=await _al(q);if(!a)a=await FB(q,'You are a friendly Indian teacher. Answer in simple Hinglish, short clear paragraphs, correct facts only.');return a}}
 
 /* --- Thoughts: add saints & social reformers with Wikipedia photos --- */
 QUOTES.push(
@@ -2020,6 +2020,506 @@ window.mkPick=k=>{MK.a[MK.i]=k;mkShow()};
 window.mkDone=function(){if(!MK)return;clearInterval(MK.tm);let s=0,w=0;MK.L.forEach((q,i)=>{if(MK.a[i]==null)return;MK.a[i]===q.a?s++:w++});const sc=s-w*.25;
  modal('🏁 Result',`<div class="card" style="text-align:center"><h2>${sc.toFixed(2)} / ${MK.L.length}</h2><p class="mu">Correct ${s} · Wrong ${w} · Skipped ${MK.L.length-s-w} (−0.25 negative marking)</p></div>`+MK.L.map((q,i)=>`<div class="li" style="display:block"><b>${i+1}. ${esc(q.q)}</b><br><span style="color:${MK.a[i]===q.a?'#16a34a':'#dc2626'}">Your: ${MK.a[i]==null?'—':esc(q.o[MK.a[i]])}</span> · <b>Ans: ${esc(q.o[q.a]||'')}</b><br><small class="mu">${esc(q.e||'')}</small></div>`).join(''),true);MK=null};
 })();
+
+/* ================= v12 : ID card redesign, Constitution fix, Admin settings, PDF export, Quote UI ================= */
+(function(){
+const st=document.createElement('style');st.textContent=`
+html body #idc#idc{width:320px!important;height:533px!important;max-width:none!important;border-radius:26px!important;zoom:1;display:flex!important;flex-direction:column;overflow:hidden;position:relative;background:#fff!important;border:1px solid #cbd5e1;box-shadow:0 24px 50px rgba(15,23,42,.3);font-family:Inter,system-ui,sans-serif;color:#0f172a}
+#idc .nc-h{flex:none;height:112px;background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#38bdf8);color:#fff;text-align:center;padding:14px 12px 0;border-radius:0 0 50% 50%/0 0 26px 26px}
+#idc .nc-h b{display:block;font-size:1.15rem;letter-spacing:1.5px;font-weight:800}#idc .nc-h small{display:block;font-size:.58rem;letter-spacing:2.5px;margin-top:3px;opacity:.9}
+#idc .nc-tag{display:inline-block;margin-top:6px;font-size:.55rem;font-weight:800;letter-spacing:2px;padding:3px 12px;border-radius:99px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.45)}
+#idc .nc-ph{flex:none;width:92px;height:92px;margin:-34px auto 0;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px #2563eb,0 8px 18px rgba(0,0,0,.25);overflow:hidden;background:#e2e8f0;position:relative;z-index:2}
+#idc .nc-ph img{width:100%;height:100%;object-fit:cover;display:block}
+#idc .nc-n{flex:none;text-align:center;font-weight:800;font-size:1.15rem;margin:8px 12px 0;line-height:1.2;word-break:break-word}
+#idc .nc-i{flex:none;margin:6px auto 0;background:#eff6ff;border:1.5px dashed #2563eb;border-radius:99px;padding:3px 16px;font-size:.78rem;display:flex;gap:6px;align-items:center}#idc .nc-i span{color:#2563eb;font-weight:800;font-size:.6rem;letter-spacing:1px}
+#idc .nc-d{flex:none;margin:8px 18px 0;display:grid;grid-template-columns:1fr 1fr;gap:5px 8px;font-size:.72rem}#idc .nc-d div{background:#f8fafc;border-radius:10px;padding:3px 9px;min-width:0}#idc .nc-d span{display:block;color:#2563eb;font-size:.52rem;font-weight:800;letter-spacing:1px}#idc .nc-d b{display:block;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#idc .nc-d .w{grid-column:1/3}
+#idc .nc-q{flex:1;min-height:96px;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:14px;padding:6px 18px}#idc .nc-q img{height:100%;max-height:112px;aspect-ratio:1;border:2px solid #e2e8f0;border-radius:12px;padding:4px;background:#fff}
+#idc .nc-s{background:linear-gradient(90deg,#ef4444,#f59e0b);color:#fff;border-radius:14px;padding:10px 16px;text-align:center;font-size:.6rem;font-weight:800;letter-spacing:1.5px}#idc .nc-s b{display:block;font-size:1.5rem}
+#idc .nc-f{flex:none;display:flex;gap:10px;align-items:flex-end;padding:8px 18px 12px;border-top:4px solid #2563eb;background:#f1f5f9}
+#idc .nc-f svg{width:100%;height:34px;display:block}#idc .nc-f .bc{flex:1.4;text-align:center}#idc .nc-f .bc small{font-size:.55rem;color:#334155}#idc .nc-g{flex:1;text-align:center}#idc .nc-g i{display:block;font-family:'Dancing Script','Brush Script MT',cursive;font-size:1.1rem}#idc .nc-g small{font-size:.5rem;letter-spacing:1px;color:#2563eb;font-weight:800;border-top:1px solid #93c5fd;display:block;padding-top:2px}
+.qcopy{font-size:.9rem}
+@media(max-width:380px){.g2{grid-template-columns:1fr!important}}
+@media(min-width:700px){.sec{max-width:980px;margin-inline:auto}.tg{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
+img,canvas,svg,video{max-width:100%}table{display:block;overflow-x:auto}.modal>*{max-width:100%}body{overflow-x:hidden;-webkit-text-size-adjust:100%}
+`;document.head.appendChild(st);
+try{$('idc').innerHTML=`<div class="nc-h"><b>NATIONAL LIBRARY</b><small>MAHARAJGANJ AZAMGARH</small><span class="nc-tag">STUDENT ID CARD</span></div>
+<div class="nc-ph"><img id="iPh" alt="" src="${BLANK}"></div><div class="nc-n" id="cN">--</div><div class="nc-i"><span>ID</span><b id="cI">--</b></div>
+<div class="nc-d"><div><span>DOB</span><b id="cB">--</b></div><div><span>MOBILE</span><b id="cM">--</b></div><div class="w"><span>SHIFT</span><b id="cSh">--</b></div><div class="w"><span>ADDRESS</span><b id="cA">--</b></div></div>
+<div class="nc-q"><img id="iQ" crossorigin="anonymous" alt="QR"><div class="nc-s">SEAT<b id="cS">N/A</b></div></div>
+<div class="nc-f"><div class="bc"><svg id="cBar" preserveAspectRatio="none"></svg><small id="cBt">--</small></div><div class="nc-g"><i>Ravi Prakash</i><small>LIBRARY MANAGER</small></div></div><span id="cV" style="display:none"></span>`;idu()}catch(e){}
+idFit=function(){const c=$('idc');if(c)c.style.zoom=Math.min(1,(innerWidth-40)/340)};setTimeout(idFit,200);
+
+/* --- Constitution: India only --- */
+const CR=' ALWAYS answer only about the Constitution of INDIA (Bharat ka Samvidhan). Never discuss Bangladesh, Pakistan, Nepal, USA or any other country, even if the query is ambiguous: every Article, Part, Schedule and Amendment number refers to India. Format: short clear paragraphs, bold headings, bullet points, no filler.';
+const _g2=gem;gem=async function(q,s,o){if(s===CSYS||/Constitution of India|Indian Constitution|Samvidhan|Article \d+/i.test(q)){s=(s||'')+CR;if(!/INDIA only/.test(q))q+='\n(Context: Constitution of INDIA only.)'}const r=await _g2(q,s,o);gem.err=_g2.err;gem.model=_g2.model;return r};
+
+/* --- more homepage quotes --- */
+const MQ=[['Shiksha vo hathiyar hai jisse aap duniya badal sakte hain.','Nelson Mandela','#0f766e'],['Sapne wo nahi jo hum sote hue dekhein, sapne wo hain jo hamein sone na dein.','A.P.J. Abdul Kalam','#2563eb'],['Hum jaisa sochte hain, waise ban jaate hain.','Swami Vivekananda','#ea580c'],['Sangharsh hi jeevan hai.','Dr. B.R. Ambedkar','#7c3aed'],['Main us dharm ko manta hoon jo swatantrata, samanta aur bhaichare ko sikhata hai.','Dr. B.R. Ambedkar','#7c3aed'],['Shiksha ek aisa gehna hai jo koi chura nahi sakta.','Savitribai Phule','#c026d3'],['Seva se badi koi pooja nahi.','Mother Teresa','#0891b2'],['Ekta hi shakti hai.','Sardar Patel','#b45309'],['Kismat unhi ki saath deti hai jo mehnat karte hain.','Chanakya','#a16207'],['Ek achchhi kitaab hazaar dost ke barabar hai.','Anonymous','#4f46e5'],['Jo samay ki keemat jaanta hai, wahi safal hota hai.','Anonymous','#059669'],['Aaj ki mehnat kal ki safalta ki neev hai.','Anonymous','#2563eb'],['Aatma-vishwas safalta ka pehla rahasya hai.','Swami Vivekananda','#ea580c'],['Seekhne ki koi umar nahi hoti.','Anonymous','#0d9488']];
+QUOTES.push(...MQ);Object.assign(QW,{'Mother Teresa':'Mother_Teresa','Nelson Mandela':'Nelson_Mandela','Sardar Patel':'Vallabhbhai_Patel'});HQ.push(...MQ.map(q=>[q[0],q[1]]));try{qPhotos()}catch{}
+
+/* --- Quote maker: better design + working copy --- */
+function wrapT(x,t,w,f){const W=t.split(/\s+/),L=[];let c='';W.forEach(a=>{const n=c?c+' '+a:a;if(x.measureText(n).width>w&&c){L.push(c);c=a}else c=n});if(c)L.push(c);return L}
+copyQuote=function(){const t=window.LASTQ;if(!t)return toast('Pehle quote generate karo');const fb=()=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(a);a.focus();a.select();let ok=0;try{ok=document.execCommand('copy')}catch{}a.remove();toast(ok?'Copied ✅':'Copy nahi hua, text select karke copy karo')};
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(()=>toast('Copied ✅')).catch(fb);else fb()};
+
+/* --- Admin settings: API key, Bot token, Chat ID, Admin login (old values are kept in history) --- */
+ITEMS.adminset=['sliders','Admin settings'];ADMIN_ONLY.push('adminset');
+function applyCfg(v){if(!v)return;if(v.gkey)sv('nl_gkey',v.gkey);if(v.tgToken&&v.tgToken!==CFG.tg.token){CFG.tg.token=v.tgToken;TG=`https://api.telegram.org/bot${v.tgToken}/`}if(v.tgChat)CFG.tg.chat=v.tgChat;if(v.adminU)CFG.admin.u=v.adminU;if(v.adminP)CFG.admin.p=v.adminP}
+window.cfgLoad=async function(){try{if(!await ensureDB())return;applyCfg((await DB.ref('library/settings').once('value')).val())}catch{}};setTimeout(cfgLoad,3000);
+ACT.adminset=async function(){if(!admin)return toast('Admin login chahiye');await cfgLoad();
+ modal('⚙️ Admin settings',`<p class="mu">Blank chhodo to purani value same rahegi. Naya save karne par purani value history me safe rehti hai.</p>
+ <label>Gemini API key<input class="inp" id="cfG" placeholder="Current: ${esc((gkey()||'').slice(0,6))}…"></label>
+ <label>Telegram Bot token<input class="inp" id="cfT" placeholder="Current: ${esc(CFG.tg.token.slice(0,8))}…"></label>
+ <label>Telegram Chat ID<input class="inp" id="cfC" placeholder="Current: ${esc(CFG.tg.chat)}"></label>
+ <label>Admin username<input class="inp" id="cfU" placeholder="Current: ${esc(CFG.admin.u)}"></label>
+ <label>Admin password<input class="inp" id="cfP" type="password" placeholder="New password"></label>
+ <div class="g2" style="margin-top:10px"><button class="btn ok" onclick="cfgSave()">Save</button><button class="btn o" onclick="aiTest().then(o=>toast(o?'AI working ✅':'AI fail: '+(gem.err||'')))">Test AI</button></div>`,true)};
+window.cfgSave=async function(){const n={},g=k=>($(k).value||'').trim();if(g('cfG'))n.gkey=g('cfG');if(g('cfT'))n.tgToken=g('cfT');if(g('cfC'))n.tgChat=g('cfC');if(g('cfU'))n.adminU=g('cfU');if(g('cfP'))n.adminP=g('cfP');
+ if(!Object.keys(n).length)return toast('Kuch naya daalo');if(!await ensureDB())return;
+ try{const cur=(await DB.ref('library/settings').once('value')).val()||{old:CFG.tg};await DB.ref('library/settings_history').push({t:Date.now(),prev:{gkey:ls('nl_gkey','')||GKEY,tgToken:CFG.tg.token,tgChat:CFG.tg.chat,adminU:CFG.admin.u}});
+  await DB.ref('library/settings').set({...cur,...n});applyCfg(n);toast('Saved ✅');closeModal()}catch(e){toast('Save nahi hua: '+(e.message||e))}};
+try{CATS[3][4].forEach(g=>{if(g[1].includes('wifi')&&!g[1].includes('adminset'))g[1].push('adminset')})}catch{}
+
+/* --- Student: download all my data as PDF --- */
+const asc=v=>String(v==null?'':v).replace(/[^\x20-\x7E]/g,'?');
+function flat(o,p){if(o==null)return[];if(typeof o!=='object')return[(p?p+': ':'')+o];return Object.entries(o).flatMap(([k,v])=>{if(/^(pass|pw|pin|photo|dp|img)/i.test(k))return[];if(/^(t|time|in|out|ts|timestamp|date)$/i.test(k)&&+v>1e11)return[`${k}: ${new Date(+v).toLocaleString()}`];return flat(v,(p?p+' > ':'')+k)})}
+window.myPDF=async function(){if(!PT.m)return toast('Login karo');if(!window.jspdf)return toast('PDF library load ho rahi hai, dobara try karo');
+ const d=new jspdf.jsPDF({unit:'mm',format:'a4'});let y=18;const ln=(t,b)=>{d.setFont('helvetica',b?'bold':'normal');d.setFontSize(b?12:9);d.splitTextToSize(asc(t),180).forEach(l=>{if(y>284){d.addPage();y=16}d.text(l,14,y);y+=b?7:5})};
+ d.setFontSize(16);d.setFont('helvetica','bold');d.text('National Library - My Data',14,y);y+=8;ln('Generated: '+new Date().toLocaleString());
+ let TT=[];try{TT=ls('nl_tt_'+PT.m,[])}catch{}
+ [['Profile',PT.s],['Attendance',PT.at],['Fee / Payments',PT.py],['Study time log',PT.sl],['Exams',PT.ex],['Timetable',TT]].forEach(([t,o])=>{y+=3;ln(t,1);const r=flat(o);if(!r.length)ln('No data');else r.slice(0,400).forEach(l=>ln(l))});
+ d.save('My_Library_Data_'+PT.m+'.pdf');toast('PDF download ho gaya ✅')};
+const _pd=ptDraw;ptDraw=function(){_pd.apply(this,arguments);const el=$('pt');if(el&&PT.m&&!$('myPdfB'))el.insertAdjacentHTML('afterbegin','<div style="text-align:right;margin-bottom:8px"><button id="myPdfB" class="btn o" style="padding:6px 12px;font-size:.8rem" onclick="myPDF()"><i class="fa-solid fa-file-pdf"></i> My data PDF</button></div>')};
+})();
+
+/* ================= v13 : India-only Constitution, free AI fallback, Updates manager, pro PDF ================= */
+window.FB=async function(q,s,o){try{const c=new AbortController(),to=setTimeout(()=>c.abort(),25000);const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',temperature:o&&o.t!=null?o.t:.7,messages:[...(s?[{role:'system',content:s}]:[]),{role:'user',content:q}]}),signal:c.signal});clearTimeout(to);if(!r.ok)return'';const j=await r.json();let t=(((j.choices||[])[0]||{}).message||{}).content||'';if(o&&o.json)t=t.replace(/```json|```/g,'').trim();return t}catch{return''}};
+window.GF=0;
+(function(){
+const st=document.createElement('style');st.textContent=`
+html{scroll-behavior:smooth}*{-webkit-tap-highlight-color:transparent}
+.card{border-radius:18px;transition:box-shadow .2s,transform .2s}.btn{border-radius:14px;font-weight:700;transition:transform .15s,filter .15s}.btn:active{transform:scale(.97)}.btn:hover{filter:brightness(1.06)}
+.inp,select,textarea{border-radius:12px}input:focus,select:focus,textarea:focus{outline:2px solid var(--acc,#2563eb);outline-offset:1px}
+.upc{align-items:center}.upc img{width:72px;height:72px}.upc .lk{display:inline-block;margin-top:4px;font-size:.8rem;font-weight:700}
+@media(max-width:480px){.modal .mbox{max-height:92vh;overflow:auto}h2.st{font-size:1.15rem}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}`;document.head.appendChild(st);
+document.querySelector('style#idfix')||0;
+/* --- Constitution: India only, never a wrong country --- */
+constGo=async function(){const q=$('cq').value.trim();if(!q)return toast('Article, Part ya topic likho');CQL=q;const R=$('cr');
+ R.innerHTML='<p class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Bharat ke Samvidhan se jaankari la rahe hain...</p>';
+ const m=/(?:article|art\.?|anuchh?ed|अनुच्छेद)\s*(\d{1,3}[A-Za-z]{0,2})|^\s*(\d{1,3}[A-Za-z]{0,2})\s*$/i.exec(q),a=m?(m[1]||m[2]).toUpperCase():'';
+ let pre='';try{if(a){const pt=partOf(a);pre=`<h4>📌 Article ${a} — Constitution of India</h4>${pt?`<p><b>Part ${pt}</b> — ${esc(PN[pt])}</p>`:''}`}}catch{}
+ const P=`Explain this topic of the CONSTITUTION OF INDIA (Bharat ka Samvidhan): "${q}". Use these bold headings:\n**Article / Part / Schedule** (number and title)\n**Meaning** (3-4 simple lines, Hinglish)\n**Original provision in short**\n**Amendments** (which amendment, year, what changed)\n**Important Supreme Court cases** (only if relevant)\n**Exam points** (5 bullets)\n**Related articles**`;
+ const bad=t=>t&&/bangladesh|pakistan|nepal|sri lanka/i.test(t)&&!/\bindia|bharat/i.test(t.slice(0,400));
+ let t=await gem(P,CSYS,{max:2800,t:.3});if(bad(t))t=await gem(P+'\nYour previous answer was about the wrong country. Answer ONLY for INDIA.',CSYS,{max:2800,t:.2});if(bad(t))t='';
+ if(t)return R.innerHTML=pre+cOut(t);
+ try{const W='https://en.wikipedia.org/';let ti=a?`Article_${a}_of_the_Constitution_of_India`:'';let j=ti?await(await fetch(W+'api/rest_v1/page/summary/'+ti)).json():{};
+  if(!j.extract){const s=await(await fetch(W+'w/api.php?action=query&list=search&format=json&origin=*&srsearch='+encodeURIComponent(q+' Constitution of India'))).json();const h=((s.query||{}).search||[]).find(x=>/india/i.test(x.title)&&!/bangladesh/i.test(x.title))||{title:'Constitution_of_India'};j=await(await fetch(W+'api/rest_v1/page/summary/'+encodeURIComponent(h.title.replace(/ /g,'_')))).json()}
+  R.innerHTML=pre+`<div class="cx"><h4>${esc(j.title||'Constitution of India')}</h4><p>${esc(j.extract||'')}</p><a href="${esc(((j.content_urls||{}).desktop||{}).page||'https://en.wikipedia.org/wiki/Constitution_of_India')}" target="_blank" rel="noopener">Wikipedia par poora padho</a></div><p class="mu">AI abhi available nahi hai, isliye Wikipedia (India) se jawab diya gaya.</p>`}
+ catch{R.innerHTML=pre+'<p class="mu">Jaankari nahi mil payi. Internet check karke dobara try karo.</p>'}};
+
+/* --- Updates: Library + Study feeds, link, image, auto-delete, sort, admin manage --- */
+const UC=()=>DB.ref('library/updates');
+async function updOpen(cat,adm){const T=cat==='study'?'📚 Study Updates':'📢 Library Updates';modal(T,'<div id="upBox"><p class="mu">Loading...</p></div>',true);if(!await ensureDB())return;
+ const draw=async()=>{let L=[];try{const v=(await UC().once('value')).val()||{};L=Object.entries(v).map(([k,x])=>({k,cat:'lib',...x}))}catch{}
+  const n=Date.now();if(admin)for(const x of L.filter(x=>x.exp&&x.exp<n))try{await UC().child(x.k).remove()}catch{}
+  L=L.filter(x=>x.cat===cat&&!(x.exp&&x.exp<n));const s=window.upSort||'new';L.sort((a,b)=>s==='old'?a.t-b.t:s==='img'?(!!b.img-!!a.img)||b.t-a.t:b.t-a.t);const B=$('upBox');if(!B)return;
+  B.innerHTML=(admin?`<div class="card" style="margin-bottom:10px"><textarea class="inp" id="upT" rows="2" placeholder="Update text"></textarea><input class="inp" id="upI" placeholder="Image link (https://...)" style="margin-top:6px"><input class="inp" id="upL" placeholder="Button link (optional)" style="margin-top:6px"><div class="g2" style="margin-top:6px"><label>Section<select id="upC"><option value="lib" ${cat==='lib'?'selected':''}>Library</option><option value="study" ${cat==='study'?'selected':''}>Study</option></select></label><label>Auto-delete<select id="upE"><option value="0">Never</option><option value="1">After 1 day</option><option value="3">After 3 days</option><option value="7">After 7 days</option><option value="30">After 30 days</option></select></label></div><button class="btn p w" style="margin-top:8px" onclick="upAdd('${cat}')">Post update</button></div>`:'')
+  +`<label>Sort<select id="upS" onchange="window.upSort=this.value;updOpen('${cat}')"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="img">With images first</option></select></label>`
+  +(L.length?L.map(x=>`<div class="li upc">${x.img?`<img src="${esc(x.img)}" alt="" onerror="this.style.display='none'">`:''}<div class="t">${esc(x.text||'')}${x.link?`<br><a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">🔗 Open link</a>`:''}<br><small class="mu">${new Date(x.t).toLocaleString()}${x.exp?' · auto-delete '+new Date(x.exp).toLocaleDateString():''}</small></div>${admin?`<button class="btn er" style="flex:0" onclick="upDel('${x.k}','${cat}')"><i class="fa-solid fa-trash"></i></button>`:''}</div>`).join(''):'<p class="mu">Abhi koi update nahi hai.</p>');
+  const e=$('upS');if(e)e.value=s};draw()}
+window.upAdd=async function(cat){const t=($('upT').value||'').trim(),i=($('upI').value||'').trim(),l=($('upL').value||'').trim(),d=+$('upE').value,c=$('upC').value;if(!t&&!i&&!l)return toast('Text, image ya link daalo');if((i&&!/^https?:\/\//i.test(i))||(l&&!/^https?:\/\//i.test(l)))return toast('Link https:// se shuru hona chahiye');
+ try{await UC().push({text:t,img:i,link:l,cat:c,t:Date.now(),exp:d?Date.now()+d*864e5:0});toast('Update post ho gaya ✅');updOpen(c)}catch(e){toast('Save nahi hua: '+(e.message||e))}};
+window.upDel=async function(k,cat){if(!confirm('Is update ko delete karein?'))return;try{await UC().child(k).remove();updOpen(cat)}catch{toast('Delete nahi hua')}};
+ITEMS.updates=['bullhorn','Library updates'];ACT.updates=()=>updOpen('lib');ITEMS.studyupd=['book-open','Study updates'];ACT.studyupd=()=>updOpen('study');ITEMS.updadm=['bullhorn','Manage updates'];ACT.updadm=()=>updOpen('lib');ADMIN_ONLY.push('updadm');
+try{CATS[2][4].forEach(g=>{if(g[1].includes('news')&&!g[1].includes('studyupd'))g[1].push('studyupd')});CATS[3][4].forEach(g=>{if(g[1].includes('wifi')&&!g[1].includes('updadm'))g[1].push('updadm')})}catch{}
+
+/* --- Professional student PDF --- */
+const A=v=>String(v==null?'':v).replace(/[^\x20-\x7E]/g,'');
+async function toData(u){try{const i=await img(u);const c=document.createElement('canvas');c.width=i.naturalWidth||i.width;c.height=i.naturalHeight||i.height;c.getContext('2d').drawImage(i,0,0);return c.toDataURL('image/jpeg',.9)}catch{return null}}
+window.myPDF=async function(){if(!PT.m)return toast('Pehle login karo');if(!window.jspdf)return toast('PDF library load ho rahi hai, 2 sec baad try karo');toast('PDF ban rahi hai...');
+ const d=new jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,S=PT.s||{};let y=0;const C={b:[30,64,175],g:[100,116,139],l:[241,245,249]};
+ const dt=v=>v?new Date(+v||v).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'-',tm=v=>v?new Date(+v).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'-';
+ const chk=h=>{if(y+h>278){d.addPage();y=16}};
+ const H=(t,sub)=>{chk(20);d.setFillColor(...C.b);d.roundedRect(14,y,182,8,2,2,'F');d.setTextColor(255);d.setFont('helvetica','bold');d.setFontSize(11);d.text(t,18,y+5.6);y+=12;if(sub){d.setTextColor(...C.g);d.setFont('helvetica','italic');d.setFontSize(8.5);d.splitTextToSize(sub,178).forEach(l=>{d.text(l,16,y);y+=4});y+=2}d.setTextColor(30)};
+ const T=(cols,rows,w)=>{chk(10);d.setFont('helvetica','bold');d.setFontSize(8.5);d.setFillColor(...C.l);d.rect(14,y,182,6.5,'F');d.setTextColor(30);let x=16;cols.forEach((c,i)=>{d.text(c,x,y+4.5);x+=w[i]});y+=7;d.setFont('helvetica','normal');
+  if(!rows.length){d.setTextColor(...C.g);d.text('Abhi koi record nahi hai.',16,y+3);y+=8;d.setTextColor(30);return}
+  rows.forEach((r,k)=>{const ls=r.map((c,i)=>d.splitTextToSize(A(c),w[i]-2)),hh=Math.max(...ls.map(l=>l.length))*4+2.5;chk(hh);if(k%2){d.setFillColor(250,250,252);d.rect(14,y-1,182,hh,'F')}let x=16;ls.forEach((l,i)=>{l.forEach((t,j)=>d.text(t,x,y+3+j*4));x+=w[i]});y+=hh});y+=3};
+ d.setFillColor(...C.b);d.rect(0,0,W,40,'F');d.setTextColor(255);d.setFont('helvetica','bold');d.setFontSize(20);d.text('NATIONAL LIBRARY',14,16);d.setFontSize(9);d.setFont('helvetica','normal');d.text('Maharajganj, Azamgarh  |  My Study Report',14,23);d.text('Generated on '+new Date().toLocaleString('en-IN'),14,30);
+ const qr=await toData('https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=1&data='+encodeURIComponent('NATIONAL LIBRARY - '+(S.idNo||PT.m)+' - '+(S.name||'')));if(qr)d.addImage(qr,W-38,6,26,26);
+ y=48;d.setFillColor(...C.l);d.roundedRect(14,y,182,34,3,3,'F');let ph=S.photo||S.dp||'';try{if(/^data:image/.test(ph))d.addImage(ph,18,y+3,24,28);else{const p=await toData(ph||'');if(p)d.addImage(p,18,y+3,24,28)}}catch{}
+ d.setTextColor(30);d.setFont('helvetica','bold');d.setFontSize(14);d.text(A(S.name||'Student'),48,y+9);d.setFont('helvetica','normal');d.setFontSize(9.5);[['ID No',S.idNo||'-'],['Mobile',PT.m],['Seat',S.seat||'-'],['Shift',S.shift||'-'],['Status',S.status||'-']].forEach((r,i)=>d.text(r[0]+': '+A(r[1]),48+(i%2)*70,y+16+Math.floor(i/2)*6));y+=42;
+ const days=Object.keys(PT.at||{}),ses=days.flatMap(k=>sess(PT.at[k]).map(x=>({...x,day:k}))),hrs=ses.reduce((s,x)=>s+(x.out&&x.in?(x.out-x.in)/36e5:0),0),pay=Object.values(PT.py||{}),paid=pay.reduce((s,x)=>s+(+x.amount||0),0),sl=Object.values(PT.sl||{}),sh=sl.reduce((s,x)=>s+(+x.hours||0),0);
+ [['Days present',days.length],['Hours in library',hrs.toFixed(1)],['Study hours',sh.toFixed(1)],['Fee paid','Rs '+paid]].forEach((k,i)=>{const x=14+i*46;d.setFillColor(238,242,255);d.roundedRect(x,y,42,18,3,3,'F');d.setTextColor(...C.b);d.setFont('helvetica','bold');d.setFontSize(14);d.text(String(k[1]),x+21,y+9,{align:'center'});d.setFontSize(7.5);d.setTextColor(...C.g);d.text(k[0],x+21,y+14.5,{align:'center'})});y+=26;
+ H('1. Attendance','Library me aapke aane aur jaane ka time. Rozana check-in/out se yeh apne aap banta hai.');T(['Date','Check-in','Check-out','Time spent'],ses.sort((a,b)=>b.in-a.in).slice(0,60).map(x=>[dt(x.in),tm(x.in),x.out?tm(x.out):'Inside',x.out?((x.out-x.in)/36e5).toFixed(1)+' h':'-']),[48,40,40,40]);
+ H('2. Fee / Payments','Aapne ab tak jo fee di hai uska record.');T(['Date','Amount','Months','Mode'],pay.sort((a,b)=>(b.time||0)-(a.time||0)).map(x=>[dt(x.time||x.date),'Rs '+(x.amount||0),x.months||'-',x.mode||x.method||'-']),[48,40,40,40]);
+ H('3. Study time','Aapne kis subject ko kitna time diya. Neeche chart me subject-wise ghante dikhaye gaye hain.');const by={};sl.forEach(x=>{by[x.subject||'Other']=(by[x.subject||'Other']||0)+(+x.hours||0)});const mx=Math.max(1,...Object.values(by));
+ Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([k,v])=>{chk(7);d.setFont('helvetica','normal');d.setFontSize(8.5);d.setTextColor(30);d.text(A(k),16,y+4);d.setFillColor(...C.b);d.roundedRect(52,y+0.5,Math.max(2,v/mx*120),4.5,1,1,'F');d.text(v.toFixed(1)+' h',54+v/mx*120+2,y+4);y+=7});y+=3;
+ T(['Date','Subject','Hours','Note'],sl.sort((a,b)=>b.time-a.time).slice(0,40).map(x=>[x.date||dt(x.time),x.subject||'-',x.hours||'-',x.note||'']),[30,45,25,82]);
+ H('4. Exams','Aapke dwara save kiye gaye exam aur unki date.');T(['Exam','Date','Days left'],Object.values(PT.ex||{}).map(x=>[x.name||'-',x.date||'-',x.date?Math.ceil((new Date(x.date)-Date.now())/864e5)+' days':'-']),[90,50,40]);
+ let TTL=[];try{TTL=ls('nl_tt_'+PT.m,[])}catch{}
+ H('5. Timetable','Aapka apna padhai ka time-table.');T(['Plan'],TTL.map(x=>[typeof x==='object'?Object.values(x).filter(v=>typeof v!=='object').join('  |  '):String(x)]),[178]);
+ const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7.5);d.setTextColor(...C.g);d.text('National Library, Maharajganj Azamgarh - computer generated report',14,290);d.text('Page '+i+' / '+n,W-14,290,{align:'right'})}
+ d.save('My_Library_Report_'+PT.m+'.pdf');toast('PDF download ho gaya ✅')};
+})();
+
+/* ================= v14 : no ID watermark, admin panel regrouped ================= */
+(function(){
+const st=document.createElement('style');st.textContent='#idc .wm,#idc .idwm{display:none!important}';document.head.appendChild(st);
+try{const w=document.querySelector('#idc .wm');if(w)w.remove()}catch{}
+try{const ad=CATS.find(c=>c[0]==='admin');if(ad){
+ const old=ad[4].flatMap(g=>g[1]),AG=[['Students & Attendance',['stmgr','approve','att','dailyrep','lnmgr']],['Fees & Documents',['recpay','ledger','receipt','idcard','exportd']],['Library Operations',['seats','hol','vendor']],['Announcements & Content',['notices','broadcast','updadm']],['Settings & AI',['adminset','aiset','sys','wifi']],['Security & Maintenance',['seclog','store','rules','wipe']],['Session',['logout']]],used=new Set();
+ const ng=AG.map(g=>[g[0],g[1].filter(i=>ITEMS[i]&&!used.has(i)&&used.add(i))]).filter(g=>g[1].length);
+ const rest=old.filter(i=>ITEMS[i]&&!used.has(i));if(rest.length){const s=ng.findIndex(g=>g[0]==='Session');ng.splice(s<0?ng.length:s,0,['More',rest])}
+ ad[4]=ng;buildHome()}}catch(e){console.error('admin regroup',e)}
+})();
+
+/* ================= v15 : round ID, real bottle, fast AI, Telegram reg approval, tools, pro mock test ================= */
+(function(){
+const JI='data:image/webp;base64,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',JM='data:image/png;base64,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';
+CFG.regFee=100;
+const st=document.createElement('style');st.textContent=`
+html body #idc#idc{border-radius:36px!important}
+.bt.jb{width:84px;text-align:center}.jar{position:relative;width:76px;aspect-ratio:262/494;isolation:isolate;margin:0 auto 4px;filter:drop-shadow(0 8px 8px rgba(0,0,0,.28))}
+.jimg{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block;pointer-events:none}
+.jar .wtr,.jar .bubs{position:absolute;inset:0;-webkit-mask:url(${JM}) center/100% 100% no-repeat;mask:url(${JM}) center/100% 100% no-repeat;overflow:hidden}
+.jar .wtr{z-index:2;mix-blend-mode:multiply}.jar .bubs{z-index:3}
+.jar .lv{position:absolute;left:0;right:0;bottom:1%;background:linear-gradient(180deg,#7dd3fc,#0284c7 45%,#075985);transition:height 1s ease}
+.jar .lv i{position:absolute;left:-50%;width:200%;height:10px;top:-6px;border-radius:42%;background:#bae6fd;animation:wv 3.2s linear infinite}
+.jar .lv i+i{top:-3px;background:#38bdf8;animation-duration:4.8s;animation-direction:reverse}
+.jar .bubs i{position:absolute;bottom:3%;border-radius:50%;background:rgba(255,255,255,.75);animation:jbub 3.4s ease-in infinite}
+@keyframes jbub{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(var(--r,-60px)) scale(1);opacity:0}}
+.mkx{position:fixed;inset:0;z-index:99999;background:#f1f5f9;color:#0f172a;display:flex;flex-direction:column;font-family:Inter,system-ui,sans-serif}
+.mkx button{font:inherit;cursor:pointer}.mkh{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#1e3a8a;color:#fff}.mkh b{flex:1;font-size:.95rem}.mkh .tm{background:#fff;color:#1e3a8a;padding:4px 10px;border-radius:99px;font-weight:800}
+.mkh button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:10px;padding:6px 10px}
+.mkt{display:flex;gap:6px;overflow-x:auto;padding:8px 10px;background:#fff;border-bottom:1px solid #e2e8f0}.mkt button{white-space:nowrap;border:1px solid #cbd5e1;background:#fff;border-radius:99px;padding:5px 12px;font-size:.8rem}.mkt .on{background:#2563eb;color:#fff;border-color:#2563eb}
+.mkb{flex:1;overflow:auto;padding:14px}.mkb .qh{display:flex;justify-content:space-between;font-size:.8rem;color:#475569;margin-bottom:8px}.mkb .qq{font-size:1.02rem;font-weight:600;line-height:1.65;margin-bottom:12px}
+.mko{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:11px 12px;margin:8px 0;color:#0f172a}.mko.sel{border-color:#2563eb;background:#eff6ff}.mko i{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;background:#e2e8f0;display:grid;place-items:center;font-weight:800;font-size:.8rem}.mko.sel i{background:#2563eb;color:#fff}
+.mkf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px;background:#fff;border-top:1px solid #e2e8f0}.mkf button{border:0;border-radius:12px;padding:11px 4px;font-weight:700;font-size:.82rem}.mkf .a{background:#16a34a;color:#fff}.mkf .m{background:#7c3aed;color:#fff}.mkf .c{background:#e2e8f0;color:#0f172a}
+.mkp{position:absolute;inset:48px 0 0 0;background:#fff;z-index:3;overflow:auto;padding:14px}.mkp .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px;margin:10px 0}.mkp .g button{height:44px;border-radius:12px;border:0;color:#fff;font-weight:800;position:relative}
+.mkp .lg{display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem}.mkp .lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;background:var(--c)}
+.mkr .box{background:#fff;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.06)}.mkr table{width:100%;font-size:.82rem;border-collapse:collapse}.mkr td,.mkr th{padding:6px 4px;border-bottom:1px solid #e2e8f0;text-align:left}
+.tbx{margin-top:10px}`;document.head.appendChild(st);
+
+/* --- ID card: always rounded on all 4 corners, also in downloaded image --- */
+(function(){let W=window.html2canvas;const rd=(el,o)=>function(cv){try{if(!el||!(el.id==='idc'||(el.querySelector&&el.querySelector('.nc-h'))))return cv;const k=(o&&o.scale)||1,x0=document.createElement('canvas');x0.width=cv.width;x0.height=cv.height;const x=x0.getContext('2d');x.beginPath();x.roundRect(0,0,cv.width,cv.height,36*k);x.clip();x.drawImage(cv,0,0);return x0}catch{return cv}};
+ const wrap=f=>function(el,o){return f.apply(this,arguments).then(rd(el,o))};
+ try{if(W)W=wrap(W);Object.defineProperty(window,'html2canvas',{configurable:true,get:()=>W,set:v=>{W=wrap(v)}})}catch{}})();
+
+/* --- Water: the real jar photo + live water level animation --- */
+drawWater=function(){const now=Date.now();let n=0,h='';
+ water.batches.forEach(b=>{const tot=b.count*72e5,rem=tot-(now-b.time);if(rem<=0)return;const p=rem/tot*100,hh=(p*.74).toFixed(1),rise=-Math.max(20,Math.round(p*.74*1.43*.9));
+  for(let i=0;i<b.count;i++){n++;h+=`<div class="bt jb">${admin?`<i class="fa-solid fa-xmark del" onclick="delBatch('${esc(b.id)}')"></i>`:''}<div class="jar"><div class="wtr"><div class="lv" style="height:${hh}%"><i></i><i></i></div></div><div class="bubs" style="--r:${rise}px">${[0,1,2,3,4].map(k=>`<i style="left:${14+k*15}%;width:${3+k%3*2}px;height:${3+k%3*2}px;animation-delay:${(k*.7).toFixed(1)}s"></i>`).join('')}</div><img class="jimg" src="${JI}" alt="Water jar"></div><b>#${n}</b><small>${(20*p/100).toFixed(1)}L · ${Math.floor(rem/36e5)}h ${Math.floor(rem%36e5/6e4)}m</small></div>`}});
+ $('bots').innerHTML=h||'<p class="mu">Aaj ka koi active water data nahi hai.</p>';$('wCnt').textContent=n?`${n} bottle${n>1?'s':''} active`:'0 bottles';
+ const t=new Date(),hi=water.history.filter(x=>day(new Date(x.time))===day(t));$('wH').innerHTML=hi.map(x=>`<div class="li"><span>${x.bottles} bottles</span><b>${new Date(x.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})}</b></div>`).join('')||'<p class="mu">Aaj koi delivery log nahi hui.</p>'};
+try{drawWater()}catch{}
+
+/* --- AI speed: no "thinking" delay on 2.5-flash, response cache, early hedge --- */
+['https://generativelanguage.googleapis.com','https://aiplatform.googleapis.com','https://text.pollinations.ai'].forEach(h=>{const l=document.createElement('link');l.rel='preconnect';l.href=h;document.head.appendChild(l)});
+const _gp5=gPost;gPost=async function(url,body,key,sig){try{const m=(url.match(/models\/([^:]+):/)||[])[1]||'';if(/2\.5-flash/.test(m)&&!/image|tts/.test(m)){const j=JSON.parse(body);j.generationConfig=j.generationConfig||{};if(!j.generationConfig.thinkingConfig)j.generationConfig.thinkingConfig={thinkingBudget:0};body=JSON.stringify(j)}}catch{}return _gp5(url,body,key,sig)};
+const _g5=gem,GC=new Map();gem=async function(q,s,o){const ck=o&&o.t!=null&&o.t<=.4&&!o.search?s+'|'+q:null,h=ck&&GC.get(ck);if(h&&Date.now()-h.t<6e5)return h.v;const r=await _g5(q,s,o);if(r&&ck)GC.set(ck,{v:r,t:Date.now()});gem.err=_g5.err;gem.model=_g5.model;return r};
+
+/* --- Telegram: Approve/Reject new registrations from Telegram (works for any open page) --- */
+async function regDecide(m,ok){if(!await ensureDB())return false;const s=(await DB.ref('library/students/'+m).once('value')).val();if(!s||s.status!=='pending')return false;
+ if(ok){await DB.ref('library/students/'+m+'/status').set('approved');const n=+s.seat;try{if(n>=1&&n<=70&&seats[n-1]!==false){seats[n-1]=false;fbSet('library/seats',seats)}}catch{}tg(`✅ <b>Registration approved</b>\n${esc(s.name)} · ${esc(m)} (via Telegram)`)}
+ else{await DB.ref('library/students/'+m).remove();tg(`❌ Registration rejected: ${esc(s.name)} · ${esc(m)} (via Telegram)`)}return true}
+const _rd=regDone;regDone=function(n,m){const r=_rd.apply(this,arguments);setTimeout(()=>{try{tgEnq(()=>fetch(TG+'sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CFG.tg.chat,text:`🎓 New registration: ${n} (${m})\nRegistration fee: ₹${CFG.regFee}\nApprove karein?`,reply_markup:{inline_keyboard:[[{text:'✅ Approve',callback_data:'ra1_'+m},{text:'❌ Reject',callback_data:'ra0_'+m}]]}})}))}catch{}},3000);return r};
+tgPoll=async function(){if(tgBusy||document.hidden)return;tgBusy=1;
+ try{const r=await fetch(TG+'getUpdates?timeout=0&allowed_updates='+encodeURIComponent('["callback_query"]')+(tgOff?'&offset='+tgOff:''));const j=await r.json();
+  if(j&&j.ok)for(const u of j.result){tgOff=u.update_id+1;sv('nl_tgoff',tgOff);const cq=u.callback_query;if(!cq||!cq.data||String(cq.from&&cq.from.id)!==String(CFG.tg.chat))continue;
+   let m=/^fa([01])_(.+)$/.exec(cq.data),ok,done,txt;
+   if(m){ok=m[1]==='1';done=await feeDecide(m[2],ok,'telegram');txt=done?(ok?'✅ Approved — fee payment ho gayi':'❌ Rejected'):'Ye request pehle hi process ho chuki'}
+   else if(m=/^ra([01])_(\d+)$/.exec(cq.data)){ok=m[1]==='1';done=await regDecide(m[2],ok);txt=done?(ok?'✅ Registration approved':'❌ Registration rejected'):'Ye request pehle hi process ho chuki'}else continue;
+   fetch(TG+'answerCallbackQuery',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({callback_query_id:cq.id,text:txt})}).catch(()=>0);
+   if(cq.message)fetch(TG+'editMessageReplyMarkup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:cq.message.chat.id,message_id:cq.message.message_id,reply_markup:{inline_keyboard:[]}})}).catch(()=>0)}}catch{}tgBusy=0};
+try{clearInterval(tgStart.t)}catch{}tgStart.t=setInterval(tgPoll,8000);setTimeout(tgPoll,2000);
+
+/* --- Registration fee notice (Rs. 100) --- */
+new MutationObserver(()=>{const e=document.getElementById('rgN');if(e&&!document.getElementById('regFeeB')){const L=e.closest('label');if(L)L.insertAdjacentHTML('beforebegin',`<div id="regFeeB" class="card" style="margin-bottom:10px;border-left:4px solid #f59e0b"><b>💰 Registration fee: ₹${CFG.regFee}</b> <small class="mu">(one-time, library me jama karein)</small></div>`)}}).observe(document.body,{childList:true,subtree:true});
+
+/* --- New tools --- */
+function mkTool(id,ic,title,fields,fn){ITEMS[id]=[ic,title];ACT[id]=()=>{modal(title,fields.map(f=>`<label>${f[0]}<input class="inp" id="${id}_${f[1]}" type="${f[3]||'number'}" value="${f[2]}" oninput="${id}_c()"></label>`).join('')+`<div class="card tbx" id="${id}_o"></div>`);window[id+'_c']=()=>{const v={};fields.forEach(f=>v[f[1]]=$(id+'_'+f[1]).value);$(id+'_o').innerHTML=fn(v)};window[id+'_c']()}}
+const R2=x=>(+x).toLocaleString('en-IN',{maximumFractionDigits:2});
+mkTool('t_emi','indian-rupee-sign','EMI calculator',[['Loan amount (₹)','p',100000],['Interest rate (% per year)','r',10],['Years','y',2]],v=>{const P=+v.p,r=+v.r/1200,n=+v.y*12;if(!(P>0&&n>0))return'Values daalo';const e=r?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n;return`<b>EMI: ₹${R2(e)} / month</b><br>Total payment: ₹${R2(e*n)}<br>Total interest: ₹${R2(e*n-P)}`});
+mkTool('t_pl','scale-balanced','Profit & Loss',[['Cost price (₹)','c',500],['Selling price (₹)','s',600]],v=>{const c=+v.c,s=+v.s;if(!(c>0))return'Cost price daalo';const d=s-c;return d>=0?`<b style="color:#16a34a">Profit: ₹${R2(d)} (${R2(d/c*100)}%)</b>`:`<b style="color:#dc2626">Loss: ₹${R2(-d)} (${R2(-d/c*100)}%)</b>`});
+mkTool('t_dsc','tags','Discount calculator',[['Marked price (₹)','m',1000],['Discount (%)','d',20]],v=>{const m=+v.m,d=+v.d;return`<b>Final price: ₹${R2(m*(1-d/100))}</b><br>You save: ₹${R2(m*d/100)}`});
+mkTool('t_qr','qrcode','QR code maker',[['Text or link','t','https://gtrao2026.github.io/National-Library/','text']],v=>v.t?`<div style="text-align:center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=2&data=${encodeURIComponent(v.t)}" alt="QR" style="border-radius:12px;background:#fff;padding:6px"><br><a class="btn p" style="margin-top:8px;display:inline-block" href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=4&format=png&data=${encodeURIComponent(v.t)}" target="_blank" rel="noopener">Open large / save</a></div>`:'Text likho');
+mkTool('t_rom','hashtag','Roman numerals',[['Number (1-3999)','n',2026],['Roman (optional)','r','','text']],v=>{const M=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];let o='';if(v.r){const V={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};let s=v.r.toUpperCase(),t=0;for(let i=0;i<s.length;i++){const a=V[s[i]],b=V[s[i+1]]||0;if(!a)return'Galat Roman number';t+=a<b?-a:a}return`<b>${v.r.toUpperCase()} = ${t}</b>`}let n=+v.n;if(!(n>=1&&n<=3999))return'1 se 3999 tak number daalo';M.forEach(([a,b])=>{while(n>=a){o+=b;n-=a}});return`<b>${v.n} = ${o}</b>`});
+
+/* --- Sections: tools grouped sensibly --- */
+function regroup(cid,G){const c=CATS.find(x=>x[0]===cid);if(!c)return;const old=c[4].flatMap(g=>g[1]),u=new Set(),ng=G.map(g=>[g[0],g[1].filter(i=>ITEMS[i]&&!u.has(i)&&u.add(i))]).filter(g=>g[1].length),rest=old.filter(i=>ITEMS[i]&&!u.has(i));if(rest.length)ng.push(['More',rest]);c[4]=ng}
+regroup('study',[['📘 Learn',['sp','ncert','video','syllabus','material','papers']],['📝 Tests & Practice',['mock','quiz','tquiz','typing','flash','t_stc','map']],['🤖 AI Study',['askai','const','t_wotd','t_dict']],['📰 Daily',['news','quotes','wiki','studyupd']],['📅 Track & Plan',['t_trk','t_exam','tt','t_timer','t_task','t_notes']],['🧮 Maths & Exam Tools',['t_calc','t_pct','t_unit','t_int','t_emi','t_pl','t_dsc','t_tab','t_lcm','t_prime','t_gst','t_sdt','t_n2w','t_rom']],['🛠️ Utility Tools',['t_date','t_cgpa','t_bmi','t_age','t_wc','t_exp','t_qr']],['📄 PDF Tools',['pdfly']]]);
+regroup('library',[['💰 Fees',['plans','payment','scan']],['🏛️ Library',['seats','water','books']],['📢 Updates & Links',['updates','pdfly','install']],['🌦️ Weather',['weather']],['ℹ️ About',['info']]]);
+
+/* --- Pro mock test --- */
+const MKB=[['General Awareness','Who was the first Prime Minister of India?',['Jawaharlal Nehru','Sardar Patel','Mahatma Gandhi','Dr. Rajendra Prasad'],0,'Nehru became PM on 15 August 1947.'],['General Awareness','Article 21 of the Indian Constitution protects:',['Right to life and personal liberty','Right to vote','Freedom of religion','Right to property'],0,'Article 21 = Protection of life and personal liberty.'],['General Awareness','Capital of Uttar Pradesh is:',['Kanpur','Lucknow','Prayagraj','Varanasi'],1,'Lucknow is the capital of UP.'],['General Awareness','Who wrote "The Discovery of India"?',['Jawaharlal Nehru','Rabindranath Tagore','Mahatma Gandhi','Dr. Ambedkar'],0,'Written by Nehru in 1944.'],
+['Quantitative Aptitude','15% of 240 = ?',['32','36','40','42'],1,'240 x 15/100 = 36.'],['Quantitative Aptitude','Average of 12, 18, 24, 30 is:',['20','21','22','24'],1,'Sum 84 / 4 = 21.'],['Quantitative Aptitude','A 120 m train crosses a pole in 6 s. Speed in km/h?',['60','72','80','90'],1,'120/6 = 20 m/s = 72 km/h.'],['Quantitative Aptitude','Simple interest on Rs 2000 at 5% for 3 years:',['Rs 250','Rs 300','Rs 350','Rs 400'],1,'2000 x 5 x 3 / 100 = 300.'],
+['Reasoning','Next number: 2, 6, 12, 20, 30, ?',['40','42','44','36'],1,'Differences 4,6,8,10,12 so 42.'],['Reasoning','Odd one out: Apple, Mango, Potato, Banana',['Apple','Mango','Potato','Banana'],2,'Potato is a vegetable, rest are fruits.'],['Reasoning','If CAT = 24 (3+1+20), then DOG = ?',['24','26','28','30'],1,'4+15+7 = 26.'],['Reasoning','Pointing to a man, Ria said "He is the son of my mother\'s only brother". The man is Ria\'s:',['Brother','Cousin','Uncle','Nephew'],1,'Maternal uncle\'s son = cousin.'],
+['English','Synonym of "Rapid":',['Slow','Fast','Weak','Late'],1,'Rapid = fast.'],['English','Antonym of "Ancient":',['Old','Modern','Historic','Aged'],1,'Ancient >< Modern.'],['English','She ___ to school every day.',['go','goes','going','gone'],1,'Singular subject takes "goes".'],['English','One word for "a person who loves books":',['Bibliophile','Philanthropist','Pedant','Linguist'],0,'Bibliophile = book lover.']];
+const MKN={'SSC CGL':.5,'SSC CHSL / GD':.5,'Banking (IBPS/SBI)':.25,'Railway (RRB NTPC/Group D)':.33,'UP Police / UPSSSC PET':.25,'UPSC Prelims':.33};
+let MK=null;
+const mkH=()=>{try{return JSON.parse(localStorage.getItem('nl_mkh')||'[]')}catch{return[]}};
+ACT.mock=function(){const H=mkH().slice(0,5);modal('📝 Mock Test Centre',`<div class="card" style="margin-bottom:10px"><b>Free · No login · Exam-style interface</b><p class="mu" style="margin:4px 0 0">Timer, question palette, mark for review, negative marking aur full analysis.</p></div>
+<label>Exam<select id="mkE">${Object.keys(MKN).map(k=>`<option>${k}</option>`).join('')}</select></label>
+<label>Test type<select id="mkS"><option>Full mock (all sections)</option><option>Quantitative Aptitude</option><option>Reasoning</option><option>General Awareness</option><option>Current Affairs (latest)</option><option>English</option><option>Hindi</option></select></label>
+<div class="g2"><label>Questions<select id="mkN"><option>10</option><option selected>20</option><option>40</option><option>60</option></select></label><label>Level<select id="mkL"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></label></div>
+<button class="btn ok w" id="mkB" style="margin-top:10px" onclick="mkGen()"><i class="fa-solid fa-bolt"></i> Generate custom mock & start</button>
+<button class="btn o w" style="margin-top:8px" onclick="mkStart(mkBank(),'Sample test · Offline')">Start instant sample test (no AI)</button>
+<a class="btn o w" style="margin-top:8px;display:block;text-align:center" href="${LINKS.mock}" target="_blank" rel="noopener">More free mock tests (Taiyari24Hour) ↗</a>
+${H.length?'<h4 class="grp" style="margin-top:12px">Your last attempts</h4>'+H.map(h=>`<div class="li"><span>${esc(h.t)}<br><small class="mu">${new Date(h.d).toLocaleString()}</small></span><b>${h.s} / ${h.n}</b></div>`).join(''):''}`,true)};
+function mkBank(){const o=MKB.map(x=>({sec:x[0],q:x[1],o:x[2],a:x[3],e:x[4]}));return o}
+window.mkGen=async function(){const b=$('mkB'),n=+$('mkN').value,ex=$('mkE').value,sb=$('mkS').value,lv=$('mkL').value;b.disabled=true;b.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Questions ban rahe hain...';
+ const SM={'UP Police / UPSSSC PET':['General Knowledge','Hindi','Numerical Ability','Reasoning'],'Railway (RRB NTPC/Group D)':['Mathematics','Reasoning','General Science','General Awareness'],'UPSC Prelims':['History','Geography','Polity','Economy','Science','Current Affairs']};const secs=/Full/.test(sb)?(SM[ex]||['Reasoning','General Awareness','Quantitative Aptitude','English']):[sb.replace(' (latest)','')];let jobs=[];
+ secs.forEach(s=>{let c=Math.ceil(n/secs.length);while(c>0){const k=Math.min(c,10);jobs.push([s,k]);c-=k}});
+ const one=async([s,k])=>{const p=`Create exactly ${k} ${lv} multiple-choice questions for the Indian exam "${ex}", section "${s}", exactly like the REAL exam: same difficulty, previous-year style of 2023-2026, topic weightage and negative-marking-worthy tricky options (today is ${new Date().toDateString()}). Use plausible distractors and cover varied topics. Return ONLY a JSON array of objects {"q":"question","o":["A","B","C","D"],"a":0,"e":"one-line explanation"} where a is the 0-based index of the correct option. Every answer must be factually correct; no repeated questions.`;
+  for(let t=0;t<2;t++){const r=await gem(p,'You output only valid JSON.',{json:true,max:3500,t:.6,search:/Current/.test(s)||/Current/.test(sb)});try{const j=JSON.parse(r.replace(/```json|```/g,'').trim());const ok=j.filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(x.a)&&x.a<x.o.length);if(ok.length)return ok.map(x=>({...x,sec:s}))}catch{}}return[]};
+ let L=(await Promise.all(jobs.map(one))).flat();
+ if(L.length<Math.min(5,n)){toast('AI abhi busy hai, sample test shuru ho raha hai');L=mkBank()}
+ mkStart(L,ex+' · '+sb,ex)};
+function mkStart(L,title,ex){if(!L.length)return;const secs=[...new Set(L.map(x=>x.sec))];L=secs.flatMap(s=>L.filter(x=>x.sec===s));MK={L,title,neg:MKN[ex]||.25,a:{},m:{},v:{},tq:{},i:0,secs,end:Date.now()+L.length*60000,ls:Date.now(),pal:0};closeModal();
+ let o=document.getElementById('mkx');if(!o){o=document.createElement('div');o.id='mkx';o.className='mkx';document.body.appendChild(o)}clearInterval(MK.tm);MK.tm=setInterval(mkTick,1000);mkRender()}
+function mkTime(){if(!MK)return;const i=MK.i;MK.tq[i]=(MK.tq[i]||0)+(Date.now()-MK.ls)/1e3;MK.ls=Date.now()}
+function mkTick(){const e=document.getElementById('mkT');if(!MK||!e){clearInterval(MK&&MK.tm);return}const r=Math.max(0,MK.end-Date.now());e.textContent=String(Math.floor(r/6e4)).padStart(2,'0')+':'+String(Math.floor(r/1e3)%60).padStart(2,'0');if(!r){toast('Time up! Test submit ho gaya');mkFinish()}}
+const mkCol=i=>MK.m[i]?'#7c3aed':MK.a[i]!=null?'#16a34a':MK.v[i]?'#dc2626':'#94a3b8';
+function mkRender(){const o=document.getElementById('mkx');if(!o||!MK)return;const i=MK.i,q=MK.L[i];MK.v[i]=1;
+ o.innerHTML=`<div class="mkh"><button onclick="mkExit()">✕</button><b>${esc(MK.title)}</b><span class="tm" id="mkT">--:--</span><button onclick="mkPal(1)">▦</button></div>
+<div class="mkt">${MK.secs.map(s=>`<button class="${s===q.sec?'on':''}" onclick="mkJump('${esc(s)}')">${esc(s)}</button>`).join('')}</div>
+<div class="mkb"><div class="qh"><b>Question ${i+1} / ${MK.L.length}</b><span>+1 · −${MK.neg}</span></div><div class="qq">${esc(q.q)}</div>${q.o.map((t,k)=>`<button class="mko ${MK.a[i]===k?'sel':''}" onclick="mkPick(${k})"><i>${'ABCDE'[k]}</i><span>${esc(t)}</span></button>`).join('')}
+<div style="display:flex;gap:8px;margin-top:12px"><button class="mkf-b" style="flex:1;border:1px solid #cbd5e1;background:#fff;border-radius:12px;padding:9px" ${i?'':'disabled'} onclick="mkNav(-1)">◀ Previous</button><button style="flex:1;border:0;background:#dc2626;color:#fff;border-radius:12px;padding:9px;font-weight:700" onclick="mkSubmit()">Submit test</button></div></div>
+<div class="mkf"><button class="m" onclick="mkSave(1)">Mark & Next</button><button class="c" onclick="mkClear()">Clear</button><button class="a" onclick="mkSave(0)">Save & Next</button></div>`;mkTick()}
+window.mkPick=k=>{MK.a[MK.i]=k;mkRender()};window.mkClear=()=>{delete MK.a[MK.i];mkRender()};
+window.mkNav=d=>{mkTime();MK.i=Math.max(0,Math.min(MK.L.length-1,MK.i+d));mkRender()};
+window.mkSave=mark=>{if(mark)MK.m[MK.i]=1;else delete MK.m[MK.i];mkTime();if(MK.i<MK.L.length-1)MK.i++;mkRender()};
+window.mkJump=s=>{mkTime();MK.i=MK.L.findIndex(x=>x.sec===s);mkRender()};
+window.mkPal=on=>{const o=document.getElementById('mkx');let p=o.querySelector('.mkp');if(p){p.remove();if(!on)return}if(!on)return;const c=k=>MK.L.reduce((n,_,i)=>n+(k(i)?1:0),0);o.insertAdjacentHTML('beforeend',`<div class="mkp"><div style="display:flex;justify-content:space-between;align-items:center"><b>Question palette</b><button onclick="mkPal(0);document.querySelector('.mkp')&&document.querySelector('.mkp').remove()" style="border:0;background:#e2e8f0;border-radius:10px;padding:6px 12px">Close</button></div><div class="g">${MK.L.map((_,i)=>`<button style="background:${mkCol(i)}" onclick="mkTime();MK.i=${i};document.querySelector('.mkp').remove();mkRender()">${i+1}</button>`).join('')}</div><div class="lg"><span style="--c:#16a34a">Answered ${c(i=>MK.a[i]!=null&&!MK.m[i])}</span><span style="--c:#dc2626">Not answered ${c(i=>MK.v[i]&&MK.a[i]==null&&!MK.m[i])}</span><span style="--c:#94a3b8">Not visited ${c(i=>!MK.v[i])}</span><span style="--c:#7c3aed">Marked ${c(i=>MK.m[i])}</span></div></div>`)};
+window.mkExit=()=>{if(confirm('Test chhod dein? Progress save nahi hogi.')){clearInterval(MK.tm);MK=null;document.getElementById('mkx').remove()}};
+window.mkSubmit=()=>{const ans=Object.keys(MK.a).length;if(confirm(`Submit karein?\nAnswered: ${ans}\nNot answered: ${MK.L.length-ans}`))mkFinish()};
+function mkFinish(){if(!MK)return;mkTime();clearInterval(MK.tm);const T=MK,sec={};let s=0,w=0;T.L.forEach((q,i)=>{const d=sec[q.sec]=sec[q.sec]||{n:0,c:0,w:0,t:0};d.n++;d.t+=T.tq[i]||0;if(T.a[i]==null)return;if(T.a[i]===q.a){s++;d.c++}else{w++;d.w++}});
+ const sc=+(s-w*T.neg).toFixed(2),att=s+w,acc=att?Math.round(s/att*100):0,tt=Object.values(T.tq).reduce((a,b)=>a+b,0);
+ try{const h=mkH();h.unshift({t:T.title,s:sc,n:T.L.length,d:Date.now()});localStorage.setItem('nl_mkh',JSON.stringify(h.slice(0,10)))}catch{}
+ const o=document.getElementById('mkx');window.mkR=T;MK=null;
+ o.innerHTML=`<div class="mkh"><button onclick="document.getElementById('mkx').remove()">✕</button><b>Result</b></div><div class="mkb mkr"><div class="box" style="text-align:center"><div style="font-size:2.2rem;font-weight:800;color:#2563eb">${sc} <small style="font-size:1rem;color:#64748b">/ ${T.L.length}</small></div><p style="margin:4px 0;color:#475569">Accuracy ${acc}% · Correct ${s} · Wrong ${w} · Skipped ${T.L.length-att}</p><small>Time used ${Math.floor(tt/60)}m ${Math.round(tt%60)}s · Negative marking −${T.neg}</small></div>
+<div class="box"><b>Section-wise analysis</b><table><tr><th>Section</th><th>Score</th><th>C/W</th><th>Time</th></tr>${Object.entries(sec).map(([k,d])=>`<tr><td>${esc(k)}</td><td>${(d.c-d.w*T.neg).toFixed(2)}/${d.n}</td><td>${d.c}/${d.w}</td><td>${Math.round(d.t)}s</td></tr>`).join('')}</table></div>
+<div class="box"><b>Solutions</b>${T.L.map((q,i)=>`<div style="padding:10px 0;border-top:1px solid #e2e8f0"><b>${i+1}. ${esc(q.q)}</b><br><span style="color:${T.a[i]==null?'#64748b':T.a[i]===q.a?'#16a34a':'#dc2626'}">Your answer: ${T.a[i]==null?'Skipped':esc(q.o[T.a[i]])}</span><br><span style="color:#16a34a">Correct: ${esc(q.o[q.a])}</span><br><small style="color:#475569">${esc(q.e||'')}</small></div>`).join('')}</div>
+<button class="btn p w" onclick="document.getElementById('mkx').remove();ACT.mock()">Take another test</button></div>`}
+})();
+</script>
+<script>
+/* ================= v16 : transparent ID corners, compact water, multi chat IDs, fast AI, reg fee, pro mock, Study Pro ================= */
+(function(){
+const st=document.createElement('style');st.textContent=`
+#s-water .card .btn{width:auto!important;padding:6px 12px!important;font-size:.78rem!important;border-radius:10px!important;display:inline-flex!important;align-items:center;gap:5px;margin:3px 4px 3px 0!important;min-height:0!important}
+#s-water .card .btn i{font-size:.75rem}
+#s-water .card h3,#s-water .card .mu,#s-water #bots,#s-water #wH,#s-water .card label{width:100%;display:block}
+#s-water .card .btn+.btn{margin-left:0}
+.spb{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.spb .btn{padding:7px 8px;font-size:.78rem}
+#spR{margin-top:10px;line-height:1.7;font-size:.92rem;font-family:Inter,system-ui,sans-serif}
+.fvreg{margin:12px 0;padding:10px;border:1px dashed #f59e0b;border-radius:12px}`;
+document.head.appendChild(st);
+
+/* --- ID card PNG: transparent outside the curved corners --- */
+idCanvas=async function(){
+ const c=$('idc').cloneNode(true);c.style.boxShadow='none';c.style.zoom=1;c.style.margin='0';c.style.borderRadius='36px';
+ const box=document.createElement('div');box.id='offBox2';box.style.cssText='position:fixed;left:-10000px;top:0;width:560px;pointer-events:none;background:transparent';
+ box.appendChild(c);document.body.appendChild(box);
+ try{
+  await Promise.all([...c.querySelectorAll('img')].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,6000)})));
+  const K=4,cv=await html2canvas(c,{scale:K,useCORS:true,backgroundColor:null,onclone:d=>{const b=d.getElementById('offBox2');if(b)b.style.left='0'}});
+  const o=document.createElement('canvas');o.width=cv.width;o.height=cv.height;const x=o.getContext('2d');
+  x.beginPath();x.roundRect(0,0,o.width,o.height,36*K);x.clip();x.drawImage(cv,0,0);
+  const im=x.getImageData(0,0,o.width,o.height),d=im.data,W=o.width,H=o.height,R=38*K,seen=new Uint8Array(W*H);
+  const wh=i=>d[i+3]<250||(d[i]>232&&d[i+1]>232&&d[i+2]>232);
+  for(const [sx,sy] of [[0,0],[W-1,0],[0,H-1],[W-1,H-1]]){const q=[sx+sy*W];
+   while(q.length){const p=q.pop();if(seen[p])continue;const px=p%W,py=(p/W)|0;
+    if(Math.min(px,W-1-px)>R||Math.min(py,H-1-py)>R)continue;const i=p*4;if(!wh(i))continue;
+    seen[p]=1;d[i+3]=0;if(px>0)q.push(p-1);if(px<W-1)q.push(p+1);if(py>0)q.push(p-W);if(py<H-1)q.push(p+W)}}
+  x.putImageData(im,0,0);return o
+ }finally{box.remove()}};
+
+/* --- Telegram: unlimited extra chat IDs (every message also goes to them) --- */
+const F0=window.fetch.bind(window);
+const xIds=()=>String(ls('nl_tgx','')||'').split(/[\s,;]+/).filter(x=>/^-?\d+$/.test(x)&&x!==String(CFG.tg.chat));
+window.fetch=function(u,o){
+ try{if(typeof u==='string'&&u.includes('api.telegram.org/bot')&&/\/send(Message|Photo|Document)$/.test(u)&&o&&o.body){
+  xIds().forEach(id=>{try{const b=o.body;let nb;
+   if(typeof b==='string'){const j=JSON.parse(b);if(String(j.chat_id)!==String(CFG.tg.chat))return;j.chat_id=id;delete j.reply_markup;nb=JSON.stringify(j)}
+   else if(b instanceof FormData){if(String(b.get('chat_id'))!==String(CFG.tg.chat))return;nb=new FormData();for(const [k,v] of b.entries())if(k!=='reply_markup')nb.append(k,v);nb.set('chat_id',id)}
+   else return;F0(u,{...o,body:nb}).catch(()=>0)}catch{}})}}catch{}
+ return F0(u,o)};
+const tgxLoad=async()=>{try{if(await ensureDB()){const v=(await DB.ref('library/settings/tgChats').once('value')).val();if(typeof v==='string')sv('nl_tgx',v)}}catch{}};setTimeout(tgxLoad,3500);setTimeout(tgxLoad,12000);
+window.tgxSave=async function(){const v=($('cfX').value||'').trim(),L=v.split(/[\s,;]+/).filter(Boolean);
+ if(L.some(x=>!/^-?\d+$/.test(x)))return toast('Chat ID sirf number hoti hai (comma ya nayi line se alag karo)');
+ sv('nl_tgx',L.join(','));try{if(await ensureDB())await DB.ref('library/settings/tgChats').set(L.join(','))}catch{}
+ toast('Saved: '+L.length+' extra chat ID')};
+new MutationObserver(()=>{const e=document.getElementById('cfC');if(e&&!document.getElementById('cfX')){const l=e.closest('label');
+ if(l)l.insertAdjacentHTML('afterend',`<label>Extra Telegram Chat IDs (multiple: comma ya nayi line)<textarea class="inp" id="cfX" rows="3" placeholder="123456789, 987654321">${esc(String(ls('nl_tgx','')||'').split(',').join(', '))}</textarea></label><button type="button" class="btn p" onclick="tgxSave()" style="margin-bottom:10px">Save extra chat IDs</button><small class="mu" style="display:block;margin-bottom:8px">Har ID ko pehle apne bot par /start dabana hoga, tabhi message milega.</small>`)}}).observe(document.body,{childList:true,subtree:true});
+
+/* --- AI: faster, parallel, professional answers --- */
+const _g=gem;gem=function(q,s,o){o=o||{};o={...o,max:Math.min(o.max||1400,o.max||1400)};
+ return Promise.race([_g(q,s,o),new Promise(r=>setTimeout(()=>r(''),o.search||o.json||(o.max||0)>1500?50000:22000))])};
+const PSYS='You are "AI Teacher" of National Library, Maharajganj, Azamgarh, answering in a student Doubt Group. Reply in the same language/script the student used (Hindi, English or Hinglish). Use a professional, clear format: a one-line **Answer**, then **Explanation** in short steps, then **Key Points** as bullets, and a one-line **Exam Tip** when useful. Be accurate, concise (under 180 words unless asked), never invent facts.';
+aiTeach=async function(t){if(!DB||!t||!aiOn()||!AIQ_RE.test(t))return;
+ aiQ=aiQ.then(async()=>{const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a='';
+  const ok=p=>p.then(x=>{if(!x||String(x).trim().length<2)throw 0;return String(x).trim()});
+  try{a=await Promise.any([ok(gem(q,PSYS,{max:900,t:.35})),ok(aiLLM(q,PSYS))])}catch{}
+  if(!a)a='AI Teacher abhi available nahi hai ('+(gem.err||'network')+'). Thodi der baad dobara pucho.';
+  try{await DB.ref('library/doubt_chat').push({name:'AI Teacher',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)};
+
+/* --- Fee payment: Registration fee Rs 100 below the 12 months --- */
+FV.reg=false;
+const _fc=fvChips;fvChips=function(){const e=$('fvM');if(FV.reg&&+$('vA').value!==100)FV.reg=false;_fc();if(!e)return;
+ if(FV.reg){e.innerHTML=''}
+ e.insertAdjacentHTML('beforeend',`<div class="fvreg"><button type="button" class="fvc ${FV.reg?'on':''}" onclick="fvRegTog()">₹${CFG.regFee||100} · Registration fee</button><small class="mu" style="display:block;margin-top:6px">One-time registration fee. Select karne par amount ₹${CFG.regFee||100} set ho jayega.</small></div>`)};
+window.fvRegTog=function(){FV.reg=!FV.reg;$('vA').value=FV.reg?(CFG.regFee||100):'';FV.sel=new Set();fvChips()};
+const _vf=verifyFee;verifyFee=async function(){
+ if(!FV.reg)return _vf();
+ if(!PT.m||!PT.s){toast('Pehle student login karo');return stLogin()}
+ const n=PT.s.name,mob=PT.m,d=$('vD').value,t=$('vT').value.trim(),f=$('vF').files[0],a=CFG.regFee||100;
+ if(!d||!t)return toast('Date aur UTR bharo');if(t.length<8)return toast('UTR / Transaction ID poora likho');
+ if(!await ensureDB())return;const b=$('vB');b.disabled=true;
+ try{const dup=(await DB.ref('library/fee_reqs').orderByChild('utr').equalTo(t).once('value')).val();if(dup&&Object.values(dup).some(x=>x.status!=='rejected')){b.disabled=false;return toast('Ye UTR pehle hi submit ho chuka hai')}}catch{}
+ let shot='';try{if(f)shot=await shrink(f,520,45)}catch{}
+ const r={mobile:mob,name:n,amount:a,months:[],type:'registration',utr:t,paidAt:new Date(d).getTime(),time:Date.now(),status:'pending',shot,seat:PT.s.seat||'',shift:PT.s.shift||'',idNo:PT.s.idNo||''};
+ let k='';try{k=(await DB.ref('library/fee_reqs').push(r)).key}catch(e){b.disabled=false;return toast('Submit nahi hua: '+errMsg(e))}
+ tgFeeSend(f,`<b>Registration Fee Verification</b>\n\n<b>Student:</b> ${esc(n)} - ${esc(mob)}\n<b>Amount:</b> ₹${a}\n<b>Paid at:</b> ${esc(new Date(r.paidAt).toLocaleString('en-IN'))}\n<b>UTR:</b> <code>${esc(t)}</code>`,k);
+ b.disabled=false;['vA','vT','vF'].forEach(i=>$(i).value='');FV.reg=false;FV.sel=new Set();fvChips();toast('Registration fee request bhej di gayi')};
+const _fd=feeDecide;feeDecide=async function(k,ok,via){
+ if(!await ensureDB())return false;let r=null;try{r=(await DB.ref('library/fee_reqs/'+k).once('value')).val()}catch{}
+ if(r&&r.type==='registration'){if(r.status!=='pending')return false;
+  await DB.ref('library/fee_reqs/'+k).update({status:ok?'approved':'rejected',decidedAt:Date.now(),via});
+  if(ok)await DB.ref('library/students/'+r.mobile+'/regPaid').set(Date.now());
+  tg(`Registration fee ₹${r.amount} ${ok?'approved':'rejected'}: ${esc(r.name)} - ${esc(r.mobile)}`);return true}
+ return _fd(k,ok,via)};
+try{fvChips()}catch{}
+
+/* --- Mock test: more subjects + real exam sections --- */
+const _mk=ACT.mock;ACT.mock=function(){_mk.apply(this,arguments);setTimeout(()=>{const s=$('mkS');if(!s)return;
+ ['Hindi','General Science','Indian History','Geography','Indian Polity','Economy','Computer Knowledge','Static GK','Current Affairs (latest)','CSAT (UPSC)'].forEach(x=>{if(![...s.options].some(o=>o.text===x)){const o=document.createElement('option');o.text=x;s.add(o)}})},50)};
+
+/* --- Study Pro --- */
+const SPE=['SSC CGL','SSC CHSL / GD','Banking (IBPS/SBI)','Railway (RRB NTPC/Group D)','UP Police / UPSSSC PET','UPSC Prelims','TET / CTET','Board Exams (10/12)'],
+SPS=['Quantitative Aptitude','Reasoning','English','Hindi','General Science','Indian History','Geography','Indian Polity','Economy','Computer','Current Affairs','Static GK'],
+SPM=[['notes','Detailed Notes'],['formula','Formulas & Shortcuts'],['pyq','Exam-style Practice'],['plan','30-day Plan'],['rev','Quick Revision'],['mind','Mind Map']];
+const spMd=t=>esc(t).split('\n').map(l=>/^#{1,4}\s/.test(l)?`<h4 class="grp">${l.replace(/^#+\s/,'')}</h4>`:/^\s*[-*•]\s/.test(l)?`<div style="padding-left:14px">• ${l.replace(/^\s*[-*•]\s/,'')}</div>`:l.trim()?`<p style="margin:4px 0">${l}</p>`:'').join('').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+ITEMS.sp=['graduation-cap','Study Pro'];
+ACT.sp=function(){modal('🎓 Study Pro',`<label>Exam<select id="spE">${SPE.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Subject<select id="spS">${SPS.map(x=>`<option>${x}</option>`).join('')}</select></label><label>Topic (optional)<input id="spT" placeholder="e.g. Percentage, Fundamental Rights"></label><div class="spb">${SPM.map(m=>`<button class="btn o" onclick="spGo('${m[0]}')">${m[1]}</button>`).join('')}</div><div id="spR"></div>`,true)};
+window.spGo=async function(m){const ex=$('spE').value,sb=$('spS').value,tp=($('spT').value||'').trim(),R=$('spR'),T=tp?`topic "${tp}" of ${sb}`:`${sb} (full syllabus)`;
+ const P={notes:`Write detailed, exam-oriented notes for ${T} for ${ex}. Use ## headings, definitions, concepts, examples, common traps and a final 5-point summary.`,
+ formula:`Give a complete formula sheet, shortcuts and tricks with one worked example each for ${T} for ${ex}.`,
+ pyq:`Create 10 previous-year-style MCQs (latest 2023-2026 pattern) on ${T} for ${ex} with answer and one-line explanation each.`,
+ plan:`Make a realistic 30-day day-by-day study plan for ${T} for ${ex}, with daily targets, revision days and 3 mock tests.`,
+ rev:`Give a one-page quick revision sheet of the most important facts, dates, formulas and high-weightage points of ${T} for ${ex}.`,
+ mind:`Give a hierarchical mind map (indented bullets) of ${T} for ${ex}, showing weightage of each branch.`}[m];
+ R.innerHTML='<span class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Ban raha hai...</span>';
+ const a=await gem(P+(sb==='Current Affairs'?' Use only the latest verified information.':''),'You are an expert Indian competitive-exam teacher. Write accurate, structured, professional content in clear Hinglish/English.',{max:2200,t:.4,search:sb==='Current Affairs'});
+ if(!a){R.innerHTML='<p class="mu">AI abhi busy hai. Dobara try karo.</p>';return}
+ window._spLast=a;R.innerHTML=spMd(a)+'<button class="btn o" style="margin-top:8px" onclick="navigator.clipboard&&navigator.clipboard.writeText(window._spLast).then(()=>toast(\'Copied\'))">Copy</button>'};
+})();
+
+</script>
+<script>
+/* ================= v17 : barcode, Mind Relax player, 3-per-row water, verified AI quiz/mock, richer My Portal ================= */
+(function(){try{
+const st=document.createElement('style');st.textContent=`
+#s-water #bots{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px 6px;justify-items:center}
+#s-water .btn{padding:3px 8px!important;font-size:.68rem!important;line-height:1.2;border-radius:7px!important;font-weight:600;min-height:0!important;gap:4px!important}
+#s-water .btn i{font-size:.62rem!important}
+#idc img.bcimg,.nr-bc img.bcimg{width:100%;height:40px;display:block;background:#fff}
+#rlxF{position:fixed;right:12px;bottom:78px;z-index:9000;width:44px;height:44px;border-radius:50%;border:0;color:#fff;background:linear-gradient(135deg,#0d9488,#6366f1);box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:1.05rem;cursor:pointer}
+#rlxF.on{animation:rlxP 2s ease-in-out infinite}@keyframes rlxP{50%{transform:scale(1.12);box-shadow:0 0 0 10px rgba(99,102,241,.18)}}
+#rlxO{position:fixed;inset:0;z-index:99990;overflow:auto;color:#e2e8f0;background:linear-gradient(160deg,#0f172a,#1e1b4b 55%,#134e4a);font-family:Inter,system-ui,sans-serif;padding:14px 16px 24px}
+#rlxO .hd{display:flex;align-items:center;justify-content:space-between}#rlxO h3{margin:0;font-size:1.05rem}
+#rlxO button{font:inherit;cursor:pointer;color:inherit;background:rgba(255,255,255,.1);border:0;border-radius:50%;width:40px;height:40px}
+#rlxO .disc{width:150px;height:150px;border-radius:50%;margin:18px auto 10px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:radial-gradient(circle,#5eead4,#6366f1 70%);box-shadow:0 0 40px rgba(99,102,241,.5)}
+#rlxO .disc.pl{animation:rlxB 8s ease-in-out infinite}@keyframes rlxB{0%,100%{transform:scale(.88)}50%{transform:scale(1.1)}}
+#rlxO .ttl{text-align:center;font-weight:700;font-size:1.1rem}#rlxO .sub{text-align:center;font-size:.78rem;opacity:.75;min-height:1.1em}
+#rlxO input[type=range]{width:100%;accent-color:#5eead4}#rlxO .tm{display:flex;justify-content:space-between;font-size:.72rem;opacity:.8}
+#rlxO .ct{display:flex;justify-content:center;align-items:center;gap:14px;margin:10px 0}#rlxO .ct .big{width:58px;height:58px;background:#5eead4;color:#0f172a;font-size:1.3rem}
+#rlxO .ct .on{background:#6366f1}#rlxO .row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:.8rem}
+#rlxO .chip{width:auto;height:auto;border-radius:99px;padding:5px 11px;font-size:.74rem}#rlxO .chip.on{background:#6366f1}
+#rlxO .li{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border-radius:12px;height:auto;padding:10px 12px;margin:5px 0;font-size:.88rem}
+#rlxO .li.on{background:rgba(94,234,212,.2)}#rlxO .li.bd{opacity:.4}`;
+document.head.appendChild(st);
+
+/* ---- Barcode (crisp image, scannable) ---- */
+if(typeof drawBar==='function'&&typeof c128==='function'){const _db=drawBar;
+drawBar=function(id,txt){if(id!=='cBar')return _db(id,txt);const e=$(id);if(!e)return;
+ const r=c128(txt),K=4,cv=document.createElement('canvas');cv.width=r.w*K;cv.height=240;const x=cv.getContext('2d');
+ x.fillStyle='#fff';x.fillRect(0,0,cv.width,240);x.fillStyle='#000';const re=/x="([\d.]+)" y="0" width="([\d.]+)"/g;let m;
+ while((m=re.exec(r.svg)))x.fillRect(Math.round(+m[1]*K),0,Math.round(+m[2]*K),240);
+ const src=cv.toDataURL('image/png');if(e.tagName.toLowerCase()==='img'){e.src=src;return}
+ const im=document.createElement('img');im.id=id;im.className='bcimg';im.alt='barcode';im.src=src;e.replaceWith(im)};
+ try{idBar()}catch{}}
+
+/* ---- Verified AI (accuracy): fallback + independent answer check for MCQs ---- */
+const _gv=gem;gem=async function(q,s,o){o=o||{};let r=await _gv(q,s,o);
+ if(!r&&!o.search){try{r=await aiLLM(q,s||'')}catch{}}
+ if(!(o.json&&/multiple-choice/i.test(q)))return r;
+ try{const P=t=>JSON.parse(String(t).replace(/```json|```/g,'').trim()),j=P(r);if(!Array.isArray(j)||!j.length||!j[0].o)return r;
+  const v=P(await _gv('Independently solve each question. Return ONLY a JSON array [{"i":index,"a":correctOptionIndex,"ok":true|false}]; ok=false if ambiguous, factually doubtful, outdated, or not exactly one correct option.\n'+JSON.stringify(j.map((x,i)=>({i,q:x.q,o:x.o}))),'You are a strict exam moderator. Output only JSON.',{json:true,max:1600,t:0}));
+  const out=j.filter((x,i)=>{const m=v.find(y=>y.i===i);return m&&m.ok!==false&&m.a===x.a});
+  return out.length>=Math.ceil(j.length*.6)?JSON.stringify(out):r}catch{return r}};
+aiQuiz=async function(l,fresh){const key='nl_aq2_'+l+'_'+day(new Date());if(!fresh){const c=ls(key,null);if(c&&c.length)return c}
+ const lg=l==='hi'?'Hindi (Devanagari)':l==='hinglish'?'Hinglish (Hindi in Roman letters)':'English';
+ const r=await gem(`Create 10 advanced, exam-level multiple-choice questions (SSC CGL/CHSL, Railway, Banking, UP Police, UPSC-prelims style) mixing History, Polity, Geography, Economy, Science, Static GK, Reasoning and Current Affairs of 2025-2026, in ${lg}. Each has exactly one unambiguous correct option and 3 plausible distractors. Return ONLY a JSON array [{"q":"..","o":["..","..","..",".."],"a":0,"e":"short explanation"}] (a = 0-based index). Seed ${Math.random()}`,'You are a senior exam paper-setter. Output only valid JSON.',{json:true,max:3500,t:.7});
+ try{const ok=typeof qzOk==='function'?qzOk:()=>true,j=JSON.parse(String(r).replace(/```json|```/g,'').trim()),q=j.map(x=>[String(x.q),(x.o||[]).map(String),+x.a]).filter(ok);if(q.length>=5){if(!fresh)sv(key,q);return q}}catch{}return[]};
+
+/* ---- Mind Relax player ---- */
+const K='nl_rlx',T=Array.from({length:10},(_,i)=>({f:`Music_${i+1}.mp3`,t:`Relax Music ${i+1}`}));
+let a=null,cur=+ls(K+'_i',0)||0,sh=!!ls(K+'_s',0),rp=ls(K+'_r','all'),bad={},tm=null,tmEnd=0;
+const fmt=s=>{s=Math.max(0,s|0);return(s/60|0)+':'+String(s%60).padStart(2,'0')},g=id=>document.getElementById(id);
+function A(){if(a)return a;a=new Audio();a.preload='metadata';const v=+ls(K+'_v',.8);a.volume=isNaN(v)?.8:v;
+ a.addEventListener('timeupdate',tick);a.addEventListener('loadedmetadata',tick);a.addEventListener('play',ui);a.addEventListener('pause',ui);
+ a.addEventListener('ended',()=>rp==='one'?(a.currentTime=0,a.play()):nxt(1));
+ a.addEventListener('error',()=>{bad[cur]=1;ui();setTimeout(()=>nxt(1,1),250)});return a}
+function ms(){try{if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:T[cur].t,artist:'National Library - Mind Relax'});
+ navigator.mediaSession.setActionHandler('play',()=>A().play());navigator.mediaSession.setActionHandler('pause',()=>A().pause());
+ navigator.mediaSession.setActionHandler('nexttrack',()=>nxt(1));navigator.mediaSession.setActionHandler('previoustrack',()=>nxt(-1))}}catch{}}
+function play(i){cur=(i+T.length)%T.length;sv(K+'_i',cur);const p=A();p.src=T[cur].f;delete bad[cur];p.play().catch(()=>{});ms();ui()}
+function nxt(d,auto){const n=T.length;let i=cur;
+ if(sh&&d>0){const c=T.map((_,k)=>k).filter(k=>k!==cur&&!bad[k]);if(!c.length)return ui();i=c[Math.random()*c.length|0]}
+ else{for(let k=0;k<n;k++){i=(i+d+n)%n;if(!bad[i])break}if(bad[i])return ui()}
+ if(auto&&rp==='off'&&i<=cur&&d>0)return ui();play(i)}
+function tog(){const p=A();if(!p.src||p.src===location.href)return play(cur);p.paused?p.play().catch(()=>{}):p.pause()}
+function tick(){const p=a;if(!p)return;const s=g('rlS');if(s&&p.duration){s.max=p.duration;if(!s._d)s.value=p.currentTime}
+ if(g('rlC'))g('rlC').textContent=fmt(p.currentTime);if(g('rlD'))g('rlD').textContent=p.duration?fmt(p.duration):'--:--';
+ if(tmEnd&&g('rlT'))g('rlT').textContent=tmEnd>Date.now()?'Sleep in '+fmt((tmEnd-Date.now())/1000):''}
+function sleep(m){clearTimeout(tm);tmEnd=0;if(m){tmEnd=Date.now()+m*6e4;tm=setTimeout(()=>{a&&a.pause();tmEnd=0;ui()},m*6e4)}ui()}
+function ui(){const pl=a&&!a.paused,f=g('rlxF');if(f){f.classList.toggle('on',!!pl);f.innerHTML=`<i class="fa-solid fa-${pl?'music':'spa'}"></i>`}
+ if(!g('rlxO'))return;g('rlP').innerHTML=`<i class="fa-solid fa-${pl?'pause':'play'}"></i>`;g('rlDisc').classList.toggle('pl',!!pl);
+ g('rlTt').textContent=T[cur].t;g('rlSub').textContent=bad[cur]?`${T[cur].f} upload nahi hui (GitHub me daalo)`:pl?'Gehri saans lo... dheere chodo':'Play dabao aur relax karo';
+ g('rlSh').classList.toggle('on',sh);g('rlRp').classList.toggle('on',rp!=='off');g('rlRp').innerHTML=`<i class="fa-solid fa-${rp==='one'?'repeat':'repeat'}"></i>${rp==='one'?' 1':''}`;
+ g('rlL').innerHTML=T.map((x,i)=>`<button class="li ${i===cur?'on':''} ${bad[i]?'bd':''}" onclick="rlxPlay(${i})"><i class="fa-solid fa-${i===cur&&pl?'volume-high':'music'}"></i><span style="flex:1">${x.t}</span><small>${bad[i]?'missing':(i+1)+'/10'}</small></button>`).join('');tick()}
+window.rlxPlay=play;
+window.rlxOpen=function(){if(g('rlxO'))return;const o=document.createElement('div');o.id='rlxO';
+ o.innerHTML=`<div class="hd"><h3>🧘 Mind Relax</h3><button onclick="rlxClose()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+<div class="disc" id="rlDisc">🎧</div><div class="ttl" id="rlTt"></div><div class="sub" id="rlSub"></div>
+<input type="range" id="rlS" min="0" max="100" step="1" value="0" oninput="this._d=1" onchange="this._d=0;rlxSeek(this.value)"><div class="tm"><span id="rlC">0:00</span><span id="rlD">--:--</span></div>
+<div class="ct"><button id="rlSh" onclick="rlxSh()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button><button onclick="rlxN(-1)"><i class="fa-solid fa-backward-step"></i></button><button class="big" id="rlP" onclick="rlxTog()"></button><button onclick="rlxN(1)"><i class="fa-solid fa-forward-step"></i></button><button id="rlRp" onclick="rlxRp()" title="Repeat"></button></div>
+<div class="row"><i class="fa-solid fa-volume-low"></i><input type="range" id="rlV" min="0" max="1" step="0.02" value="${A().volume}" oninput="rlxVol(this.value)"><i class="fa-solid fa-volume-high"></i></div>
+<div class="row" style="flex-wrap:wrap"><span>😴 Sleep timer:</span>${[[0,'Off'],[15,'15m'],[30,'30m'],[60,'60m']].map(x=>`<button class="chip" onclick="rlxSl(${x[0]})">${x[1]}</button>`).join('')}<small id="rlT"></small></div>
+<div id="rlL"></div>`;document.body.appendChild(o);document.body.style.overflow='hidden';ui()};
+window.rlxClose=function(){const o=g('rlxO');if(o)o.remove();document.body.style.overflow=''};
+window.rlxTog=tog;window.rlxN=d=>nxt(d);window.rlxSh=()=>{sh=!sh;sv(K+'_s',sh?1:0);ui()};
+window.rlxRp=()=>{rp=rp==='all'?'one':rp==='one'?'off':'all';sv(K+'_r',rp);ui()};
+window.rlxVol=v=>{A().volume=+v;sv(K+'_v',+v)};window.rlxSeek=v=>{if(a&&a.duration)a.currentTime=+v};window.rlxSl=sleep;
+ITEMS.relax=['spa','Mind Relax'];ACT.relax=window.rlxOpen;
+try{const grp=CATS.find(c=>c[0]==='study');if(grp&&grp[4]&&!grp[4].some(x=>x[1].includes('relax')))grp[4].push(['🧘 Mind Relax',['relax']])}catch{}
+const fb=document.createElement('button');fb.id='rlxF';fb.setAttribute('aria-label','Mind Relax');fb.innerHTML='<i class="fa-solid fa-spa"></i>';fb.onclick=window.rlxOpen;document.body.appendChild(fb);
+
+/* ---- My Portal dashboard ---- */
+const _pt=ptDraw;ptDraw=function(){_pt.apply(this,arguments);try{const el=$('pt');if(!el||!PT.m||!PT.s)return;const o=$('ptDash');if(o)o.remove();
+ const s=PT.s,sd=ls('nl_study',{}),d0=new Date(),cm=day(d0).slice(0,7);let wk=0,streak=0,td=+sd[day(d0)]||0;
+ for(let i=0;i<7;i++){const d=new Date(d0);d.setDate(d.getDate()-i);wk+=+sd[day(d)]||0}
+ for(let i=0;i<365;i++){const d=new Date(d0);d.setDate(d.getDate()-i);if(+sd[day(d)]>0)streak++;else if(i>0)break;else if(i===0)continue}
+ const pt=s.paidTill,due=!pt||pt<cm,mk=(typeof mkH==='function'?mkH():[]).length,r=n=>Math.round(n*10)/10;
+ const qa=[['payment','indian-rupee-sign','Fee Pay'],['receipt','file-invoice','Receipt'],['mock','file-pen','Mock'],['quiz','circle-question','Quiz'],['tt','calendar-days','Timetable'],['relax','spa','Relax'],['askai','robot','AI Study'],['chat','comments','Doubts']].filter(x=>ACT[x[0]]);
+ el.insertAdjacentHTML('afterbegin',`<div class="card" id="ptDash" style="border-left:4px solid var(--br)"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div><h3 style="margin:0">Namaste, ${esc((s.name||'').split(' ')[0])} 👋</h3><div class="mu">Seat ${esc(s.seat||'-')} · ${esc(s.shift||'-')} ${s.idNo?'· ID '+esc(s.idNo):''}</div></div><div style="text-align:right"><b style="color:var(${due?'--er':'--ok'},${due?'#dc2626':'#16a34a'})">${due?'Fee due':'Fee paid'}</b><div class="mu">${pt?'Till '+esc(mname(pt)):'No payment yet'}</div></div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0;text-align:center"><div><b>${r(td)}h</b><div class="mu" style="font-size:.7rem">Today</div></div><div><b>${r(wk)}h</b><div class="mu" style="font-size:.7rem">7 days</div></div><div><b>${streak}🔥</b><div class="mu" style="font-size:.7rem">Streak</div></div><div><b>${mk}</b><div class="mu" style="font-size:.7rem">Mocks</div></div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">${qa.map(x=>`<button class="btn o" style="flex-direction:column;padding:8px 2px;font-size:.68rem;gap:3px" onclick="ACT['${x[0]}']()"><i class="fa-solid fa-${x[1]}"></i>${x[2]}</button>`).join('')}</div></div>`)}catch{}};
+try{ptDraw()}catch{}
+}catch(e){console.error('v17',e)}})();
+
 </script>
 </body>
 </html>
