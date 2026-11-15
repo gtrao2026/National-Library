@@ -2271,7 +2271,7 @@ function mkBank(){const o=MKB.map(x=>({sec:x[0],q:x[1],o:x[2],a:x[3],e:x[4]}));r
 window.mkGen=async function(){const b=$('mkB'),n=+$('mkN').value,ex=$('mkE').value,sb=$('mkS').value,lv=$('mkL').value;b.disabled=true;b.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Questions ban rahe hain...';
  const SM={'UP Police / UPSSSC PET':['General Knowledge','Hindi','Numerical Ability','Reasoning'],'Railway (RRB NTPC/Group D)':['Mathematics','Reasoning','General Science','General Awareness'],'UPSC Prelims':['History','Geography','Polity','Economy','Science','Current Affairs']};const secs=/Full/.test(sb)?(SM[ex]||['Reasoning','General Awareness','Quantitative Aptitude','English']):[sb.replace(' (latest)','')];let jobs=[];
  secs.forEach(s=>{let c=Math.ceil(n/secs.length);while(c>0){const k=Math.min(c,10);jobs.push([s,k]);c-=k}});
- const one=async([s,k])=>{const p=`Create exactly ${k} ${lv} multiple-choice questions for the Indian exam "${ex}", section "${s}", exactly like the REAL exam: same difficulty, previous-year style of 2023-2026, topic weightage and negative-marking-worthy tricky options (today is ${new Date().toDateString()}). Use plausible distractors and cover varied topics. Return ONLY a JSON array of objects {"q":"question","o":["A","B","C","D"],"a":0,"e":"one-line explanation"} where a is the 0-based index of the correct option. Every answer must be factually correct; no repeated questions.`;
+ const one=async([s,k])=>{const p=`Create exactly ${k} ${lv} multiple-choice questions for the Indian exam "${ex}", section "${s}"${TP()}, exactly like the REAL exam: same difficulty, previous-year style of 2023-2026, topic weightage and negative-marking-worthy tricky options (today is ${new Date().toDateString()}). Use plausible distractors and cover varied topics. Return ONLY a JSON array of objects {"q":"question","o":["A","B","C","D"],"a":0,"e":"one-line explanation"} where a is the 0-based index of the correct option. Every answer must be factually correct; no repeated questions.`;
   for(let t=0;t<2;t++){const r=await gem(p,'You output only valid JSON.',{json:true,max:3500,t:.6,search:/Current/.test(s)||/Current/.test(sb)});try{const j=JSON.parse(r.replace(/```json|```/g,'').trim());const ok=j.filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(x.a)&&x.a<x.o.length);if(ok.length)return ok.map(x=>({...x,sec:s}))}catch{}}return[]};
  let L=(await Promise.all(jobs.map(one))).flat();
  if(L.length<Math.min(5,n)){toast('AI abhi busy hai, sample test shuru ho raha hai');L=mkBank()}
@@ -2296,7 +2296,7 @@ window.mkExit=()=>{if(confirm('Test chhod dein? Progress save nahi hogi.')){clea
 window.mkSubmit=()=>{const ans=Object.keys(MK.a).length;if(confirm(`Submit karein?\nAnswered: ${ans}\nNot answered: ${MK.L.length-ans}`))mkFinish()};
 function mkFinish(){if(!MK)return;mkTime();clearInterval(MK.tm);const T=MK,sec={};let s=0,w=0;T.L.forEach((q,i)=>{const d=sec[q.sec]=sec[q.sec]||{n:0,c:0,w:0,t:0};d.n++;d.t+=T.tq[i]||0;if(T.a[i]==null)return;if(T.a[i]===q.a){s++;d.c++}else{w++;d.w++}});
  const sc=+(s-w*T.neg).toFixed(2),att=s+w,acc=att?Math.round(s/att*100):0,tt=Object.values(T.tq).reduce((a,b)=>a+b,0);
- try{const h=mkH();h.unshift({t:T.title,s:sc,n:T.L.length,d:Date.now()});localStorage.setItem('nl_mkh',JSON.stringify(h.slice(0,10)))}catch{}
+ try{const h=mkH();const rec={t:T.title,s:sc,n:T.L.length,d:Date.now(),acc,c:s,w,sec};h.unshift(rec);localStorage.setItem('nl_mkh',JSON.stringify(h.slice(0,30)));try{nlSaveRes('mock',rec)}catch{}}catch{}
  const o=document.getElementById('mkx');window.mkR=T;MK=null;
  o.innerHTML=`<div class="mkh"><button onclick="document.getElementById('mkx').remove()">✕</button><b>Result</b></div><div class="mkb mkr"><div class="box" style="text-align:center"><div style="font-size:2.2rem;font-weight:800;color:#2563eb">${sc} <small style="font-size:1rem;color:#64748b">/ ${T.L.length}</small></div><p style="margin:4px 0;color:#475569">Accuracy ${acc}% · Correct ${s} · Wrong ${w} · Skipped ${T.L.length-att}</p><small>Time used ${Math.floor(tt/60)}m ${Math.round(tt%60)}s · Negative marking −${T.neg}</small></div>
 <div class="box"><b>Section-wise analysis</b><table><tr><th>Section</th><th>Score</th><th>C/W</th><th>Time</th></tr>${Object.entries(sec).map(([k,d])=>`<tr><td>${esc(k)}</td><td>${(d.c-d.w*T.neg).toFixed(2)}/${d.n}</td><td>${d.c}/${d.w}</td><td>${Math.round(d.t)}s</td></tr>`).join('')}</table></div>
@@ -2425,8 +2425,8 @@ const st=document.createElement('style');st.textContent=`
 #s-water .btn{padding:3px 8px!important;font-size:.68rem!important;line-height:1.2;border-radius:7px!important;font-weight:600;min-height:0!important;gap:4px!important}
 #s-water .btn i{font-size:.62rem!important}
 #idc img.bcimg,.nr-bc img.bcimg{width:100%;height:40px;display:block;background:#fff}
-#rlxF{position:fixed;right:12px;bottom:78px;z-index:9000;width:44px;height:44px;border-radius:50%;border:0;color:#fff;background:linear-gradient(135deg,#0d9488,#6366f1);box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:1.05rem;cursor:pointer}
-#rlxF.on{animation:rlxP 2s ease-in-out infinite}@keyframes rlxP{50%{transform:scale(1.12);box-shadow:0 0 0 10px rgba(99,102,241,.18)}}
+#rlxF{display:none;position:fixed;right:12px;bottom:86px;z-index:9000;width:44px;height:44px;border-radius:50%;border:0;color:#fff;background:linear-gradient(135deg,#0d9488,#6366f1);box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:1.05rem;cursor:pointer}
+#rlxF.show{display:block}#rlxF.on{animation:rlxP 2s ease-in-out infinite}@keyframes rlxP{50%{transform:scale(1.12);box-shadow:0 0 0 10px rgba(99,102,241,.18)}}
 #rlxO{position:fixed;inset:0;z-index:99990;overflow:auto;color:#e2e8f0;background:linear-gradient(160deg,#0f172a,#1e1b4b 55%,#134e4a);font-family:Inter,system-ui,sans-serif;padding:14px 16px 24px}
 #rlxO .hd{display:flex;align-items:center;justify-content:space-between}#rlxO h3{margin:0;font-size:1.05rem}
 #rlxO button{font:inherit;cursor:pointer;color:inherit;background:rgba(255,255,255,.1);border:0;border-radius:50%;width:40px;height:40px}
@@ -2475,7 +2475,7 @@ function A(){if(a)return a;a=new Audio();a.preload='metadata';const v=+ls(K+'_v'
 function ms(){try{if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:T[cur].t,artist:'National Library - Mind Relax'});
  navigator.mediaSession.setActionHandler('play',()=>A().play());navigator.mediaSession.setActionHandler('pause',()=>A().pause());
  navigator.mediaSession.setActionHandler('nexttrack',()=>nxt(1));navigator.mediaSession.setActionHandler('previoustrack',()=>nxt(-1))}}catch{}}
-function play(i){cur=(i+T.length)%T.length;sv(K+'_i',cur);const p=A();p.src=T[cur].f;delete bad[cur];p.play().catch(()=>{});ms();ui()}
+function play(i){cur=(i+T.length)%T.length;sv(K+'_i',cur);const p=A();p._stop=0;p.src=T[cur].f;delete bad[cur];p.play().catch(()=>{});ms();ui()}
 function nxt(d,auto){const n=T.length;let i=cur;
  if(sh&&d>0){const c=T.map((_,k)=>k).filter(k=>k!==cur&&!bad[k]);if(!c.length)return ui();i=c[Math.random()*c.length|0]}
  else{for(let k=0;k<n;k++){i=(i+d+n)%n;if(!bad[i])break}if(bad[i])return ui()}
@@ -2485,17 +2485,17 @@ function tick(){const p=a;if(!p)return;const s=g('rlS');if(s&&p.duration){s.max=
  if(g('rlC'))g('rlC').textContent=fmt(p.currentTime);if(g('rlD'))g('rlD').textContent=p.duration?fmt(p.duration):'--:--';
  if(tmEnd&&g('rlT'))g('rlT').textContent=tmEnd>Date.now()?'Sleep in '+fmt((tmEnd-Date.now())/1000):''}
 function sleep(m){clearTimeout(tm);tmEnd=0;if(m){tmEnd=Date.now()+m*6e4;tm=setTimeout(()=>{a&&a.pause();tmEnd=0;ui()},m*6e4)}ui()}
-function ui(){const pl=a&&!a.paused,f=g('rlxF');if(f){f.classList.toggle('on',!!pl);f.innerHTML=`<i class="fa-solid fa-${pl?'music':'spa'}"></i>`}
+function ui(){const pl=a&&!a.paused,f=g('rlxF');if(f){f.classList.toggle('show',!!(a&&a.src&&!a._stop));f.classList.toggle('on',!!pl);f.innerHTML=`<i class="fa-solid fa-${pl?'music':'spa'}"></i>`}
  if(!g('rlxO'))return;g('rlP').innerHTML=`<i class="fa-solid fa-${pl?'pause':'play'}"></i>`;g('rlDisc').classList.toggle('pl',!!pl);
  g('rlTt').textContent=T[cur].t;g('rlSub').textContent=bad[cur]?`${T[cur].f} upload nahi hui (GitHub me daalo)`:pl?'Gehri saans lo... dheere chodo':'Play dabao aur relax karo';
  g('rlSh').classList.toggle('on',sh);g('rlRp').classList.toggle('on',rp!=='off');g('rlRp').innerHTML=`<i class="fa-solid fa-${rp==='one'?'repeat':'repeat'}"></i>${rp==='one'?' 1':''}`;
  g('rlL').innerHTML=T.map((x,i)=>`<button class="li ${i===cur?'on':''} ${bad[i]?'bd':''}" onclick="rlxPlay(${i})"><i class="fa-solid fa-${i===cur&&pl?'volume-high':'music'}"></i><span style="flex:1">${x.t}</span><small>${bad[i]?'missing':(i+1)+'/10'}</small></button>`).join('');tick()}
-window.rlxPlay=play;
+window.rlxPlay=play;window.rlxStop=()=>{if(a){a.pause();a._stop=1;a.removeAttribute('src');try{a.load()}catch{}}clearTimeout(tm);tmEnd=0;ui()};
 window.rlxOpen=function(){if(g('rlxO'))return;const o=document.createElement('div');o.id='rlxO';
  o.innerHTML=`<div class="hd"><h3>🧘 Mind Relax</h3><button onclick="rlxClose()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
 <div class="disc" id="rlDisc">🎧</div><div class="ttl" id="rlTt"></div><div class="sub" id="rlSub"></div>
 <input type="range" id="rlS" min="0" max="100" step="1" value="0" oninput="this._d=1" onchange="this._d=0;rlxSeek(this.value)"><div class="tm"><span id="rlC">0:00</span><span id="rlD">--:--</span></div>
-<div class="ct"><button id="rlSh" onclick="rlxSh()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button><button onclick="rlxN(-1)"><i class="fa-solid fa-backward-step"></i></button><button class="big" id="rlP" onclick="rlxTog()"></button><button onclick="rlxN(1)"><i class="fa-solid fa-forward-step"></i></button><button id="rlRp" onclick="rlxRp()" title="Repeat"></button></div>
+<div class="ct"><button id="rlSh" onclick="rlxSh()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button><button onclick="rlxN(-1)"><i class="fa-solid fa-backward-step"></i></button><button class="big" id="rlP" onclick="rlxTog()"></button><button onclick="rlxN(1)"><i class="fa-solid fa-forward-step"></i></button><button id="rlRp" onclick="rlxRp()" title="Repeat"></button><button onclick="rlxStop()" title="Stop"><i class="fa-solid fa-stop"></i></button></div>
 <div class="row"><i class="fa-solid fa-volume-low"></i><input type="range" id="rlV" min="0" max="1" step="0.02" value="${A().volume}" oninput="rlxVol(this.value)"><i class="fa-solid fa-volume-high"></i></div>
 <div class="row" style="flex-wrap:wrap"><span>😴 Sleep timer:</span>${[[0,'Off'],[15,'15m'],[30,'30m'],[60,'60m']].map(x=>`<button class="chip" onclick="rlxSl(${x[0]})">${x[1]}</button>`).join('')}<small id="rlT"></small></div>
 <div id="rlL"></div>`;document.body.appendChild(o);document.body.style.overflow='hidden';ui()};
@@ -2507,18 +2507,207 @@ ITEMS.relax=['spa','Mind Relax'];ACT.relax=window.rlxOpen;
 try{const grp=CATS.find(c=>c[0]==='study');if(grp&&grp[4]&&!grp[4].some(x=>x[1].includes('relax')))grp[4].push(['🧘 Mind Relax',['relax']])}catch{}
 const fb=document.createElement('button');fb.id='rlxF';fb.setAttribute('aria-label','Mind Relax');fb.innerHTML='<i class="fa-solid fa-spa"></i>';fb.onclick=window.rlxOpen;document.body.appendChild(fb);
 
-/* ---- My Portal dashboard ---- */
-const _pt=ptDraw;ptDraw=function(){_pt.apply(this,arguments);try{const el=$('pt');if(!el||!PT.m||!PT.s)return;const o=$('ptDash');if(o)o.remove();
- const s=PT.s,sd=ls('nl_study',{}),d0=new Date(),cm=day(d0).slice(0,7);let wk=0,streak=0,td=+sd[day(d0)]||0;
- for(let i=0;i<7;i++){const d=new Date(d0);d.setDate(d.getDate()-i);wk+=+sd[day(d)]||0}
- for(let i=0;i<365;i++){const d=new Date(d0);d.setDate(d.getDate()-i);if(+sd[day(d)]>0)streak++;else if(i>0)break;else if(i===0)continue}
- const pt=s.paidTill,due=!pt||pt<cm,mk=(typeof mkH==='function'?mkH():[]).length,r=n=>Math.round(n*10)/10;
- const qa=[['payment','indian-rupee-sign','Fee Pay'],['receipt','file-invoice','Receipt'],['mock','file-pen','Mock'],['quiz','circle-question','Quiz'],['tt','calendar-days','Timetable'],['relax','spa','Relax'],['askai','robot','AI Study'],['chat','comments','Doubts']].filter(x=>ACT[x[0]]);
- el.insertAdjacentHTML('afterbegin',`<div class="card" id="ptDash" style="border-left:4px solid var(--br)"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div><h3 style="margin:0">Namaste, ${esc((s.name||'').split(' ')[0])} 👋</h3><div class="mu">Seat ${esc(s.seat||'-')} · ${esc(s.shift||'-')} ${s.idNo?'· ID '+esc(s.idNo):''}</div></div><div style="text-align:right"><b style="color:var(${due?'--er':'--ok'},${due?'#dc2626':'#16a34a'})">${due?'Fee due':'Fee paid'}</b><div class="mu">${pt?'Till '+esc(mname(pt)):'No payment yet'}</div></div></div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0;text-align:center"><div><b>${r(td)}h</b><div class="mu" style="font-size:.7rem">Today</div></div><div><b>${r(wk)}h</b><div class="mu" style="font-size:.7rem">7 days</div></div><div><b>${streak}🔥</b><div class="mu" style="font-size:.7rem">Streak</div></div><div><b>${mk}</b><div class="mu" style="font-size:.7rem">Mocks</div></div></div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">${qa.map(x=>`<button class="btn o" style="flex-direction:column;padding:8px 2px;font-size:.68rem;gap:3px" onclick="ACT['${x[0]}']()"><i class="fa-solid fa-${x[1]}"></i>${x[2]}</button>`).join('')}</div></div>`)}catch{}};
-try{ptDraw()}catch{}
 }catch(e){console.error('v17',e)}})();
+
+</script>
+<script>
+/* ================= v18 : new ID design, Quiz Pro, Mock history, portal Mock/Quiz tabs, water layout, reg fee in dropdown, learners manager ================= */
+(function(){try{
+const st=document.createElement('style');st.textContent=`
+html body #idc#idc{background:linear-gradient(180deg,#fff,#eef2ff)!important;border:1px solid #c7d2fe!important;box-shadow:0 26px 56px rgba(15,23,42,.38),0 0 0 3px rgba(245,179,1,.35)!important}
+#idc .nc-h{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 6px,transparent 6px 12px),linear-gradient(135deg,#0b1b4d,#1e40af 55%,#0ea5e9)!important;border-bottom:3px solid #f5b301;height:118px!important}
+#idc .nc-h b{text-shadow:0 2px 6px rgba(0,0,0,.35)}
+#idc .nc-tag{background:#f5b301!important;color:#0b1b4d!important;border:0!important;font-weight:900!important}
+#idc .nc-ph{box-shadow:0 0 0 3px #f5b301,0 0 0 6px #1e40af,0 10px 20px rgba(0,0,0,.3)!important;margin-top:-38px!important}
+#idc .nc-n{color:#0b1b4d;text-transform:uppercase;letter-spacing:.8px;font-size:1.12rem!important}
+#idc .nc-i{background:#0b1b4d!important;border:0!important;color:#fff;box-shadow:0 4px 10px rgba(11,27,77,.35)}#idc .nc-i span{color:#f5b301!important}
+#idc .nc-d div{background:#fff!important;border-left:3px solid #f5b301;box-shadow:0 1px 4px rgba(15,23,42,.1)}#idc .nc-d span{color:#1e40af!important}
+#idc .nc-q img{border:2px solid #1e40af!important;box-shadow:0 4px 10px rgba(30,64,175,.25)}
+#idc .nc-s{background:linear-gradient(135deg,#0b1b4d,#1e40af)!important;border:2px solid #f5b301;box-shadow:0 6px 14px rgba(11,27,77,.35)}#idc .nc-s b{color:#f5b301}
+#idc .nc-f{background:#0b1b4d!important;border-top:4px solid #f5b301!important;align-items:center!important}
+#idc .nc-f .bc{background:#fff;border-radius:8px;padding:5px 8px 3px}#idc .nc-f .bc small{color:#0b1b4d!important;font-weight:700}
+#idc .nc-g i{color:#fff}#idc .nc-g small{color:#f5b301!important;border-top-color:#f5b301!important}
+#s-water .wbtns{display:flex;gap:8px;margin:10px 0 8px}
+#s-water .wbtns .btn,#s-water .wvb{padding:8px 10px!important;font-size:.8rem!important;border-radius:10px!important;flex:1;width:auto!important;justify-content:center}
+#s-water .wvb{display:flex!important;width:100%!important;margin:0!important}
+.qpc{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}.qpc button{border:1px solid var(--bd,#475569);background:transparent;color:inherit;border-radius:99px;padding:5px 11px;font-size:.78rem;cursor:pointer}.qpc button.on{background:var(--br,#2563eb);color:#fff;border-color:transparent}
+.qpx{margin:10px 0;padding:10px 12px;border-radius:12px;background:rgba(99,102,241,.14);font-size:.86rem;line-height:1.55}
+.qpt{height:5px;border-radius:5px;background:rgba(148,163,184,.3);overflow:hidden;margin:4px 0}.qpt i{display:block;height:100%;background:#f59e0b;transition:width 1s linear}
+.pbar{height:8px;border-radius:8px;background:rgba(148,163,184,.25);overflow:hidden}.pbar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#38bdf8)}`;
+document.head.appendChild(st);
+
+/* ---- results store ---- */
+window.nlSaveRes=async function(t,r){try{if(PT.m&&await ensureDB())DB.ref('library/results/'+PT.m+'/'+t).push(r)}catch{}};
+const MKH=()=>{try{return JSON.parse(localStorage.getItem('nl_mkh')||'[]')}catch{return[]}},QH=()=>ls('nl_qh',[]),pc=(c,n)=>n?Math.round(c/n*100):0;
+
+/* ---- Water: Notify + Empty in one row, Vendor login below ---- */
+try{const n=$('wnBtn'),er=document.querySelector('#s-water .btn.er'),vd=document.querySelector('#s-water button[onclick*="vendor"]');
+ if(n&&er&&!document.querySelector('#s-water .wbtns')){const r=document.createElement('div');r.className='wbtns';er.insertAdjacentElement('beforebegin',r);r.appendChild(n);r.appendChild(er);
+  n.style.marginTop='0';er.innerHTML='<i class="fa-solid fa-bell"></i> Empty water';
+  if(vd){vd.className='btn o wvb';vd.innerHTML='<i class="fa-solid fa-truck-droplet"></i> Vendor login';r.insertAdjacentElement('afterend',vd)}}}catch{}
+
+/* ---- Fee: Registration fee inside the duration dropdowns ---- */
+try{const pm=$('pM');if(pm&&!pm.querySelector('[value=reg]'))pm.insertAdjacentHTML('beforeend',`<option value="reg">Registration Fee (₹${CFG.regFee||100})</option>`);
+ const _pg=payGen;payGen=function(){const v=$('pM').value;if(v!=='reg')return _pg();const a=CFG.regFee||100,u=`upi://pay?pa=${CFG.upi}&pn=${encodeURIComponent(CFG.upiName)}&am=${a}&cu=INR&tn=${encodeURIComponent('Registration fee')}`;
+  $('pAm').textContent='₹'+a;$('pQ').src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='+encodeURIComponent(u);$('pL').href=u;$('pU').innerHTML=`<span style="text-align:center"><b><i class="fa-solid fa-building-columns"></i> ${esc(CFG.upiName)}</b><br><small>${esc(CFG.upi)}</small></span>`};
+ const vs=$('vMs');if(vs){if(!vs.querySelector('[value=reg]'))vs.insertAdjacentHTML('beforeend',`<option value="reg">Registration fee · ₹${CFG.regFee||100}</option>`);vs.setAttribute('onchange','fvMs(this.value)')}
+ window.fvMs=v=>{if(v==='reg'){FV.reg=true;$('vA').value=CFG.regFee||100;FV.sel=new Set();fvChips()}else{FV.reg=false;fvAmt((+v||0)*CFG.fee)}};
+ const _f18=fvChips;fvChips=function(){_f18();const e=$('fvM'),s=$('vMs');if(e){const r=e.querySelector('.fvreg');if(r)r.remove();if(FV.reg)e.innerHTML=`<p class="mu">Registration fee ₹${CFG.regFee||100} (one-time). Payment karke UTR bharo.</p>`}if(s)s.value=FV.reg?'reg':s.value};
+ try{const pm2=$('pM'),addReg=()=>{if(!pm2.querySelector('[value=reg]'))pm2.insertAdjacentHTML('beforeend',`<option value="reg">Registration Fee (₹${CFG.regFee||100})</option>`)};addReg();new MutationObserver(addReg).observe(pm2,{childList:true})}catch{}
+ payGen()}catch(e){console.error(e)}
+
+/* ---- Mock: topic, exam-level, richer history ---- */
+window.TP=()=>{const t=((document.getElementById('mkT')||{}).value||'').trim();return t?` (focus topic: ${t})`:''};
+const _mk3=ACT.mock;ACT.mock=function(){_mk3.apply(this,arguments);setTimeout(()=>{const s=$('mkS'),l=$('mkL');
+ if(s&&!$('mkT'))s.closest('label').insertAdjacentHTML('afterend','<label>Topic (optional)<input id="mkT" placeholder="e.g. Percentage, Fundamental Rights"></label>');
+ if(l&&![...l.options].some(o=>/Exam/.test(o.text))){const o=document.createElement('option');o.text='Exam-level (Hard+)';l.add(o)}},80)};
+
+/* ---- Quiz Pro ---- */
+const QS=['Mixed GK','History','Polity','Geography','Economy','Science','Maths','Reasoning','English','Hindi','Computer','Current Affairs'];
+let QP={cfg:{s:'Mixed GK',d:'Medium',n:10,l:'hinglish',t:30}},qt=null;window.QP=QP;
+const sel=(k,v)=>{QP.cfg[k]=v;qpSetup()};window.qpSet=(k,v)=>{QP.cfg[k]=isNaN(v)||k==='s'||k==='d'||k==='l'?v:+v;qpSetup()};
+function qpSetup(){clearInterval(qt);const e=$('qzb');if(!e)return;const c=QP.cfg,H=QH().slice(0,5),ch=(k,L)=>`<div class="qpc">${L.map(x=>`<button class="${String(c[k])===String(Array.isArray(x)?x[0]:x)?'on':''}" onclick="qpSet('${k}','${Array.isArray(x)?x[0]:x}')">${Array.isArray(x)?x[1]:x}</button>`).join('')}</div>`;
+ e.innerHTML=`<div class="card"><h3>🧠 Quiz Pro</h3><small class="mu">Subject chuno, level chuno aur shuru karo. Har sawal ka jawab verify hota hai.</small><h4 class="grp">Subject</h4>${ch('s',QS)}<h4 class="grp">Level</h4>${ch('d',['Easy','Medium','Hard','Exam-level'])}<h4 class="grp">Questions</h4>${ch('n',[10,15,20,30])}<h4 class="grp">Language</h4>${ch('l',[['hinglish','Hinglish'],['en','English'],['hi','हिन्दी']])}<h4 class="grp">Timer / question</h4>${ch('t',[[0,'Off'],[20,'20s'],[30,'30s'],[45,'45s']])}
+<button class="btn ok w" style="margin-top:8px" onclick="qpStart()"><i class="fa-solid fa-play"></i> Start quiz</button></div>
+${H.length?'<div class="card"><h3>Recent results</h3>'+H.map(h=>`<div class="li"><span>${esc(h.s)} · ${esc(h.d1||'')}<br><small class="mu">${new Date(h.d).toLocaleString()}</small></span><b>${h.sc}/${h.n} (${h.acc}%)</b></div>`).join('')+'</div>':''}${window.nlXL?nlXL():''}`}
+window.quiz=function(m){if(m==='more'&&QP.cfg)return qpStart();qpSetup()};
+async function qpGen(){const c=QP.cfg,ck='nl_qc_'+[c.s,c.d,c.n,c.l].join('|'),hit=ls(ck,null);if(hit&&hit.length>=Math.min(c.n,5)){sv(ck,null);setTimeout(()=>qpGen().then(r=>{if(r&&r.length)sv(ck,r)}).catch(()=>0),800);return hit}const lg=c.l==='hi'?'Hindi (Devanagari)':c.l==='hinglish'?'Hinglish (Hindi in Roman letters)':'English',sb=c.s==='Mixed GK'?'a mix of History, Polity, Geography, Economy, Science, Static GK and Current Affairs':c.s;let need=c.n,all=[];
+ const jobs=[];while(need>0){const k=Math.min(need,10);jobs.push(k);need-=k}
+ const R=await Promise.all(jobs.map(async k=>{for(let t=0;t<2;t++){const r=await gem(`Create exactly ${k} ${c.d} multiple-choice questions on ${sb} for Indian competitive exams (SSC, Railway, Banking, UP Police, UPSC-prelims style) in ${lg}. Use the latest syllabus and 2023-2026 trends. Each has exactly one unambiguous correct option and 3 plausible distractors. Return ONLY a JSON array [{"q":"..","o":["..","..","..",".."],"a":0,"e":"one-line explanation"}] (a = 0-based index). Seed ${Math.random()}`,'You are a senior exam paper-setter. Output only valid JSON.',{json:true,max:3500,t:.7,search:c.s==='Current Affairs'});
+  try{const j=JSON.parse(String(r).replace(/```json|```/g,'').trim()).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(+x.a)&&+x.a<x.o.length);if(j.length)return j}catch{}}return[]}));
+ R.forEach(a=>all.push(...a));const seen=new Set();all=all.filter(x=>{const k=String(x.q).toLowerCase().slice(0,60);if(seen.has(k))return false;seen.add(k);return true});
+ return all.slice(0,c.n).map(x=>({q:String(x.q),o:x.o.map(String),a:+x.a,e:String(x.e||'')}))}
+window.qpStart=async function(retry){const e=$('qzb');if(!e)return;let Q;
+ if(retry&&QP.wrong&&QP.wrong.length)Q=QP.wrong.map(x=>({...x}));else{e.innerHTML='<div class="card"><p class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Quiz ban raha hai aur answers verify ho rahe hain...</p></div>';Q=await qpGen();
+  if(!Q.length&&typeof QZ!=='undefined'){toast('AI abhi busy hai, saved quiz dikha rahe hain');Q=[...QZ].sort(()=>Math.random()-.5).slice(0,QP.cfg.n).map(x=>({q:x[0],o:x[1],a:x[2],e:''}))}}
+ if(!Q.length){e.innerHTML='<div class="card"><p class="mu">Quiz load nahi hua.</p><button class="btn p w" onclick="qpSetup()">Back</button></div>';return}
+ QP.run={Q,i:0,s:0,st:0,bs:0,log:[],t0:Date.now(),lock:0};qpShow()};
+window.qpSetup=qpSetup;
+function qpShow(){clearInterval(qt);const R=QP.run,e=$('qzb');if(!R||!e)return;if(R.i>=R.Q.length)return qpEnd();const q=R.Q[R.i],n=R.Q.length,T=QP.cfg.t;R.lock=0;R.left=T;
+ e.innerHTML=`<div class="card"><div class="row"><b>Q${R.i+1}/${n}</b><span class="chip ok">Score ${R.s}</span><span class="chip">🔥 ${R.st}</span></div><div class="qpr"><i style="width:${R.i/n*100}%"></i></div>${T?`<div class="qpt"><i id="qpTi" style="width:100%"></i></div>`:''}<h3 style="margin:12px 0;line-height:1.5">${esc(q.q)}</h3>${q.o.map((o,k)=>`<button class="btn o w qb" onclick="qpAns(${k})">${esc(o)}</button>`).join('')}<div id="qpEx"></div></div>`;
+ if(T)qt=setInterval(()=>{R.left--;const b=$('qpTi');if(b)b.style.width=Math.max(0,R.left/T*100)+'%';if(R.left<=0){clearInterval(qt);qpAns(-1)}},1000)}
+window.qpShow=qpShow;window.qpAns=function(k){const R=QP.run;if(!R||R.lock)return;R.lock=1;clearInterval(qt);const q=R.Q[R.i],ok=k===q.a;if(ok){R.s++;R.st++;R.bs=Math.max(R.bs,R.st)}else R.st=0;
+ R.log.push({q:q.q,o:q.o,a:q.a,e:q.e,p:k,ok});document.querySelectorAll('#qzb .qb').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('ok');else if(i===k)b.classList.add('bad')});
+ $('qpEx').innerHTML=`<div class="qpx">${k<0?'⏰ Time up! ':ok?'✅ Sahi! ':'❌ Galat. '}Sahi jawab: <b>${esc(q.o[q.a])}</b>${q.e?'<br>'+esc(q.e):''}</div><button class="btn p w" onclick="QP.run.i++;qpShow()">${R.i+1>=R.Q.length?'Result dekho':'Next'} <i class="fa-solid fa-arrow-right"></i></button>`};
+function qpEnd(){const R=QP.run,e=$('qzb'),n=R.Q.length,acc=pc(R.s,n),tt=Math.round((Date.now()-R.t0)/1000);QP.wrong=R.log.filter(x=>!x.ok).map(x=>({q:x.q,o:x.o,a:x.a,e:x.e}));
+ sv('nl_qz',Math.max(ls('nl_qz',0),R.s));const rec={s:QP.cfg.s,d1:QP.cfg.d,sc:R.s,n,acc,d:Date.now(),tt,bs:R.bs},h=QH();h.unshift(rec);sv('nl_qh',h.slice(0,30));nlSaveRes('quiz',rec);
+ e.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:2.6rem">${acc>=80?'🏆':acc>=50?'👍':'💪'}</div><h2>${R.s}/${n} · ${acc}%</h2><p class="mu">${esc(QP.cfg.s)} · ${esc(QP.cfg.d)} · ${Math.floor(tt/60)}m ${tt%60}s · Best streak ${R.bs}</p><div class="pbar"><i style="width:${acc}%"></i></div></div>
+ ${QP.wrong.length?'<div class="card"><h3>Galat sawal ka review</h3>'+R.log.filter(x=>!x.ok).map(x=>`<div class="li" style="flex-direction:column;align-items:flex-start"><b>${esc(x.q)}</b><small>✔ ${esc(x.o[x.a])}${x.p>=0?' · Aapka: '+esc(x.o[x.p]):' · Time up'}</small>${x.e?`<small class="mu">${esc(x.e)}</small>`:''}</div>`).join('')+'</div>':''}
+ <button class="btn p w" onclick="qpStart()"><i class="fa-solid fa-rotate-right"></i> Naya quiz (same subject)</button>${QP.wrong.length?'<button class="btn o w" style="margin-top:8px" onclick="qpStart(1)">Sirf galat sawal dobara</button>':''}<button class="btn o w" style="margin-top:8px" onclick="qpSetup()">Subject badlo</button>`}
+
+/* ---- Portal: Mock + Quiz tabs ---- */
+const K=(i,v,x)=>`<div class="kpi"><i class="fa-solid fa-${i}"></i><b>${v}</b><small>${x}</small></div>`;
+function subjBars(map){const L=Object.entries(map).filter(([,v])=>v.n).sort((a,b)=>a[1].c/a[1].n-b[1].c/b[1].n);
+ return L.length?L.map(([k,v])=>`<div style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${esc(k)}</span><b>${pc(v.c,v.n)}% <small class="mu">(${v.c}/${v.n})</small></b></div><div class="pbar"><i style="width:${pc(v.c,v.n)}%"></i></div></div>`).join('')+(L.length>1?`<p class="mu" style="margin-top:8px">💡 Sabse kamzor: <b>${esc(L[0][0])}</b> — isme aur practice karo.</p>`:''):'<p class="mu">Abhi koi data nahi.</p>'}
+SEC.mk=()=>{const H=MKH(),m={};H.forEach(h=>Object.entries(h.sec||{}).forEach(([k,v])=>{const o=m[k]=m[k]||{c:0,n:0};o.c+=v.c||0;o.n+=(v.c||0)+(v.w||0)}));const best=Math.max(0,...H.map(h=>h.n?pc(h.s,h.n):0)),avg=H.length?Math.round(H.reduce((a,h)=>a+(h.n?pc(h.s,h.n):0),0)/H.length):0;
+ return `<div class="stats">${K('file-pen',H.length,'Tests')}${K('trophy',best+'%','Best')}${K('chart-line',avg+'%','Average')}</div><div class="card"><h3><i class="fa-solid fa-chart-simple"></i> Subject-wise accuracy</h3>${subjBars(m)}</div><div class="card"><h3><i class="fa-solid fa-clock-rotate-left"></i> Recent mock tests</h3>${H.slice(0,15).map(h=>`<div class="li"><span>${esc(h.t)}<br><small class="mu">${new Date(h.d).toLocaleString()}</small></span><b>${h.s}/${h.n}</b></div>`).join('')||'<p class="mu">Mock test do — result yahan dikhega.</p>'}<button class="btn p w" style="margin-top:10px" onclick="ACT.mock()">Start mock test</button></div>`};
+SEC.qz=()=>{const H=QH(),m={};H.forEach(h=>{const o=m[h.s]=m[h.s]||{c:0,n:0};o.c+=h.sc;o.n+=h.n});const best=Math.max(0,...H.map(h=>h.acc)),avg=H.length?Math.round(H.reduce((a,h)=>a+h.acc,0)/H.length):0;
+ return `<div class="stats">${K('circle-question',H.length,'Quizzes')}${K('trophy',best+'%','Best')}${K('chart-line',avg+'%','Average')}</div><div class="card"><h3><i class="fa-solid fa-chart-simple"></i> Subject-wise accuracy</h3>${subjBars(m)}</div><div class="card"><h3><i class="fa-solid fa-clock-rotate-left"></i> Recent quizzes</h3>${H.slice(0,15).map(h=>`<div class="li"><span>${esc(h.s)} · ${esc(h.d1||'')}<br><small class="mu">${new Date(h.d).toLocaleString()}</small></span><b>${h.sc}/${h.n} (${h.acc}%)</b></div>`).join('')||'<p class="mu">Quiz khelo — result yahan dikhega.</p>'}<button class="btn p w" style="margin-top:10px" onclick="ACT.quiz()">Start quiz</button></div>`};
+const _p18=ptDraw;ptDraw=function(){_p18.apply(this,arguments);try{const el=$('pt'),tb=el&&el.querySelector('.tabs.sc');if(!tb||!PT.m||!PT.s||tb.querySelector('[data-x]'))return;
+ [['mk','file-pen','Mock'],['qz','circle-question','Quiz']].forEach(t=>tb.insertAdjacentHTML('beforeend',`<button data-x="1" class="btn ${PT.tab===t[0]?'p':'o'}" onclick="PT.tab='${t[0]}';ptDraw()"><i class="fa-solid fa-${t[1]}"></i> ${t[2]}</button>`))}catch{}};
+try{ptDraw()}catch{}
+
+/* ---- Admin: Our Learners — add / remove (also the old ones) ---- */
+const LD0={sel:LEARN_DEF.sel.slice(),cur:LEARN_DEF.cur.slice()};let LH=ls('nl_lnh',{});
+function applyLH(){LEARN_DEF.sel.length=0;LD0.sel.forEach(x=>{if(!LH[slug(x[0])])LEARN_DEF.sel.push(x)});LEARN_DEF.cur.length=0;LD0.cur.forEach(n=>{if(!LH[slug(n)])LEARN_DEF.cur.push(n)})}
+async function lhLoad(){try{if(await ensureDB()){const v=(await DB.ref('library/learners_hidden').once('value')).val();LH=v||{};sv('nl_lnh',LH)}}catch{}applyLH()}
+const _ld=learnDraw;learnDraw=async function(t){if(!learnDraw._lh){learnDraw._lh=1;await lhLoad()}return _ld.apply(this,arguments)};
+async function lhSet(k,v){if(v)LH[k]=v;else delete LH[k];sv('nl_lnh',LH);try{if(await ensureDB())await DB.ref('library/learners_hidden/'+k).set(v||null)}catch{}applyLH();learnDraw.f=0;if($('lnL'))learnDraw(lnTab);learnersMgr()}
+window.lnHide=(t,i)=>{const x=LEARN_DEF[t][i];if(!x)return;const n=t==='sel'?x[0]:x;lhSet(slug(n),{n,t,e:t==='sel'?x[1]:''})};
+window.lnRestore=k=>lhSet(k,null);
+learnersMgr=async function(){modal('👥 Our Learners — manage','<div id="lmB"><p class="mu">Loading...</p></div>',true);await lhLoad();let v={};try{v=(await DB.ref('library/learners').once('value')).val()||{}}catch{}
+ const E=k=>Object.entries(v[k]||{}),e=$('lmB');if(!e)return;const T=(c,t)=>`<i class="fa-solid fa-trash" style="color:var(--er,#dc2626);cursor:pointer;padding:6px" onclick="${c}" title="${t}"></i>`;
+ e.innerHTML=`<h4 class="grp">Naya learner jodo</h4><div class="g"><label><i class="fa-solid fa-user"></i> Naam<input id="lmN"></label><label><i class="fa-solid fa-award"></i> Exam (selected ho to likho, warna khali)<input id="lmE" placeholder="RRB ALP / UP Police..."></label></div><button class="btn p w" onclick="lnAdd()"><i class="fa-solid fa-plus"></i> Add</button>
+ <h4 class="grp">Selected students (${LEARN_DEF.sel.length+E('sel').length})</h4>${LEARN_DEF.sel.map((x,i)=>`<div class="li"><span>${esc(x[0])} · ${esc(x[1])}</span>${T(`if(confirm('${esc(x[0]).replace(/'/g,"")} ko remove karein?'))lnHide('sel',${i})`,'Remove')}</div>`).join('')}${E('sel').map(([k,x])=>`<div class="li"><span>${esc(x.n)} · ${esc(x.e)} <small class="mu">(added)</small></span>${T(`lnDel('sel','${esc(k)}')`,'Delete')}</div>`).join('')}
+ <h4 class="grp">Current students (${LEARN_DEF.cur.length+E('cur').length})</h4>${LEARN_DEF.cur.map((n,i)=>`<div class="li"><span>${esc(n)}</span>${T(`if(confirm('${esc(n).replace(/'/g,"")} ko remove karein?'))lnHide('cur',${i})`,'Remove')}</div>`).join('')}${E('cur').map(([k,x])=>`<div class="li"><span>${esc(x.n)} <small class="mu">(added)</small></span>${T(`lnDel('cur','${esc(k)}')`,'Delete')}</div>`).join('')}
+ ${Object.keys(LH).length?'<h4 class="grp">Removed (restore kar sakte ho)</h4>'+Object.entries(LH).map(([k,x])=>`<div class="li"><span>${esc(x.n)}</span><button class="btn o" style="padding:4px 10px;font-size:.75rem" onclick="lnRestore('${esc(k)}')">Restore</button></div>`).join(''):''}`};
+ACT.lnmgr=()=>learnersMgr();
+}catch(e){console.error('v18',e)}})();
+
+</script>
+<script>
+/* ================= v19 : full time-table image, links, Library Updates quick action, fast verified AI, Azamgarh Darshan ================= */
+(function(){try{
+const st=document.createElement('style');st.textContent=`
+.ttr{display:flex;gap:8px;align-items:stretch;margin:7px 0}.ttd{width:54px;flex:none;border-radius:12px;background:#1e3a8a;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0}
+.ttr.td .ttd{background:#f59e0b;color:#111}.ttd small{font-size:.62rem;opacity:.85}.ttsl{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:rgba(148,163,184,.12);border-radius:12px;padding:6px}
+.ttc2{color:#fff;border-radius:10px;padding:6px 10px;font-size:.78rem;cursor:pointer;display:flex;flex-direction:column;min-width:96px}.ttc2 small{opacity:.9;font-size:.68rem}
+.xls{margin-top:14px}.xlh{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;opacity:.7;margin-bottom:4px}
+.xl{display:flex;align-items:center;gap:12px;padding:11px 14px;margin:8px 0;border-radius:14px;text-decoration:none;color:inherit;border:1px solid var(--c);background:linear-gradient(135deg,rgba(99,102,241,.12),transparent);transition:transform .15s}
+.xl:active{transform:scale(.98)}.xi{width:40px;height:40px;border-radius:12px;background:var(--c);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.xt{flex:1;display:flex;flex-direction:column;min-width:0}.xt b{font-size:.95rem}.xt small{opacity:.75;font-size:.74rem}.xa{opacity:.6;font-size:.8rem}
+.az .kpi b{font-size:1rem}.azg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.azg .kpi{padding:10px 4px}
+.azt{width:100%;border-collapse:collapse;font-size:.82rem}.azt td,.azt th{padding:6px 8px;border-bottom:1px solid rgba(148,163,184,.25);text-align:left}
+.azc{display:flex;flex-wrap:wrap;gap:6px}.azc span{background:rgba(99,102,241,.16);border-radius:99px;padding:4px 11px;font-size:.76rem}`;
+document.head.appendChild(st);
+
+/* ---- Time table: arranged weekly view + full image ---- */
+const dI=di=>TT.map((x,i)=>({...x,i})).filter(x=>x.d===di).sort((a,b)=>a.a<b.a?-1:1),hrs=it=>it.reduce((s,x)=>s+(tmin(x.b)-tmin(x.a)),0)/60;
+const _ttd=ttDraw;ttDraw=function(){_ttd.apply(this,arguments);if(ttV!=='grid')return;const l=$('ttL');if(!l)return;const td=(new Date().getDay()+6)%7;
+ l.innerHTML=`<div id="ttGW">`+TTD.map((d,di)=>{const it=dI(di);return `<div class="ttr ${di===td?'td':''}"><div class="ttd"><b>${d.slice(0,3)}</b><small>${it.length?hrs(it).toFixed(1)+'h':'free'}</small></div><div class="ttsl">${it.map(x=>`<div class="ttc2" style="background:${ttCol(x.s)}" onclick="ttEdit(${x.i})"><b>${esc(x.s)}</b><small>${f12(x.a)} – ${f12(x.b)}</small></div>`).join('')||'<span class="mu" style="font-size:.75rem">Koi plan nahi</span>'}</div></div>`}).join('')+'</div>'};
+ttShot=async function(){if(!window.html2canvas)return toast('Library load ho rahi hai, thodi der baad try karo');if(!TT.length)return toast('Pehle time table me kuch add karo');
+ const W=1100,nm=esc((PT.s&&PT.s.name)||''),dt=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),box=document.createElement('div');box.id='ttOff';
+ box.style.cssText=`position:fixed;left:-12000px;top:0;width:${W}px;background:#fff;font-family:Inter,Arial,sans-serif;color:#0f172a`;
+ box.innerHTML=`<div style="background:linear-gradient(135deg,#0b1b4d,#1e40af 60%,#0ea5e9);color:#fff;padding:26px 34px;border-bottom:6px solid #f5b301"><div style="font-size:30px;font-weight:800;letter-spacing:2px">NATIONAL LIBRARY</div><div style="font-size:13px;letter-spacing:4px;opacity:.9">MAHARAJGANJ AZAMGARH</div><div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px"><div style="font-size:24px;font-weight:700">Weekly Time Table</div><div style="text-align:right;font-size:15px"><b>${nm}</b><br>${dt}</div></div></div><div style="padding:22px 28px">`
+ +TTD.map((d,di)=>{const it=dI(di);return `<div style="display:flex;gap:12px;margin:0 0 12px;align-items:stretch"><div style="width:110px;flex:none;border-radius:14px;background:#1e3a8a;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0"><b style="font-size:22px">${d.slice(0,3).toUpperCase()}</b><span style="font-size:13px;opacity:.85">${it.length?hrs(it).toFixed(1)+' hrs':'Free'}</span></div><div style="flex:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#f1f5f9;border-radius:14px;padding:10px;min-height:56px">${it.map(x=>`<div style="background:${ttCol(x.s)};color:#fff;border-radius:10px;padding:8px 14px;min-width:130px"><b style="font-size:16px">${esc(x.s)}</b><div style="font-size:13px;opacity:.92">${f12(x.a)} – ${f12(x.b)}</div></div>`).join('')||'<span style="color:#64748b;font-size:14px">No plan</span>'}</div></div>`}).join('')
+ +`</div><div style="background:#0b1b4d;color:#f5b301;text-align:center;padding:12px;font-size:13px;letter-spacing:1px">NATIONAL LIBRARY · MAHARAJGANJ AZAMGARH</div>`;
+ document.body.appendChild(box);
+ try{const cv=await html2canvas(box,{scale:2,backgroundColor:'#ffffff',width:W,windowWidth:W,onclone:d=>{const b=d.getElementById('ttOff');if(b)b.style.left='0'}});
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png')),f=new File([blob],'My_Time_Table.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'My Time Table'});return toast('Time table image share ho gayi ✓')}catch(e){if(e&&e.name==='AbortError')return}}
+  const a=document.createElement('a');a.download='My_Time_Table.png';a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();a.remove();toast('Time table image save ho gayi ✓')
+ }catch(e){toast('Image nahi ban payi')}finally{box.remove()}};
+
+/* ---- Professional practice links ---- */
+window.nlXL=()=>`<div class="xls"><div class="xlh">More free practice</div>`+[['https://www.examveda.com/','Examveda','Free MCQs, quizzes & online tests','book-open-reader','#0ea5e9'],['https://www.notopedia.com/sarkari-jobs-exam','Notopedia','Sarkari jobs & exam resources','briefcase','#8b5cf6']].map(x=>`<a class="xl" href="${x[0]}" target="_blank" rel="noopener noreferrer" style="--c:${x[4]}"><span class="xi"><i class="fa-solid fa-${x[3]}"></i></span><span class="xt"><b>${x[1]}</b><small>${x[2]}</small></span><i class="fa-solid fa-arrow-up-right-from-square xa"></i></a>`).join('')+'</div>';
+const _mk4=ACT.mock;ACT.mock=function(){_mk4.apply(this,arguments);setTimeout(()=>{if(document.querySelector('.xls'))return;const a=document.querySelector('a[href*="taiyari" i]')||$('mkB');if(a)a.insertAdjacentHTML('afterend',nlXL())},120)};
+
+/* ---- Home quick action: Library Update instead of Study Hub ---- */
+try{const i=QUICK.indexOf('studyhub');if(i>-1)QUICK[i]='updates';QC.updates='library'}catch{}
+
+/* ---- Fast + verified MCQ generation ---- */
+const MQ=/multiple-choice/i,RULES=' RULES: each question must have exactly one verifiably correct option; options must be distinct and short; never use "all of the above" or "none of the above"; avoid facts that change over time unless the year is stated.';
+async function fm(q,s,o,model,think){const c=new AbortController(),to=setTimeout(()=>c.abort(),o.to||22000);try{
+ const gc={temperature:o.t??.5,maxOutputTokens:o.max||3000,responseMimeType:'application/json'};if(think===0)gc.thinkingConfig={thinkingBudget:0};
+ const r=await gPost('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent',JSON.stringify({contents:[{role:'user',parts:[{text:q}]}],...(s?{systemInstruction:{parts:[{text:s}]}}:{}),generationConfig:gc}),gkey(),c.signal);
+ if(!r.ok)throw 0;const j=await r.json(),p=(((j.candidates||[])[0]||{}).content||{}).parts,x=(p||[]).map(t=>t.text||'').join(''),a=JSON.parse(x.replace(/```json|```/g,'').trim());if(!Array.isArray(a)||!a.length)throw 0;return a}finally{clearTimeout(to)}}
+const race=(q,s,o)=>Promise.any([fm(q,s,o,'gemini-2.5-flash',0),fm(q,s,o,ls('nl_gm','')||'gemini-flash-latest',o,1)]);
+async function vfy(a){try{const v=await race('Solve each MCQ independently and carefully. Return ONLY a JSON array [{"i":index,"a":correctOptionIndex,"ok":true|false}]; ok=false if ambiguous, factually doubtful, or not exactly one correct option.\n'+JSON.stringify(a.map((x,i)=>({i,q:x.q,o:x.o}))),'You are a strict exam moderator. Output only JSON.',{t:0,max:a.length*45+200,to:15000});
+ const out=a.filter((x,i)=>{const m=v.find(y=>y&&y.i===i);return m&&m.ok!==false&&+m.a===+x.a});return out.length>=Math.ceil(a.length*.6)?out:a}catch{return a}}
+const shuf=x=>{const n=x.o.length,id=[...Array(n).keys()].sort(()=>Math.random()-.5);return{...x,o:id.map(i=>x.o[i]),a:id.indexOf(+x.a)}};
+const _g19=gem;gem=async function(q,s,o){o=o||{};if(!(o.json&&MQ.test(q))||o.search)return _g19(q,s,o);
+ const k=+((q.match(/exactly (\d+)/i)||[])[1])||10;
+ try{let a=await race(q,(s||'')+RULES,{...o,max:Math.min(8000,k*320+400)});
+  a=a.filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&Number.isInteger(+x.a)&&+x.a<x.o.length);if(!a.length)throw 0;
+  a=(await vfy(a)).map(shuf);gem.model='fast';return JSON.stringify(a)}catch{return _g19(q,s,o)}};
+
+/* ---- Azamgarh Darshan ---- */
+const S=(t,i,b)=>`<div class="card"><h3><i class="fa-solid fa-${i}"></i> ${t}</h3>${b}</div>`,K=(v,x)=>`<div class="kpi"><b>${v}</b><small>${x}</small></div>`,CH=a=>`<div class="azc">${a.map(x=>`<span>${x}</span>`).join('')}</div>`;
+const AZQ=[['Azamgarh shahar ki sthapna kis saal hui?',['1565','1665','1765','1865'],1,'Azamgarh shahar ki neev 1665 me Azam (Vikramajit ke bete) ne rakhi.'],['Azamgarh shahar kisne basaya?',['Azam, Vikramajit ke putra','Shershah Suri','Akbar','Warren Hastings'],0,'Zila apne mukhyalay shahar Azamgarh ke naam par hai.'],['Azamgarh mandal (division) me Azamgarh ke alawa kaun se zile hain?',['Mau aur Ballia','Jaunpur aur Ghazipur','Deoria aur Basti','Gorakhpur aur Mau'],0,'Azamgarh mandal: Azamgarh, Mau, Ballia.'],['Azamgarh zile me kitni tehsil hain?',['5','6','8','10'],2,'Sadar, Budhanpur, Sagri, Lalganj, Martinganj, Mehnagar, Nizamabad, Phulpur.'],['Azamgarh zile me kitne police thane hain?',['16','21','26','31'],2,'Zile me 26 police station (Mahila thana sahit).'],['Azamgarh zile ka kshetrafal lagbhag kitna hai?',['2,054 km²','3,054 km²','4,054 km²','5,054 km²'],2,'Kshetrafal 4,054 km² (Census 2011).'],['Census 2011 me Azamgarh zile ki aabadi lagbhag kitni thi?',['26 lakh','36 lakh','46 lakh','56 lakh'],2,'Kul aabadi 46,13,913.'],['1988 me Azamgarh se alag hokar kaun sa zila bana?',['Ballia','Mau','Deoria','Ghazipur'],1,'Mau zila 1988 me Azamgarh se alag hua.'],['Nizamabad kis kala ke liye prasiddh hai (GI tag)?',['Kali mitti ke bartan','Zari kadhai','Kaleen','Lakdi ke khilone'],0,'Nizamabad ki black pottery ko GI tag mila hai.'],['Mahapandit Rahul Sankrityayan ka janm kis zile me hua?',['Azamgarh','Varanasi','Ballia','Gorakhpur'],0,'Rahul Sankrityayan ka janm Azamgarh zile ke Pandaha (Kanaila) gaon me hua.'],['Azamgarh zile me Lok Sabha ki kitni seat hain?',['1','2','3','4'],1,'Azamgarh aur Lalganj (SC). Vidhan Sabha ki 10 seat.']];
+window.azQuiz=function(){closeModal();show('quiz');QP.cfg.s='Azamgarh GK';QP.run={Q:AZQ.map(x=>({q:x[0],o:x[1],a:x[2],e:x[3]})),i:0,s:0,st:0,bs:0,log:[],t0:Date.now(),lock:0};qpShow()};
+window.azAsk=async function(){const q=($('azQ').value||'').trim(),r=$('azR');if(!q)return toast('Sawal likho');r.innerHTML='<span class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Soch raha hoon...</span>';
+ const a=await gem(q,'You are an expert on Azamgarh district, Uttar Pradesh (history, geography, administration, culture, education, notable people). Answer in simple Hinglish, short and accurate. If you are not sure of an exact number, say so clearly instead of guessing.',{max:900,t:.3});
+ r.innerHTML=a?esc(a).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>'):'<span class="mu">AI abhi busy hai, dobara try karo.</span>'};
+ITEMS.azm=['landmark','Azamgarh'];
+ACT.azm=function(){modal('🏛️ Azamgarh Darshan',`<div class="az">
+${S('Ek nazar me','chart-pie',`<div class="azg">${[['8','Tehsil'],['26','Thana'],['22','Blocks*'],['4,106','Gaon'],['4,054 km²','Kshetrafal'],['46.14 L','Aabadi'],['1,138','Ghanatwa /km²'],['1019','Sex ratio'],['2 / 10','LS / VS seat']].map(x=>K(x[0],x[1])).join('')}</div><p class="mu" style="margin-top:8px;font-size:.76rem">Census 2011 ke hisab se. *Blocks: Wikipedia/census 22 batata hai, azamgarh.nic.in ka purana page 17 — latest ginti ke liye official site dekho.</p>`)}
+${S('Parichay','circle-info',`<div class="li"><span>Mukhyalay</span><b>Azamgarh</b></div><div class="li"><span>Rajya / Mandal</span><b>Uttar Pradesh / Azamgarh</b></div><div class="li"><span>Naam ka karan</span><b>Azam (Vikramajit ke putra), 1665</b></div><div class="li"><span>Mandal ke zile</span><b>Azamgarh, Mau, Ballia</b></div><div class="li"><span>Mau zila alag hua</span><b>1988</b></div><div class="li"><span>Bhasha</span><b>Hindi, Bhojpuri, Urdu</b></div><div class="li"><span>PIN (Mukhyalay / Maharajganj)</span><b>276001 / 276137</b></div>`)}
+${S('Tehsil (8)','map-location-dot',`<table class="azt"><tr><th>Tehsil</th><th>Kshetra</th><th>Gaon</th></tr><tr><td>Sadar (Azamgarh)</td><td>579 km²</td><td>716</td></tr><tr><td>Budhanpur</td><td>423 km²</td><td>493</td></tr><tr><td>Lalganj</td><td>627 km²</td><td>498</td></tr><tr><td>Mehnagar</td><td>391 km²</td><td>330</td></tr><tr><td>Martinganj</td><td>—</td><td>210</td></tr><tr><td>Sagri</td><td colspan="2">Kshetrafal me sabse bada</td></tr><tr><td>Nizamabad</td><td colspan="2">—</td></tr><tr><td>Phulpur</td><td colspan="2">—</td></tr></table><p class="mu" style="margin-top:6px;font-size:.76rem">Aankde Census 2011 par based. Census ke samay 7 tehsil the; baad me tehsil badle, isliye kuch aankde purane ho sakte hain.</p>`)}
+${S('Police thane (26)','shield-halved',CH(['Kotwali','Sidhari','Rani ki Sarai','Maharajganj','Mubarakpur','Nizamabad','Phulpur','Pawai','Mehnagar','Mehnajpur','Jiyanpur','Jahanaganj','Gambhirpur','Kandharapur','Kaptanganj','Deogaon','Bardah','Bilariyaganj','Didarganj','Ahiraula','Atrauliya','Raunapaar','Saraimeer','Mahila thana'])+'<p class="mu" style="margin-top:6px;font-size:.76rem">26 me se 24 naam yahan hain; poori list district police / court ki official site par dekho.</p>')}
+${S('Gaon, post aur nikay','house-chimney',`<div class="li"><span>Kul gaon (Census 2011)</span><b>4,106</b></div><div class="li"><span>Aabad gaon</span><b>3,792</b></div><div class="li"><span>Gair-aabad gaon</span><b>314</b></div><div class="li"><span>Shehar / kasbe</span><b>20</b></div><div class="li"><span>Nagar nikay</span><b>Nagar Palika Azamgarh; Nagar Panchayat Jiyanpur, Katghar-Lalganj, Maharajganj aadi</b></div><p class="mu" style="margin-top:6px;font-size:.76rem">Post offices ki exact ginti yahan verify nahi hui — India Post ke pincode search se dekho. Kuch websites gaon 4,101 ya ~3,800 likhti hain (alag counting).</p>`)}
+${S('Aabadi (Census 2011)','people-group',`<div class="li"><span>Kul</span><b>46,13,913</b></div><div class="li"><span>Purush / Mahila</span><b>22,85,004 / 23,28,909</b></div><div class="li"><span>Gramin / Shehari</span><b>42,20,512 / 3,93,401</b></div><div class="li"><span>Gramin aabadi</span><b>~91.5%</b></div><div class="li"><span>SC / ST</span><b>25.39% / 0.2%</b></div><div class="li"><span>Bharat me rank (zila)</span><b>30vi</b></div>`)}
+${S('Bhugol','mountain-sun',`<p style="line-height:1.7">Azamgarh gangetic maidan ka zila hai. Padosi zile: Ambedkar Nagar, Sultanpur, Jaunpur, Ghazipur, Mau aur Gorakhpur kshetra. Mukhya nadiyan: <b>Ghaghra (Saryu)</b>, <b>Tamsa (Tons)</b> aur <b>Manjhui</b>. Zile ka kshetrafal 4,054 km² hai (gramin 3,967 km², shehari ~87 km²).</p>`)}
+${S('Rajneeti','landmark',`<div class="li"><span>Lok Sabha</span><b>Azamgarh, Lalganj (SC)</b></div><div class="li"><span>Vidhan Sabha (10)</span><b></b></div>${CH(['Atrauliya','Gopalpur','Sagri','Mubarakpur','Azamgarh','Nizamabad','Phulpur-Pawai','Didarganj','Lalganj (SC)','Mehnagar (SC)'])}`)}
+${S('Itihas aur sanskriti','book-open',`<p style="line-height:1.7">Azamgarh shahar 1665 me Azam ne basaya. Zila anek rishi-ashramon ke liye jaana jata hai — <b>Durvasa (Phulpur)</b>, <b>Dattatreya</b> aur <b>Chandrama Rishi</b> ke ashram. <b>Nizamabad</b> ki kali mitti ki pottery ko GI tag mila hai aur <b>Mubarakpur</b> bunkari (Banarasi saree) ke liye prasiddh hai.</p>`)}
+${S('Prasiddh log aur sansthayen','award',CH(['Rahul Sankrityayan','Kaifi Azmi (Mijwan)','Allama Shibli Nomani','Ayodhya Singh Upadhyay "Hariaudh" (Nizamabad)','Prakash Singh (Padma Shri, ex-DGP)','Shibli Academy (Darul Musannifin)','Shibli National College','Maharaja Suheldev State University'])+'<p class="mu" style="margin-top:6px;font-size:.76rem">Kaifi Azmi ka janm Mijwan gaon me hua tha.</p>')}
+${S('Sampark marg','road',`<p style="line-height:1.7">Purvanchal Expressway Azamgarh se hokar guzarta hai. Mukhya rail stations: <b>Azamgarh Jn</b> aur <b>Sarai Mir</b>. Pramukh sadak: NH-233B.</p>`)}
+${S('Mera ilaka','location-dot',`<div class="li"><span>National Library</span><b>Maharajganj, Azamgarh</b></div><div class="li"><span>PIN</span><b>276137</b></div><div class="li"><span>Maharajganj</span><b>Thana + Nagar Panchayat</b></div>`)}
+${S('Azamgarh se kuch bhi poocho (AI)','robot',`<div class="g"><label>Sawal<input id="azQ" placeholder="e.g. Azamgarh ke mashhoor mele kaun se hain?"></label></div><button class="btn p w" onclick="azAsk()"><i class="fa-solid fa-paper-plane"></i> Poocho</button><div id="azR" style="margin-top:10px;line-height:1.7;font-size:.9rem"></div>`)}
+<button class="btn ok w" onclick="azQuiz()"><i class="fa-solid fa-circle-question"></i> Azamgarh GK Quiz (11 sawal)</button>
+<p class="mu" style="margin-top:10px;font-size:.72rem">Sources: Census of India 2011, azamgarh.nic.in, Azamgarh district court website. Aankde badal sakte hain — pakki jaankari ke liye official sites dekho.</p></div>`,true)};
+try{const g=CATS.find(c=>c[0]==='study');if(g&&g[4]&&!g[4].some(x=>x[1].includes('azm')))g[4].push(['🏛️ Azamgarh',['azm']])}catch{}
+try{buildHome()}catch(e){console.error(e)}
+}catch(e){console.error('v19',e)}})();
 
 </script>
 </body>
