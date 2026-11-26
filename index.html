@@ -874,7 +874,7 @@ function qSlide(){qShow(qi2+1)}function qMove(d){qShow(qi2+d)}
 function qBind(){const c=$('qc');if(!c)return;let x0=0;c.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});c.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40)qMove(d<0?1:-1)},{passive:true})}
 /* storage manager & auto-delete of old data */
 /* ===== DATA SAFETY: student details, fees/payments, attendance (5 months) & study log are never auto-deleted ===== */
-const NL_KEEP=/^(students|auth|names|ident|payments|pay_s|fee_reqs|fee_audit|studylog|exams|timetable|issued|security)(\/|$)/;
+const NL_KEEP=/^(students|auth|names|ident|authmap|emailmap|payments|pay_s|fee_reqs|fee_audit|studylog|exams|timetable|issued|security)(\/|$)/;
 const attCutDay=()=>{const d=new Date();d.setMonth(d.getMonth()-5);return day(d)};
 async function prune(f){if(!DB)return 0;f=f||1;const D=864e5,now=Date.now(),u={},rd=async p=>(await DB.ref('library/'+p).once('value')).val()||{};let n=0;
  const cd=attCutDay();
@@ -984,7 +984,7 @@ const d2b=u=>{const b=atob(u.split(',')[1]),a=new Uint8Array(b.length);for(let i
 function healNames(){if(healNames.d||!DB)return;healNames.d=1;SL().slice(0,400).forEach(x=>{if(x.name)DB.ref('library/names/'+nameKey(x.name)).transaction(v=>v||{m:x.mobile,t:Date.now()})})}
 function wipeAll(){modal('🧹 Data clear (safe mode)','<p style="color:var(--ok);font-weight:700;margin-bottom:8px"><i class="fa-solid fa-shield-halved"></i> Student details, fees/payments, attendance (5 mahine) aur study log SAFE rehte hain — ye delete nahi honge.</p><p class="mu" style="margin-bottom:10px">Sirf temporary data hatega: doubt chat, feedback, notifications, updates, leaderboard, security log, waiting list aur 5 mahine se purani attendance.</p><label><i class="fa-solid fa-lock"></i> Security PIN<input id="wpP" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></label><label class="li" style="text-transform:none;font-size:.9rem"><span>Is device ka cache bhi clear karo</span><input type="checkbox" id="wpL" style="width:22px;margin:0"></label><button class="btn o w" style="margin-bottom:8px" onclick="backupProtected()"><i class="fa-solid fa-download"></i> Pehle backup download karo</button><button class="btn er w" onclick="wipeGo()"><i class="fa-solid fa-broom"></i> Temporary data clear karo</button>')}
 const NL_WIPE=['doubt_chat','chat_meta','feedback','notifications','seclog','leaderboard','lb_my_likes','lb_like_cnt','lb_like_by','updates','results','pomo','waitlist','dev_req','_test'];
-async function backupProtected(){if(!await ensureDB())return;toast('Backup ban raha hai...');const K=['students','names','auth','ident','payments','pay_s','fee_reqs','fee_audit','attendance_s','studylog','exams','timetable','issued'],o={_app:'National Library',_at:new Date().toISOString()};for(const k of K){try{o[k]=(await DB.ref('library/'+k).once('value')).val()||{}}catch(e){o[k]={}}}try{const b=new Blob([JSON.stringify(o)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='NationalLibrary_backup_'+day(new Date())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('Backup download ho gaya ✅')}catch(e){toast('Backup fail: '+errMsg(e))}}
+async function backupProtected(){if(!await ensureDB())return;toast('Backup ban raha hai...');const K=['students','names','auth','ident','payments','pay_s','fee_reqs','fee_audit','attendance_s','studylog','exams','timetable','issued','authmap','emailmap'],o={_app:'National Library',_at:new Date().toISOString()};for(const k of K){try{o[k]=(await DB.ref('library/'+k).once('value')).val()||{}}catch(e){o[k]={}}}try{const b=new Blob([JSON.stringify(o)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='NationalLibrary_backup_'+day(new Date())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('Backup download ho gaya ✅')}catch(e){toast('Backup fail: '+errMsg(e))}}
 async function wipeGo(){if($('wpP').value!==CFG.pin.wipe){logSec('wipe-wrong-pin','admin');return toast('Wrong PIN')}if(!confirm('Temporary data (chat, feedback, notices, leaderboard, logs) clear karein?\nStudent details, fees, attendance (5 mahine) aur study log safe rahenge.'))return;if(!await ensureDB())return;try{const loc=$('wpL').checked,u={};NL_WIPE.forEach(k=>{if(!NL_KEEP.test(k))u[k]=null});await DB.ref('library').update(u);let n=0;try{n=await prune(1)}catch(e){}tg('🧹 <b>Temporary data cleared</b> by admin (students, fees, attendance, study log safe)');if(loc){try{Object.keys(localStorage).forEach(k=>{if(!/^(nl_sess|nl_theme)$|^nl_tt_|dev|mac|did/i.test(k))localStorage.removeItem(k)})}catch{}}closeModal();toast('Clear ho gaya ✅ · students, fees, attendance, study log safe hain'+(n?` · ${n} purani records hati`:''))}catch(e){toast('Clear nahi hua: '+errMsg(e))}}
 function amMove(d){PT.am=addM(PT.am||day(new Date()).slice(0,7),d);ptDraw()}
 const isApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;
@@ -7167,5 +7167,90 @@ html body #v29ld .ldp i{background:linear-gradient(90deg,#1fa072,#34c38a,#f5b942
 html body #v29ld .mu{color:#a9ebcf!important}html body .nlx-eta{color:#fcd079!important}
 
 </style>
+<script id="nl-auth">
+/* ===== National Library · Google + Email (password / email link) login & registration ===== */
+(function(){
+const NLA={linkTo:'',busy:0,pend:null},SITE=CFG.site;
+const eKey=e=>String(e||'').toLowerCase().trim().replace(/[.#$\[\]\/]/g,','),okMail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e),wait=ms=>new Promise(r=>setTimeout(r,ms));
+const DISP=/@(mailinator|guerrillamail|10minutemail|tempmail|temp-mail|yopmail|trashmail|sharklasers|getnada|dispostable|maildrop|throwawaymail|fakeinbox|mohmal|emailondeck|moakt)\./i;
+const ERR={'auth/email-already-in-use':'Ye email pehle se registered hai. Login dabao, Google use karo ya "Password bhool gaye" karo.','auth/invalid-email':'Email sahi nahi hai.','auth/weak-password':'Password kam se kam 6 akshar ka rakho.','auth/user-not-found':'Is email se account nahi mila. "Naya account" banao.','auth/wrong-password':'Password galat hai.','auth/invalid-credential':'Email ya password galat hai.','auth/invalid-login-credentials':'Email ya password galat hai.','auth/too-many-requests':'Bahut zyada try ho gaye. Thodi der baad try karo.','auth/network-request-failed':'Internet check karo, phir try karo.','auth/popup-closed-by-user':'Google window band ho gayi.','auth/cancelled-popup-request':'Google window band ho gayi.','auth/account-exists-with-different-credential':'Is email se dusre tarike se account bana hai. Usi tarike se login karo.','auth/operation-not-allowed':'Ye login tarika Firebase me enable nahi hai.','auth/unauthorized-domain':'Ye website Firebase ke Authorized domains me add nahi hai.','auth/invalid-action-code':'Ye link purana ya use ho chuka hai. Naya link mangao.','auth/expired-action-code':'Link expire ho gaya. Naya link mangao.','auth/user-disabled':'Ye account band kar diya gaya hai.','auth/web-storage-unsupported':'Browser storage band hai. Chrome me site kholo.','nl/script':'Login ka module load nahi hua. Internet check karke page reload karo.','nl/noapp':'Server se connect nahi hua. Page reload karo.','nl/taken':'Ye email kisi aur student se juda hai.'};
+function msg(t,ok){const e=$('nlMsg');if(e){e.style.color=ok?'var(--ok)':'var(--er)';e.textContent=t}toast(t)}
+function nlErr(e){if(!e||e.code==='nl/proto')return;console.warn(e);msg(ERR[e.code]||('Login me dikkat: '+(e.message||e.code||e)),0)}
+async function run(f){if(NLA.busy)return;NLA.busy=1;try{await f()}catch(e){nlErr(e)}finally{NLA.busy=0}}
+async function nlAuth(){if(!/^https?:$/.test(location.protocol)){toast('Email/Google login sirf website (https) se chalta hai. Chrome me site kholo.');throw{code:'nl/proto'}}
+ for(let i=0;i<40&&!(window.firebase&&firebase.initializeApp);i++)await wait(250);
+ if(!(window.firebase&&firebase.auth)){for(const u of['https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.1/firebase-auth.min.js','https://cdn.jsdelivr.net/npm/firebase@8.10.1/firebase-auth.js']){try{await loadJS(u);if(firebase.auth)break}catch(e){}}}
+ if(!(window.firebase&&firebase.auth))throw{code:'nl/script'};
+ for(let i=0;i<60&&!(firebase.apps&&firebase.apps.length);i++)await wait(250);
+ if(!firebase.apps.length)throw{code:'nl/noapp'};
+ const a=firebase.auth();try{a.useDeviceLanguage()}catch{}return a}
+const out=async()=>{try{await firebase.auth().signOut()}catch{}};
+
+/* ---------- finish login (same as normal PIN login) ---------- */
+function nlSessIn(m,s){if(s.status==='pending'){toast('⏳ Admin approval ke baad hi login hoga');return}if(s.status==='disapproved'){toast('🚫 Admin ne approval hata diya hai, manager se milo');return}
+ sv('nl_lock',{n:0,u:0});sv('nl_sess',{m,exp:Date.now()+30*864e5});sv('nl_last',{n:s.name,m});closeModal();PT.m=m;PT.s=s;PT.tab='ov';try{ptStart(m)}catch{}show('portal');ptDraw();homeHello();toast('Welcome '+s.name+' 👋');[300,1200].forEach(t=>setTimeout(()=>{try{ptDraw();homeHello()}catch{}},t));
+ try{devInfo().then(dv=>{DB.ref('library/logins/'+m).push({time:Date.now(),ip:dv.ip,dev:dv.name});DB.ref('library/students/'+m+'/dev').set(dv)}).catch(()=>0)}catch{}}
+async function nlLink(m,uid,email){const ek=eKey(email),tr=await DB.ref('library/emailmap/'+ek).transaction(v=>(v&&v.m!==m)?undefined:{m,uid,t:Date.now()});if(!tr.committed)throw{code:'nl/taken'};await DB.ref('library').update({['authmap/'+uid]:{m,email,t:Date.now()},['students/'+m+'/email']:email})}
+
+/* ---------- after any successful Firebase sign-in ---------- */
+async function nlAfter(u){const a=firebase.auth(),email=String(u.email||(u.providerData[0]||{}).email||'').toLowerCase();
+ if(!email){await out();return toast('Is account me email nahi mila')}
+ if(!u.emailVerified){try{await u.sendEmailVerification({url:SITE})}catch{}await out();return msg('Email verify nahi hai. Verification link bhej diya, verify karke dobara login karo.',0)}
+ if(!await ensureDB()){await out();return}
+ try{localStorage.setItem('nl_em',email)}catch{}
+ const rd=async p=>(await DB.ref('library/'+p).once('value')).val(),ek=eKey(email);let lt=NLA.linkTo;NLA.linkTo='';
+ if(!lt){const it=ls('nl_intent',null),ss=ls('nl_sess',null);if(it&&ss&&ss.m===it.m&&ss.exp>Date.now()&&Date.now()-it.t<864e5)lt=it.m}
+ try{localStorage.removeItem('nl_intent')}catch{}
+ const [mp,em]=await Promise.all([rd('authmap/'+u.uid),rd('emailmap/'+ek)]);let m=(mp&&mp.m)||(em&&em.m)||'',s=null;
+ if(m){s=await rd('students/'+m);if(!s){await DB.ref('library').update({['authmap/'+u.uid]:null,['emailmap/'+ek]:null});m=''}}
+ if(lt){if(m&&m!==lt){await out();return toast('Ye email kisi aur student se juda hai')}await nlLink(lt,u.uid,email);await out();closeModal();toast('Email jud gaya ✅ Ab isse bhi login kar sakte ho');try{ptDraw()}catch{}return}
+ if(m){if(!mp)await nlLink(m,u.uid,email);await out();return nlSessIn(m,s)}
+ if(DISP.test(email)){await out();return msg('Temporary / disposable email allowed nahi hai. Apna asli email use karo.',0)}
+ NLA.pend={uid:u.uid,email,name:u.displayName||'',via:((u.providerData[0]||{}).providerId==='google.com')?'google':'email',t:Date.now()};nlProfile()}
+
+/* ---------- complete profile (first time Google/email) ---------- */
+function nlProfile(){modal('✅ Email verify ho gaya',`<p class="mu" style="margin-bottom:12px"><b>${esc(NLA.pend.email)}</b><br>Ab registration karo, ya purana account is email se jodo. Registration ke baad admin approval zaruri hai.</p><button class="btn p w" onclick="stReg()"><i class="fa-solid fa-user-plus"></i> Naya registration karo</button><button class="btn o w" style="margin-top:8px" onclick="nlLinkOld()"><i class="fa-solid fa-link"></i> Main pehle se student hoon</button>`)}
+window.nlLinkOld=()=>modal('🔗 Purana account link karo','<p class="mu" style="margin-bottom:8px">Apna purana naam, mobile aur 6-digit PIN daalo. Ek baar link hone ke baad email/Google se login hoga.</p><label><i class="fa-solid fa-user"></i> Full name<input id="loN"></label><label><i class="fa-solid fa-mobile-screen"></i> Mobile number<input id="loM" type="tel" maxlength="10"></label><label><i class="fa-solid fa-lock"></i> 6-digit PIN<input id="loP" type="password" inputmode="numeric" maxlength="6"></label><button class="btn p w" onclick="nlLinkGo()">Link karo</button>');
+window.nlLinkGo=()=>run(async()=>{const P=NLA.pend;if(!P)return toast('Pehle Google ya Email se login karo');const m=$('loM').value.trim(),s=await verifyCred($('loN').value.trim(),m,$('loP').value.trim());if(!s)return;await nlLink(m,P.uid,P.email);NLA.pend=null;await out();nlSessIn(m,s)});
+
+/* ---------- Google ---------- */
+window.nlGoogle=()=>run(async()=>{const a=await nlAuth(),p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});toast('Google khul raha hai...');let r;
+ try{r=await a.signInWithPopup(p)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){try{sessionStorage.setItem('nl_redir','1');if(NLA.linkTo)localStorage.setItem('nl_intent',JSON.stringify({m:NLA.linkTo,t:Date.now()}))}catch{}await a.signInWithRedirect(p);return}throw e}
+ await nlAfter(r.user)});
+
+/* ---------- Email: password / link / reset ---------- */
+const emv=()=>$('nlE').value.trim().toLowerCase();
+window.nlEmailModal=()=>{modal('✉️ Email se login / register','<label><i class="fa-solid fa-envelope"></i> Email<input id="nlE" type="email" inputmode="email" autocomplete="email"></label><label><i class="fa-solid fa-lock"></i> Password (kam se kam 6 akshar)<input id="nlPw" type="password" autocomplete="current-password"></label><div class="g2"><button class="btn p" onclick="nlPwLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button><button class="btn o" onclick="nlPwSignup()"><i class="fa-solid fa-user-plus"></i> Naya account</button></div><div class="g2" style="margin-top:8px"><button class="btn o" onclick="nlSendLink()"><i class="fa-solid fa-link"></i> Bina password: link bhejo</button><button class="btn o" onclick="nlReset()"><i class="fa-solid fa-key"></i> Password bhool gaye</button></div><p class="mu" id="nlMsg" style="margin-top:10px"></p><p class="mu" style="font-size:.78rem">Verification / link wale email Spam folder me bhi dekho.</p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
+window.nlPwLogin=()=>run(async()=>{const e=emv(),p=$('nlPw').value;if(!okMail(e))return msg('Sahi email likho.',0);if(!p)return msg('Password likho, ya "link bhejo" dabao.',0);const a=await nlAuth(),r=await a.signInWithEmailAndPassword(e,p);await nlAfter(r.user)});
+window.nlPwSignup=()=>run(async()=>{const e=emv(),p=$('nlPw').value;if(!okMail(e))return msg('Sahi email likho.',0);if(p.length<6)return msg('Password kam se kam 6 akshar ka rakho.',0);const a=await nlAuth(),r=await a.createUserWithEmailAndPassword(e,p);await r.user.sendEmailVerification({url:SITE});await out();try{localStorage.setItem('nl_em',e)}catch{}msg('Account ban gaya ✅ Verification link '+e+' par bheja hai. Link kholo, phir yahan Login dabao. (Spam bhi dekho)',1)});
+window.nlSendLink=()=>run(async()=>{const e=emv();if(!okMail(e))return msg('Sahi email likho.',0);const a=await nlAuth();await a.sendSignInLinkToEmail(e,{url:SITE,handleCodeInApp:true});try{localStorage.setItem('nl_email_link',e);localStorage.setItem('nl_em',e);if(NLA.linkTo)localStorage.setItem('nl_intent',JSON.stringify({m:NLA.linkTo,t:Date.now()}))}catch{}msg('Login link '+e+' par bhej diya ✅ Isi phone me email kholkar link dabao. (Spam bhi dekho)',1)});
+window.nlReset=()=>run(async()=>{const e=emv();if(!okMail(e))return msg('Pehle sahi email likho.',0);const a=await nlAuth();await a.sendPasswordResetEmail(e,{url:SITE});msg('Password reset link '+e+' par bhej diya ✅ (Spam bhi dekho)',1)});
+
+/* ---------- link Google / email to a logged-in student (profile tab) ---------- */
+window.nlAddGoogle=()=>{NLA.linkTo=PT.m;nlGoogle()};
+window.nlAddEmail=()=>{NLA.linkTo=PT.m;nlEmailModal()};
+
+/* ---------- UI hooks ---------- */
+const alt=()=>'<div style="margin:6px 0 14px;padding:10px;border:1px dashed var(--bd);border-radius:14px"><div class="mu" style="margin-bottom:8px;font-weight:700">Ya Google / Email se:</div><div class="g2"><button class="btn o" type="button" onclick="NLA_clr();nlGoogle()"><i class="fa-brands fa-google"></i> Google</button><button class="btn o" type="button" onclick="NLA_clr();nlEmailModal()"><i class="fa-solid fa-envelope"></i> Email</button></div></div>';
+window.NLA_clr=()=>{NLA.linkTo=''};
+const _sl=stLogin;stLogin=function(){_sl.apply(this,arguments);try{const b=document.querySelector('#modal .mbox'),f=b&&b.querySelector('form');if(f)f.insertAdjacentHTML('afterend',alt())}catch{}};
+window.nlGate=()=>{modal('🔐 Registration se pehle verify karo','<p class="mu" style="margin-bottom:10px">Registration sirf verified email ya Google account se hoti hai. Verify hone ke baad hi form khulega. Registration ke baad bhi admin approval zaruri hai, uske bina login nahi hoga.</p><button class="btn o w" onclick="NLA_clr();nlGoogle()"><i class="fa-brands fa-google"></i> Google se verify karo</button><div class="mu" style="text-align:center;margin:10px 0">— ya —</div><label><i class="fa-solid fa-envelope"></i> Email<input id="nlE" type="email" inputmode="email" autocomplete="email"></label><button class="btn p w" onclick="NLA_clr();nlSendLink()"><i class="fa-solid fa-paper-plane"></i> Verification link bhejo</button><p class="mu" id="nlMsg" style="margin-top:10px"></p><p class="mu" style="font-size:.78rem">Link isi phone me kholna. Spam folder bhi dekho. Pehle se student ho? <a href="#" onclick="stLogin();return false" style="color:var(--br)">Login karo</a></p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
+const _sr=stReg;stReg=function(){if(!NLA.pend||Date.now()-NLA.pend.t>18e5){NLA.pend=null;return nlGate()}_sr.apply(this,arguments);try{const b=document.querySelector('#modal .mbox'),h=b&&b.querySelector('h3');if(!h)return;const n=$('rgN');if(n&&!n.value)n.value=NLA.pend.name;h.insertAdjacentHTML('afterend','<div class="li" style="margin-bottom:10px"><span><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> Email: <b>'+esc(NLA.pend.email)+'</b> (verified). PIN bhi banao, backup login ke liye. Registration ke baad admin approval zaruri hai.</span></div>')}catch{}};
+const _rsv=regSave;regSave=async function(){const P=NLA.pend,u=window.firebase&&firebase.auth&&firebase.auth().currentUser;if(!P||!u||u.uid!==P.uid||!u.emailVerified||Date.now()-P.t>18e5){NLA.pend=null;toast('Verification expire ya adhoora hai. Pehle email ya Google se verify karo.');return nlGate()}
+ const m=$('rgM').value.trim();if(/^\d{10}$/.test(m)){try{const em=(await DB.ref('library/emailmap/'+eKey(P.email)).once('value')).val();if(em&&em.m!==m&&(await DB.ref('library/students/'+em.m).once('value')).val())return regErr('Ye email dusre student se juda hai. Apna asli email use karo.')}catch{}}
+ return _rsv.apply(this,arguments)};
+const _rdn=regDone;regDone=function(n,m){const r=_rdn.apply(this,arguments);const P=NLA.pend;if(P){NLA.pend=null;nlLink(m,P.uid,P.email).then(()=>DB.ref('library/students/'+m).update({emailVerified:true,verifiedVia:P.via,verifiedAt:Date.now()})).catch(()=>0).finally(out);try{tg('📧 <b>Verified email</b> ('+P.via+'): '+esc(P.email)+'\nMobile: '+esc(m))}catch{}}return r};
+const _pdn=ptDraw;ptDraw=function(){if(PT.m&&PT.s&&PT.s.status==='pending'){stLogout(1);toast('⏳ Admin approval ke baad hi login hoga');return}const r=_pdn.apply(this,arguments);try{const el=$('pt');if(el&&PT.m&&PT.s&&PT.tab==='pf'&&!$('nlEmCard'))el.insertAdjacentHTML('beforeend','<div class="card" id="nlEmCard"><h3 class="h"><i class="fa-solid fa-envelope"></i> Email / Google login</h3>'+(PT.s.email?'<p class="mu" style="margin-bottom:8px">Juda hua: <b>'+esc(PT.s.email)+'</b>. Is email ya Google se bhi login kar sakte ho.</p>':'<p class="mu" style="margin-bottom:8px">Email ya Google jodo, phir mobile + PIN ke bina bhi login ho jayega.</p>')+'<div class="g2"><button class="btn o" onclick="nlAddGoogle()"><i class="fa-brands fa-google"></i> Google jodo</button><button class="btn o" onclick="nlAddEmail()"><i class="fa-solid fa-envelope"></i> Email jodo</button></div></div>')}catch{}return r};
+
+/* ---------- return from email link / Google redirect ---------- */
+async function nlBoot(){try{const h=location.href,redir=sessionStorage.getItem('nl_redir'),isLink=/[?&]oobCode=/.test(h)&&/[?&]mode=signIn/.test(h);if(!redir&&!isLink)return;
+ const a=await nlAuth();
+ if(redir){sessionStorage.removeItem('nl_redir');const r=await a.getRedirectResult();if(r&&r.user)await nlAfter(r.user);return}
+ if(a.isSignInWithEmailLink(h)){let e='';try{e=localStorage.getItem('nl_email_link')||''}catch{}if(!e)e=(prompt('Security ke liye wahi email likho jis par link aaya tha:')||'').trim().toLowerCase();if(!okMail(e))return toast('Sahi email likho aur link dobara kholo');
+  const r=await a.signInWithEmailLink(e,h);try{localStorage.removeItem('nl_email_link');history.replaceState(null,'',location.pathname+location.hash)}catch{}await nlAfter(r.user)}}catch(e){nlErr(e)}}
+setTimeout(nlBoot,3200);
+})();
+
+</script>
 </body>
 </html>
