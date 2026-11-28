@@ -575,13 +575,13 @@ function attachMenu(){const e=$('chAct');e.innerHTML=`<div class="chsheet"><h3>A
 async function chatPick(e){const f=e.target.files[0];e.target.value='';if(!f)return;if(f.type&&!/^image\//.test(f.type))return toast('Only photos can be sent');toast('📷 Photo taiyar ho rahi hai...');
  try{chatPrev=await shrink(f,1600,260);const o=$('chAct');o.innerHTML=`<div class="chsheet"><img src="${esc(chatPrev)}" alt="Preview" style="width:100%;max-height:48vh;object-fit:contain;border-radius:12px;background:#000"><input id="chCap" class="inp" placeholder="Caption likho (optional)..." style="margin:8px 0"><div class="g2"><button class="btn o" onclick="chatPrev=null;$('chAct').style.display='none'">Cancel</button><button class="btn p" onclick="chatSendImg()"><i class="fa-solid fa-paper-plane"></i> Bhejo</button></div></div>`;o.style.display='flex'}catch(x){toast('Photo nahi khuli: '+errMsg(x))}}
 async function chatSendImg(){const url=chatPrev,cap=(($('chCap')||{}).value||'').trim();if(!url)return;$('chAct').style.display='none';chatPrev=null;toast('📤 Bhej rahe hain...');let person=false;try{person=await Promise.race([detectPerson(url),new Promise(r=>setTimeout(()=>r(false),6000))])}catch{}if(person)return strike('Selfie/person detect hua. Sirf question ki photo bhejo');
- try{await chatPush({text:url,type:'image',cap:cap||null});chatReply=null;const r=$('chRep');if(r)r.style.display='none';toast('Photo bhej di ✅');setTimeout(()=>DB.ref('library/doubt_chat').push({name:'AI Teacher',u:'ai',dp:'',text:`Hello ${me}, question mil gaya. Formula lagakar step-by-step solve karo, ya desk par aakar samjho. 📚`,type:'text',timestamp:Date.now()}).catch(()=>{}),2500)}catch(x){toast('Photo nahi gayi: '+errMsg(x))}}
+ try{await chatPush({text:url,type:'image',cap:cap||null});chatReply=null;const r=$('chRep');if(r)r.style.display='none';toast('Photo bhej di ✅');setTimeout(()=>DB.ref('library/doubt_chat').push({name:'National Library AI',u:'ai',dp:'',text:`Hello ${me}, question mil gaya. Formula lagakar step-by-step solve karo, ya desk par aakar samjho. 📚`,type:'text',timestamp:Date.now()}).catch(()=>{}),2500)}catch(x){toast('Photo nahi gayi: '+errMsg(x))}}
 function viewImg(src){closeViewer(1);const d=document.createElement('div');d.id='imgV';d.style.cssText='position:fixed;inset:0;z-index:160;background:#000;display:flex;flex-direction:column';d.innerHTML=`<div class="chh" style="background:rgba(0,0,0,.7)"><button class="ib" onclick="closeViewer()" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button><div class="chtt"><b>Photo</b><small>Pinch karke zoom karo</small></div><a class="ib" style="display:flex;align-items:center;justify-content:center;text-decoration:none;color:#fff" href="${esc(src)}" download="NL_photo.jpg" aria-label="Download"><i class="fa-solid fa-download"></i></a></div><div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;touch-action:pinch-zoom"><img src="${esc(src)}" alt="Photo" style="max-width:100%;max-height:100%;object-fit:contain"></div>`;document.body.appendChild(d);viewNav=1;navPush(()=>{viewNav=0;closeViewer(1)})}
 function closeViewer(fromPop){const d=$('imgV');if(d)d.remove();if(!fromPop&&viewNav){viewNav=0;navPop()}}
 
 /* ===== AI assistant ===== */
 const KB=[[/fee|price|amount|kitna/,'**Library fees**\n• ₹400 / 1 month\n• ₹800 / 2 months\n• ₹1200 / 3 months\n• ₹2400 / 6 months\nUPI se pay karein.'],[/time|open|close|timing/,'**Timing**\nRoz 7:00 AM se 9:00 PM tak.'],[/rule/,'**Rules**\n• Mobile silent rakhein\n• Cabin mein bahar ka khana nahi\n• Shaanti banaye rakhein'],[/holiday/,'Library saal ke 365 din khuli rehti hai, jab tak notice board par alag se na bataya jaye.'],[/address|location|kahan/,'**Address**\nNear Post Office, Maharajganj, Azamgarh UP-276137'],[/contact|phone|manager|call/,'**Manager**\nRavi Prakash · +91 87950 11001'],[/seat/,`Total 68 seats hain. Abhi available: **${'{S}'}**`],[/water|paani|pani/,'RO chilled drinking water free hai.']];
-function openAI(){modal('✨ AI assistant','<div class="ai-h" id="aiH"><div class="bub">Namaste! Fees, time, rules, seats ya koi bhi topic poochho.</div></div><div class="g2" style="flex-wrap:wrap;margin-bottom:10px">'+['Fee','Time','Rules','Seat','Weather','Study tips'].map(q=>`<button class="btn o" style="padding:6px 12px" onclick="aiAsk('${q}')">${q}</button>`).join('')+'</div><div class="g2"><input class="inp" id="aiQ" placeholder="Type here..." style="margin:0" onkeydown="if(event.key===\'Enter\')aiAsk()"><button class="btn p" style="flex:0" onclick="aiAsk()"><i class="fa-solid fa-paper-plane"></i></button></div>',true)}
+function openAI(){modal('✨ National Library AI','<div class="ai-h" id="aiH"><div class="bub">Namaste! Main National Library AI hoon. Fees, time, rules, seats, padhai ya koi bhi topic aasan bhasha me poochho.</div></div><div class="g2" style="flex-wrap:wrap;margin-bottom:10px">'+['Fee','Time','Rules','Seat','Weather','Study tips'].map(q=>`<button class="btn o" style="padding:6px 12px" onclick="aiAsk('${q}')">${q}</button>`).join('')+'</div><div class="g2"><input class="inp" id="aiQ" placeholder="Type here..." style="margin:0" onkeydown="if(event.key===\'Enter\')aiAsk()"><button class="btn p" style="flex:0" onclick="aiAsk()"><i class="fa-solid fa-paper-plane"></i></button></div>',true)}
 const INT=[['fee','fee fees price amount kitna kitni paisa rupee rupaye charges monthly cost shulk फीस शुल्क पैसा'],['time','time timing open close khulti khulta baje samay टाइम समय खुलती'],['rules','rule rules niyam kanoon नियम'],['addr','address location kahan kaha pata where jagah पता'],['contact','contact phone call manager number whatsapp mobile sampark संपर्क'],['seat','seat seats khali available seet सीट'],['water','water paani pani पानी'],['holiday','holiday chutti band off छुट्टी'],['weather','weather mausam mosam mousam barish garmi sardi thand temperature rain मौसम बारिश'],['reg','register registration admission join signup ragistration रजिस्ट्रेशन'],['login','login signin pin forgot bhool'],['checkin','checkin checkout attendance hazri'],['receipt','receipt invoice slip'],['idcard','idcard id card pehchan'],['wifi','wifi internet password'],['study','study tips padhai prepare preparation strategy timetable tayari']];
 const lev=(a,b)=>{if(a===b)return 0;const m=a.length,n=b.length;if(!m||!n)return Math.max(m,n);let p=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]};
 const STOPW=new Set('kaisa kaisi kaise kya hai hain ho hoga hota ka ki ke ko se me mein mai kar kare karo karna aur ya mujhe mera meri batao bataiye bataye please pls aaj abhi today the is are what how tell about hi hello ji bhai sir kaun kon'.split(' '));
@@ -661,7 +661,7 @@ const KEYS={news:'news samachar current affairs khabar',quiz:'gk question test',
 const CATS=[['students','Students','graduation-cap','Login, check-in, fees, doubts',[['My account',['portal','checkin','reg']],['Community',['chat','leader','learners','feedback']],['Enquiry',['admission']]]],
 ['library','Library & Fees','building-columns','Plans, fee payment, seats, water',[['Fees',['plans','payment','scan']],['Library',['seats','water','info','books','weather','map']],['Links',['pdfly','install']]]],
 ['study','Study','book-open-reader','News, quiz, typing, tools & more',[['Daily',['news','wiki','quotes']],['Practice',['quiz','typing','flash']],['Track & tools',['study','tools']],['Books & videos',['material','ncert','video','books','mock','syllabus','pdfly']]]],
-['admin','Admin Panel','user-shield','All students, fees, reports, security',[['Students',['stmgr','approve','recpay','ledger','att']],['Library',['seats','vendor','notices','broadcast','lnmgr']],['Documents',['receipt','idcard','exportd']],['System',['store','sys','wifi','seclog','dailyrep','rules','wipe']],['Session',['logout']]]]];
+['admin','Admin Panel','user-shield','All students, fees, reports, security',[['Students',['stmgr','approve','recpay','ledger','att']],['Library',['seats','vendor','notices','broadcast','lnmgr','gps','sus']],['Documents',['receipt','idcard','exportd']],['System',['store','sys','wifi','seclog','dailyrep','rules','wipe']],['Session',['logout']]]]];
 const ACT={portal:()=>PT.m?(show('portal'),ptDraw()):stLogin(),checkin:()=>PT.m?ckModal():stLogin(),reg:()=>stReg(),leader:()=>leader(),quiz:()=>{show('quiz');quiz()},news:()=>{show('news');newsLoad()},flash:()=>{show('flash');fcDraw()},studyhub:()=>show('c-study'),pdfly:()=>window.open('https://pdflytools.github.io/Home/','_blank','noopener'),feedback:()=>feedback(),notices:()=>openNotices(),vendor:()=>gate(CFG.pin.water,vendor,'Vendor access'),stmgr:()=>nA(()=>show('stmgr')),approve:()=>nA(approvals),recpay:()=>nA(collectFee),ledger:()=>nA(ledger),att:()=>nA(attRep),broadcast:()=>nA(broadcast),exportd:()=>nA(exportData),store:()=>nA(storeMgr),sys:()=>nA(sysStatus),wifi:()=>nA(wifiMgr),seclog:()=>nA(secLog),dailyrep:()=>nA(dailyRep),rules:()=>rulesGuide(),wipe:()=>nA(wipeAll),install:()=>installApp(),learners:()=>{show('learners');learnDraw()},lnmgr:()=>nA(learnersMgr),ncert:()=>openLink('ncert'),video:()=>openLink('video'),books:()=>openLink('books'),mock:()=>openLink('mock'),syllabus:()=>openLink('syllabus'),weather:()=>{show('weather');wxDraw()},map:()=>{show('map');mapInit()},material:()=>{show('material');matDraw()},books:()=>{show('books');booksLoad()},logout:()=>{admin=false;drawWater();buildHome();show('home');toast('Logged out')},'c-admin':()=>nA(()=>show('c-admin'))};
 function navMark(id){const k=id==='home'?'home':id.startsWith('c-')?id.slice(2):(CATS.find(c=>c[4].some(g=>g[1].includes(id)))||[])[0];document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===k));curTab=k||'home';applyTheme(curTab)}
 function buildHome(){
@@ -748,7 +748,7 @@ function ptStart(m){ptStop();if(!DB)return;PT.m=m;[['students/'+m,'s'],['attenda
 function ptStop(){PT.refs.forEach(r=>r.off());PT.refs=[];PT.m='';PT.s=null;PT.at={};PT.sl={};PT.ex={};PT.py={};PT.is={}}
 function stLogout(q){ptStop();try{localStorage.removeItem('nl_sess')}catch{}ptDraw();homeHello();if(!q){show('home');toast('Logged out')}}
 function stLogin(){modal('🎓 Student login','<form onsubmit="doLogin(event);return false" autocomplete="on"><label><i class="fa-solid fa-user"></i> Full name<input id="lgN" name="name" autocomplete="name"></label><label><i class="fa-solid fa-mobile-screen"></i> Mobile number<input id="lgM" name="username" type="tel" maxlength="10" autocomplete="username"></label><label><i class="fa-solid fa-lock"></i> 6-digit PIN<input id="lgP" name="password" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password"></label><button class="btn p w" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button></form><div class="g2"><button class="btn o" onclick="forgot()"><i class="fa-solid fa-key"></i> Forgot PIN</button><button class="btn o" onclick="stReg()"><i class="fa-solid fa-user-plus"></i> Register</button></div><p class="mu" style="margin-top:10px"><i class="fa-solid fa-shield-halved"></i> Browser ka "Save password" popup aaye to Save dabao, agli baar auto-fill ho jayega.</p>');const l=ls('nl_last',null);if(l){$('lgN').value=l.n;$('lgM').value=l.m}credFill('lg')}
-async function credFill(p){try{if(!navigator.credentials||!window.PasswordCredential)return;const c=await navigator.credentials.get({password:true,mediation:'optional'});if(c&&c.type==='password'&&$(p+'M')){$(p+'M').value=c.id;$(p+'P').value=c.password;if(c.name)$(p+'N').value=c.name}}catch{}}
+async function credFill(p){try{if(!navigator.credentials||!window.PasswordCredential)return;const c=await navigator.credentials.get({password:true,mediation:'optional'});if(c&&c.type==='password'&&/^\d{10}$/.test(c.id)&&$(p+'M')){$(p+'M').value=c.id;$(p+'P').value=c.password;if(c.name)$(p+'N').value=c.name}}catch{}}
 const credSave=async(m,p,n)=>{try{if(window.PasswordCredential)await navigator.credentials.store(new PasswordCredential({id:m,password:p,name:n}))}catch{}};
 async function verifyCred(n,m,p){if(lockd())return null;if(!n||!/^\d{10}$/.test(m)||!/^\d{6}$/.test(p)){toast('Naam, 10 digit mobile aur Enter the 6-digit PIN');return null}if(!await ensureDB())return null;
  try{const sc=(await DB.ref('library/security/'+m).once('value')).val();if(sc&&sc.until>Date.now()){toast(`Account ${Math.ceil((sc.until-Date.now())/6e4)} min ke liye lock hai`);return null}
@@ -802,7 +802,7 @@ async function ckDo(i){const m=PT.m;if(!m)return toast('Please log in first');if
  if(i){if(open)return toast('You are already checked in. Check out first');const k=r.push().key,v={in:Date.now(),ip};await r.child(k).set(v);await DB.ref(`library/attendance/${d}/${m}`).update({name:PT.s.name,['s/'+k]:v});toast('✅ Check-in ho gaya'+(dl(PT.s)<0?' · fee due hai':''))}
  else{if(!open||open.k==='x')return toast('Please check in first');const o=Date.now();await r.child(open.k).update({out:o});await DB.ref(`library/attendance/${d}/${m}/s/${open.k}`).update({out:o});toast('👋 Check-out ho gaya')}closeModal()}catch(e){toast('Check-in/out save nahi hua: '+errMsg(e))}}
 /* study, exams */
-async function slAdd(){const sub=$('slS').value.trim(),h=parseFloat($('slH').value);if(!sub||!(h>0&&h<=16))return toast('Subject aur sahi hours (0-16) daalo');const m=PT.m,ym=day(new Date()).slice(0,7);try{await DB.ref('library/studylog/'+m).push({time:Date.now(),date:day(new Date()),subject:sub,hours:h,note:$('slN').value.trim()});DB.ref(`library/leaderboard/${ym}/${m}`).transaction(v=>({name:(PT.s.name||'').split(' ')[0],hours:Math.round(((v&&v.hours||0)+h)*100)/100}));toast('Study log save ho gaya ✅')}catch{toast('Could not save')}}
+async function slAdd(){toast('Study hours ab check-in / check-out se automatic judte hain 📚')}
 const slDel=k=>DB.ref('library/studylog/'+PT.m+'/'+k).remove();
 function exAdd2(){const n=$('exN2').value.trim(),d=$('exD2').value;if(!n||!d)return toast('Enter the exam name and date');DB.ref('library/exams/'+PT.m).push({name:n,date:d});toast('Exam add ho gaya ✅')}
 const exDel2=k=>DB.ref('library/exams/'+PT.m+'/'+k).remove();
@@ -830,7 +830,7 @@ sty:(d,own)=>{PT.cur=d;const c=calc(d),cm=day(new Date()).slice(0,7),sm=own&&PT.
  const tot={};Object.entries(by).forEach(([k,o])=>{tot[k]=Object.values(o).reduce((a,b)=>a+b,0)});const mx=Math.max(1,...Object.values(tot)),mt=Object.values(tot).reduce((a,b)=>a+b,0),sx=Math.max(1,...Object.values(subM));
  let cal=['S','M','T','W','T','F','S'].map(x=>`<span>${x}</span>`).join('')+'<i></i>'.repeat(fd);for(let n=1;n<=dim;n++){const k=mk(n),h=tot[k]||0,a=(c.days[k]||[]).length;cal+=`<b class="cd ${PT.sd===k?'sel':''}" style="${h?`background:color-mix(in srgb,var(--br) ${Math.round(Math.min(90,22+h/mx*68))}%,var(--in));color:#fff`:''}" onclick="stDay('${k}')">${n}${a?'<u></u>':''}</b>`}
  const bars=[...Array(dim)].map((_,i)=>{const k=mk(i+1),o=by[k]||{};return `<div class="sgb ${PT.sd===k?'sel':''}" onclick="stDay('${k}')"><div class="sgs">${Object.entries(o).map(([n,h])=>`<i style="height:${h/mx*110}px;background:${scol(n)}" title="${esc(n)}"></i>`).join('')}</div><small>${i+1}</small></div>`}).join('');
- return (own?`<div class="card"><h3><i class="fa-solid fa-pen"></i> Aaj kya padha?</h3><div class="g"><label><i class="fa-solid fa-book"></i> Subject<input id="slS" list="subs" placeholder="e.g. Maths"></label><label><i class="fa-solid fa-clock"></i> Hours<input id="slH" type="number" step=".25" min=".25" max="16"></label></div><label><i class="fa-solid fa-note-sticky"></i> Topic / note<input id="slN" placeholder="Percentage, Polity ch-3..."></label><datalist id="subs">${SUBS.map(x=>`<option>${x}</option>`).join('')}</datalist><button class="btn p w" onclick="slAdd()"><i class="fa-solid fa-plus"></i> Save study log</button><label style="margin-top:14px"><i class="fa-solid fa-bullseye"></i> Daily goal (hours)<input type="number" step=".5" min="0" max="16" value="${+c.s.goal||''}" onchange="DB.ref('library/students/'+PT.m+'/goal').set(+this.value||0);toast('Goal save ho gaya ✅')"></label></div>`:'')+
+ return (own?`<div class="card"><h3><i class="fa-solid fa-fingerprint"></i> Study hours automatic hain</h3><p class="mu" style="margin-bottom:6px">Check-in se check-out tak aap library me jitna time rahoge, utna hi study hours aur leaderboard me judta hai. Alag se likhne ki zarurat nahi.</p><label style="margin-top:14px"><i class="fa-solid fa-bullseye"></i> Daily goal (hours)<input type="number" step=".5" min="0" max="16" value="${+c.s.goal||''}" onchange="DB.ref('library/students/'+PT.m+'/goal').set(+this.value||0);toast('Goal save ho gaya ✅')"></label></div>`:'')+
  `<div class="card"><div class="row"><h3><i class="fa-solid fa-calendar-days"></i> ${mname(sm)} · ${mt.toFixed(1)}h</h3>${own?`<div><button class="ib" onclick="smMove(-1)" aria-label="Pichla month"><i class="fa-solid fa-chevron-left"></i></button> <button class="ib" onclick="smMove(1)" aria-label="Agla month" ${sm>=cm?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button></div>`:''}</div><p class="mu" style="margin:6px 0 10px">Date par tap karo, us din ki padhai aur library ka poora hisaab dikhega. Gehra rang = zyada padhai, dot = library aaye.</p><div class="cal">${cal}</div></div>
  <div class="card" id="sdDet"></div>
  <div class="card"><h3><i class="fa-solid fa-chart-column"></i> Subject-wise graph · ${mname(sm)}</h3><div class="sg">${bars}</div><div class="row" style="margin-top:8px">${Object.keys(subM).map(n=>`<span class="mu"><i class="dotc" style="background:${scol(n)}"></i> ${esc(n)}</span>`).join('')}</div></div>
@@ -848,7 +848,7 @@ function ptDraw(){const el=$('pt');if(!el)return;if(!PT.m){el.innerHTML='<div cl
  el.innerHTML=hdr(PT,true)+'<div class="tabs sc">'+T.map(t=>`<button class="btn ${PT.tab===t[0]?'p':'o'}" onclick="PT.tab='${t[0]}';ptDraw()"><i class="fa-solid fa-${t[1]}"></i> ${t[2]}</button>`).join('')+'</div>'+(SEC[PT.tab]||SEC.ov)(PT,true);if(PT.tab==='sty'&&PT.sd)stDay(PT.sd)}
 function homeHello(){const s=PT.s,h=$('heroName');if(!h)return;$('heroSm').textContent=s?'NAMASTE 👋':'WELCOME TO';h.textContent=s?s.name:'National Library';$('heroBtns').innerHTML=s?'<button class="btn acc" onclick="go(\'portal\')"><i class="fa-solid fa-user-graduate"></i> My portal</button><button class="btn gl" onclick="ckModal()"><i class="fa-solid fa-fingerprint"></i> Check-in / out</button>':'<button class="btn acc" onclick="stLogin()"><i class="fa-solid fa-right-to-bracket"></i> Student login</button><button class="btn gl" onclick="stReg()"><i class="fa-solid fa-user-plus"></i> Register</button>'}
 /* leaderboard, quiz, quotes */
-async function leader(){modal('🏆 Top learners','<p class="mu">Loading...</p>');if(!DB)return;const ym=day(new Date()).slice(0,7),v=(await DB.ref('library/leaderboard/'+ym).once('value')).val()||{},l=Object.values(v).sort((a,b)=>b.hours-a.hours).slice(0,10),e=document.querySelector('#modal .mbox');if(!e)return;e.innerHTML=`<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners · ${ym}</h3>`+(l.map((x,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)} ${esc(x.name)}</span><b>${esc(x.hours)}h</b></div>`).join('')||'<p class="mu">Is mahine abhi koi study log nahi. Portal mein study log karo!</p>')}
+async function leader(){modal('🏆 Top learners','<p class="mu">Loading...</p>');if(!DB)return;const ym=day(new Date()).slice(0,7),v=(await DB.ref('library/leaderboard/'+ym).once('value')).val()||{},l=Object.values(v).sort((a,b)=>b.hours-a.hours).slice(0,10),e=document.querySelector('#modal .mbox');if(!e)return;e.innerHTML=`<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners · ${ym}</h3>`+(l.map((x,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)} ${esc(x.name)}</span><b>${esc(x.hours)}h</b></div>`).join('')||'<p class="mu">Is mahine abhi kisi ka library time nahi juda. Check-in / check-out karo!</p>')}
 const QZ=[["Uttar Pradesh ki rajdhani kaun si hai?",["Lucknow","Kanpur","Varanasi","Prayagraj"],0],["Bharat ke Samvidhan ke janak kise kaha jata hai?",["M. Gandhi","B.R. Ambedkar","J. Nehru","S. Patel"],1],["Chhuachhut ka ant kaun sa Anuchhed karta hai?",["Article 14","Article 15","Article 17","Article 21"],2],["'Missile Man of India' kaun hain?",["A.P.J. Abdul Kalam","Vikram Sarabhai","Homi Bhabha","C.V. Raman"],0],["Azamgarh kis rajya mein hai?",["Bihar","Uttar Pradesh","Madhya Pradesh","Jharkhand"],1],["Bharat ka rashtriya pashu?",["Sher","Hathi","Bagh","Tendua"],2],["'Bihar ka shok' kis nadi ko kaha jata hai?",["Ganga","Kosi","Gandak","Son"],1],["Bharat ke pehle Rashtrapati kaun the?",["Dr. Rajendra Prasad","Dr. Radhakrishnan","Zakir Husain","V.V. Giri"],0],["Bharat ko swatantrata kis varsh mili?",["1942","1945","1947","1950"],2],["Samvidhan kab lagu hua?",["15 Aug 1947","26 Jan 1950","26 Nov 1949","2 Oct 1950"],1],["Lal Grah kise kehte hain?",["Shukra","Mangal","Brihaspati","Budh"],1],["Sone ka rasayanik chinh?",["Ag","Go","Au","Gd"],2]];
 let qz={i:0,s:0,q:[]};
 const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
@@ -1169,7 +1169,7 @@ async function leader(p){if(typeof p==='string')ldP=p;if(!$('modal'))modal('🏆
   else{const mon=new Date(now);mon.setDate(now.getDate()-((now.getDay()+6)%7));const from=day(mon),sl=(await DB.ref('library/studylog').once('value')).val()||{};Object.entries(sl).forEach(([m,l])=>{let h=0;Object.values(l||{}).forEach(x=>{if(x&&x.date>=from)h+=+x.hours||0});if(h>0)rows.push({m,name:names[m]||m.slice(-4),hours:Math.round(h*100)/100})})}
  }catch(e){const b=box();if(b)b.innerHTML='<button class="x" onclick="closeModal()">✕</button><h3>🏆 Leaderboard</h3><p class="mu">Data load nahi hua: '+esc(errMsg(e))+'</p>';return}
  rows.sort((a,b)=>b.hours-a.hours);rows=rows.slice(0,10);const lab={w:'Is hafte (Mon se)',m:'Is mahine · '+ym,y:'Saal '+Y},e=box();if(!e)return;
- e.innerHTML=`<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners</h3><div class="ldt">${[['w','Weekly'],['m','Monthly'],['y','Yearly']].map(x=>`<button class="btn ${x[0]===ldP?'p':'o'}" onclick="leader('${x[0]}')">${x[1]}</button>`).join('')}</div><div class="mu" style="margin-bottom:8px">${lab[ldP]}</div>`+(rows.map((x,i)=>`<div class="li" ${PT.m===x.m?'style="outline:2px solid var(--br);border-radius:10px"':''}><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)} ${esc(x.name)}</span><b>${esc(x.hours)}h</b></div>`).join('')||'<p class="mu">Is period me abhi koi study log nahi. Portal me study log karo!</p>')}
+ e.innerHTML=`<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners</h3><div class="ldt">${[['w','Weekly'],['m','Monthly'],['y','Yearly']].map(x=>`<button class="btn ${x[0]===ldP?'p':'o'}" onclick="leader('${x[0]}')">${x[1]}</button>`).join('')}</div><div class="mu" style="margin-bottom:8px">${lab[ldP]}</div>`+(rows.map((x,i)=>`<div class="li" ${PT.m===x.m?'style="outline:2px solid var(--br);border-radius:10px"':''}><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)} ${esc(x.name)}</span><b>${esc(x.hours)}h</b></div>`).join('')||'<p class="mu">Is period me abhi kisi ka library time nahi juda. Check-in / check-out karo!</p>')}
 /* ===== Student Time Table (saved + editable) ===== */
 const TTD=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];let TT=[],ttE=-1;
 async function ttLoad(){const m=PT.m;TT=ls('nl_tt_'+m,[]);try{if(DB){const v=(await DB.ref('library/timetable/'+m).once('value')).val();if(v){TT=Array.isArray(v)?v.filter(Boolean):Object.values(v);sv('nl_tt_'+m,TT)}}}catch{}}
@@ -1230,15 +1230,15 @@ $('hub').insertAdjacentHTML('beforebegin',`<div class="card" style="margin-botto
 /* ===== Global speed/safety: fetch timeout ===== */
 (function(){const f=window.fetch;window.fetch=function(u,o){o=o||{};if(!o.signal&&typeof AbortController!=='undefined'){const c=new AbortController();setTimeout(()=>c.abort(),25000);o=Object.assign({},o,{signal:c.signal})}return f.call(this,u,o)}})();
 /* ===== Free AI (Pollinations - no API key) ===== */
-const AISYS='Tum "AI Teacher" ho, National Library Maharajganj Azamgarh ke Doubt Group mein. Students SSC, Railway, UP Police, Bank, TET aur board exams ki taiyari karte hain. Jawab saral Hinglish (Hindi Roman script) mein do, 120 shabdon ke andar, step-by-step aur sahi tathyon ke saath. Agar pakka na pata ho to saaf bolo. Gaali-galoch ya galat sawal par vinamrata se mana karo.';
+const AISYS='[NLAI] Tum "National Library AI" ho, National Library Maharajganj Azamgarh ke Doubt Group mein. Students SSC, Railway, UP Police, Bank, TET aur board exams ki taiyari karte hain. Jawab bahut aasan Hinglish (Hindi Roman script) mein do, chhote vakya aur roz ke shabd use karo taaki students samajh sakein,  120 shabdon ke andar, step-by-step aur sahi tathyon ke saath. Agar pakka na pata ho to saaf bolo. Gaali-galoch ya galat sawal par vinamrata se mana karo.';
 async function aiLLM(q,sys){const msg=[{role:'system',content:sys||AISYS},{role:'user',content:q}];
  try{const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:msg,private:true})});if(r.ok){const j=await r.json(),t=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;if(t)return String(t).trim()}}catch{}
  try{const r=await fetch('https://text.pollinations.ai/'+encodeURIComponent(q)+'?private=true&system='+encodeURIComponent(sys||AISYS));if(r.ok){const t=await r.text();if(t&&t.length<6000)return t.trim()}}catch{}
  return''}
 let aiLast=0;
 async function aiTeach(t){if(!DB||!/\?|^\s*@?ai\b|@ai|teacher|^\s*(kya|kaun|kab|kaise|kyun|kyon|kitna|kitne|kahan|what|why|how|who|when|explain|define|solve|batao|bataiye|samjhao)\b/i.test(t))return;if(Date.now()-aiLast<4000)return;aiLast=Date.now();
- const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a=await aiLLM(q);if(!a)a='🙏 AI Teacher abhi busy hai, thodi der baad dobara poochho ya group ke dost / manager se madad lo.';
- try{await DB.ref('library/doubt_chat').push({name:'🤖 AI Teacher',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1500),type:'text'})}catch{}}
+ const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a=await aiLLM(q);if(!a)a='🙏 National Library AI abhi busy hai, thodi der baad dobara poochho ya group ke dost / manager se madad lo.';
+ try{await DB.ref('library/doubt_chat').push({name:'🤖 National Library AI',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1500),type:'text'})}catch{}}
 /* ===== Code 128 barcode (scannable) ===== */
 const C128=['212222','222122','222221','121223','121322','131222','122213','122312','132212','221213','221312','231212','112232','122132','122231','113222','123122','123221','223211','221132','221231','213212','223112','312131','311222','321122','321221','312212','322112','322211','212123','212321','232121','111323','131123','131321','112313','132113','132311','211313','231113','231311','112133','112331','132131','113123','113321','133121','313121','211331','231131','213113','213311','213131','311123','311321','331121','312113','312311','332111','314111','221411','431111','111224','111422','121124','121421','141122','141221','112214','112412','122114','122411','142112','142211','241211','221114','413111','241112','134111','111242','121142','121241','114212','124112','124211','411212','421112','421211','212141','214121','412121','111143','111341','131141','114113','114311','411113','411311','113141','114131','311141','411131','211412','211214','211232','2331112'];
 function c128(t){const v=[104];let sum=104;[...String(t)].forEach((ch,i)=>{let c=ch.charCodeAt(0)-32;if(c<0||c>94)c=0;v.push(c);sum+=c*(i+1)});v.push(sum%103,106);let x=12,o='';v.forEach(k=>{let bk=true;for(const d of C128[k]){const w=+d;if(bk)o+=`<rect x="${x}" y="0" width="${w}" height="60"/>`;x+=w;bk=!bk}});return{w:x+12,svg:o}}
@@ -1318,7 +1318,7 @@ CATS[2][4]=[['Books & videos',['material','ncert','video','books','mock','syllab
 CATS[3][4].forEach(g=>{if(g[0]==='Library'&&!g[1].includes('hol'))g[1].push('hol')});
 buildHome();
 /* Constitution: add AI explanation */
-const _cg=constGo;constGo=async function(){await _cg();const q=$('cq').value.trim(),R=$('cr');if(!q||!R||/Jaankari la rahe/.test(R.textContent))return;R.insertAdjacentHTML('beforeend','<div id="cai" class="li" style="margin-top:10px;flex-direction:column;align-items:flex-start"><b>🤖 AI Teacher (exam point of view)</b><span class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Likh raha hai...</span></div>');const a=await aiLLM(`Bharat ke Samvidhan (Constitution of India) ke baare mein: "${q}". Is topic ke Article/Part/Schedule ka number, matlab, kab aur kaise jodha gaya (amendment), aur competitive exam ke liye 4-5 important points batao.`,AISYS.replace('120 shabdon','200 shabdon'));const c=$('cai');if(c)c.innerHTML='<b>🤖 AI Teacher (exam point of view)</b><div class="cx">'+esc(a||'AI abhi busy hai, upar ka source dekho.')+'</div>'};
+const _cg=constGo;constGo=async function(){await _cg();const q=$('cq').value.trim(),R=$('cr');if(!q||!R||/Jaankari la rahe/.test(R.textContent))return;R.insertAdjacentHTML('beforeend','<div id="cai" class="li" style="margin-top:10px;flex-direction:column;align-items:flex-start"><b>🤖 National Library AI (exam point of view)</b><span class="mu"><i class="fa-solid fa-spinner fa-spin"></i> Likh raha hai...</span></div>');const a=await aiLLM(`Bharat ke Samvidhan (Constitution of India) ke baare mein: "${q}". Is topic ke Article/Part/Schedule ka number, matlab, kab aur kaise jodha gaya (amendment), aur competitive exam ke liye 4-5 important points batao.`,AISYS.replace('120 shabdon','200 shabdon'));const c=$('cai');if(c)c.innerHTML='<b>🤖 National Library AI (exam point of view)</b><div class="cx">'+esc(a||'AI abhi busy hai, upar ka source dekho.')+'</div>'};
 </script>
 
 <style>
@@ -1522,14 +1522,14 @@ const md=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/^\s*[-*•]\s+
 const _aiLLM0=aiLLM;
 aiLLM=async function(q,sys){const js=/JSON/i.test(sys||'');const t=await gem(q,sys||AISYS,{json:js,max:js?7000:1400});if(t)return t;return await _aiLLM0(q,sys)};
 
-/* ---- Doubt group AI Teacher (fixed) ---- */
+/* ---- Doubt group National Library AI (fixed) ---- */
 let aiQ=Promise.resolve();
 const AIQ_RE=/[?？]|@?\bai\b|teacher|^\s*(kya|kaun|kab|kaise|kaisa|kyun|kyon|kitna|kitne|kahan|kis|what|why|how|who|when|where|explain|define|solve|batao|bataiye|bata|samjhao|samjha)\b|क्या|कैसे|कौन|कब|क्यों|कितना|बताओ|समझाओ/i;
 async function aiTeach(t){if(!DB||!t||!AIQ_RE.test(t))return;
  aiQ=aiQ.then(async()=>{const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a='';
   try{a=await aiLLM(q,AISYS+' Jawab seedha aur poora do, adhura mat chhodo.')}catch{}
-  if(!a)a='🤖 AI Teacher abhi jawab nahi de paaya. Thodi der baad dobara poochho.';
-  try{await DB.ref('library/doubt_chat').push({name:'🤖 AI Teacher',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)}
+  if(!a)a='🤖 National Library AI abhi jawab nahi de paaya. Thodi der baad dobara poochho.';
+  try{await DB.ref('library/doubt_chat').push({name:'🤖 National Library AI',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)}
 
 /* ---- Constitution AI (improved) ---- */
 let CQL='';
@@ -1780,11 +1780,11 @@ const aiOn=()=>ls('nl_aiT',1)!==0&&ls('nl_aiT',1)!==false;
 async function aiTeach(t){if(!DB||!t||!aiOn()||!AIQ_RE.test(t))return;
  aiQ=aiQ.then(async()=>{const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a='';
   try{a=await aiLLM(q,AISYS+' Give a direct, complete answer.')}catch{}
-  if(!a)a='🤖 AI Teacher is unavailable right now ('+(gem.err||'network')+'). Please try again shortly.';
-  try{await DB.ref('library/doubt_chat').push({name:'🤖 AI Teacher',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)}
+  if(!a)a='🤖 National Library AI is unavailable right now ('+(gem.err||'network')+'). Please try again shortly.';
+  try{await DB.ref('library/doubt_chat').push({name:'🤖 National Library AI',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)}
 function aiTogDraw(){const b=$('chAI');if(!b)return;const on=aiOn();b.className='ib aib '+(on?'on':'off');b.innerHTML='<i class="fa-solid fa-robot"></i><span>'+(on?'AI ON':'AI OFF')+'</span>'}
-function aiTog(){sv('nl_aiT',aiOn()?0:1);aiTogDraw();toast(aiOn()?'AI Teacher is ON: it will answer your questions':'AI Teacher is OFF')}
-const _oc0=openChat;openChat=async function(){await _oc0.apply(this,arguments);const h=document.querySelector('#chatFS .chh');if(h&&!$('chAI')){h.insertAdjacentHTML('beforeend','<button class="ib aib" id="chAI" onclick="aiTog()" aria-label="AI Teacher"></button>');const m=h.querySelector('button[aria-label="Members"]');if(m)h.insertBefore($('chAI'),m);aiTogDraw()}};
+function aiTog(){sv('nl_aiT',aiOn()?0:1);aiTogDraw();toast(aiOn()?'National Library AI is ON: it will answer your questions':'National Library AI is OFF')}
+const _oc0=openChat;openChat=async function(){await _oc0.apply(this,arguments);const h=document.querySelector('#chatFS .chh');if(h&&!$('chAI')){h.insertAdjacentHTML('beforeend','<button class="ib aib" id="chAI" onclick="aiTog()" aria-label="National Library AI"></button>');const m=h.querySelector('button[aria-label="Members"]');if(m)h.insertBefore($('chAI'),m);aiTogDraw()}};
 const _dc0=drawChat;drawChat=function(){if(drawChat.q)return;drawChat.q=requestAnimationFrame(()=>{drawChat.q=0;try{_dc0()}catch{}})};
 
 /* ---- Wi-Fi restriction (IP based, strict) + MAC ---- */
@@ -1797,7 +1797,7 @@ async function netOK(){let st={};try{st=(await DB.ref('library/settings').once('
  if(!l.length){wifiMsg('Library Wi-Fi is not set up yet. Ask the manager.',[]);return false}
  if(l.some(x=>sameNet(x.ip,ip)))return true;logSec('wifi-block',PT.m);closeModal();wifiMsg('You are not on the Library Wi-Fi',names);return false}
 function ckModal(){const ss=sess(PT.at[day(new Date())]),open=ss.some(x=>!x.out),mac=(PT.s&&PT.s.mac)||'';
- modal('📍 Check-in / out',`<div class="li pendrow"><span><i class="fa-solid fa-wifi"></i> You must be on the Library Wi-Fi to check in or out.</span></div><div class="li"><span>Today's sessions</span><b>${ss.length}</b></div>${ss.map((x,i)=>`<div class="li ${x.out?'':'pendrow'}"><span>#${i+1} · ${fmtT(x.in)} → ${x.out?fmtT(x.out):'<b>inside now</b>'}</span><small>${x.out?((x.out-x.in)/36e5).toFixed(1)+'h':''}</small></div>`).join('')}<div class="g2"><button class="btn ok" ${open?'disabled':''} onclick="ckDo(1)"><i class="fa-solid fa-right-to-bracket"></i> Check-in</button><button class="btn er" ${open?'':'disabled'} onclick="ckDo(0)"><i class="fa-solid fa-right-from-bracket"></i> Check-out</button></div>
+ modal('📍 Check-in / out',`<div class="li pendrow"><span><i class="fa-solid fa-wifi"></i> Check-in / out sirf library ke andar hoga: Library Wi-Fi + phone ki Location (GPS) ON rakho. 10 minute se pehle check-out nahi hoga.</span></div><div class="li"><span>Today's sessions</span><b>${ss.length}</b></div>${ss.map((x,i)=>`<div class="li ${x.out?'':'pendrow'}"><span>#${i+1} · ${fmtT(x.in)} → ${x.out?fmtT(x.out):'<b>inside now</b>'}</span><small>${x.out?((x.out-x.in)/36e5).toFixed(1)+'h':''}</small></div>`).join('')}<div class="g2"><button class="btn ok" ${open?'disabled':''} onclick="ckDo(1)"><i class="fa-solid fa-right-to-bracket"></i> Check-in</button><button class="btn er" ${open?'':'disabled'} onclick="ckDo(0)"><i class="fa-solid fa-right-from-bracket"></i> Check-out</button></div>
  `)}
 const macFmt=v=>{v=String(v||'').trim().toUpperCase().replace(/[^0-9A-F]/g,'');return v.length===12?v.match(/.{2}/g).join(':'):''};
 async function macSelf(){const v=($('ckMac').value||'').trim(),f=v?macFmt(v):'';if(v&&!f)return toast('Enter a valid MAC address (12 hex digits)');if(!await ensureDB())return;try{await DB.ref('library/students/'+PT.m+'/mac').set(f||null);toast('MAC saved ✅')}catch(e){toast('Not saved: '+errMsg(e))}}
@@ -2451,13 +2451,13 @@ new MutationObserver(()=>{const e=document.getElementById('cfC');if(e&&!document
 /* --- AI: faster, parallel, professional answers --- */
 const _g=gem;gem=function(q,s,o){o=o||{};o={...o,max:Math.min(o.max||1400,o.max||1400)};
  return Promise.race([_g(q,s,o),new Promise(r=>setTimeout(()=>r(''),o.search||o.json||(o.max||0)>1500?50000:22000))])};
-const PSYS='You are "AI Teacher" of National Library, Maharajganj, Azamgarh, answering in a student Doubt Group. Reply in the same language/script the student used (Hindi, English or Hinglish). Use a professional, clear format: a one-line **Answer**, then **Explanation** in short steps, then **Key Points** as bullets, and a one-line **Exam Tip** when useful. Be accurate, concise (under 180 words unless asked), never invent facts.';
+const PSYS='You are "National Library AI" of National Library, Maharajganj, Azamgarh, answering in a student Doubt Group. Reply in the same language/script the student used (Hindi, English or Hinglish). Use a professional, clear format: a one-line **Answer**, then **Explanation** in short steps, then **Key Points** as bullets, and a one-line **Exam Tip** when useful. Be accurate, concise (under 180 words unless asked), never invent facts.';
 aiTeach=async function(t){if(!DB||!t||!aiOn()||!AIQ_RE.test(t))return;
  aiQ=aiQ.then(async()=>{const q=t.replace(/^\s*@?ai(\s*teacher)?[:,\s]*/i,'').trim()||t;let a='';
   const ok=p=>p.then(x=>{if(!x||String(x).trim().length<2)throw 0;return String(x).trim()});
   try{a=await Promise.any([ok(gem(q,PSYS,{max:900,t:.35})),ok(aiLLM(q,PSYS))])}catch{}
-  if(!a)a='AI Teacher abhi available nahi hai ('+(gem.err||'network')+'). Thodi der baad dobara pucho.';
-  try{await DB.ref('library/doubt_chat').push({name:'AI Teacher',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)};
+  if(!a)a='National Library AI abhi available nahi hai ('+(gem.err||'network')+'). Thodi der baad dobara pucho.';
+  try{await DB.ref('library/doubt_chat').push({name:'National Library AI',u:'ai_teacher',dp:'',timestamp:Date.now(),reply:null,text:a.slice(0,1800),type:'text'})}catch{}}).catch(()=>0)};
 
 /* --- Fee payment: Registration fee Rs 100 below the 12 months --- */
 FV.reg=false;
@@ -3017,7 +3017,7 @@ new MutationObserver(()=>{const e=document.getElementById('sy');if(!e||e.dataset
   r.innerHTML='<span>Gemini AI<br><small>'+(ok?'Key + model working':String(err||'Key/limit check karo (AI settings)').replace(/[<>]/g,''))+'</small></span><span class="chip '+(ok?'ok':'er')+'">'+(ok?'Connected':'Failed')+'</span>'})()}).observe(document.body,{childList:true,subtree:true});
 /* Real-time graph: pichhle 7 din ki padhai (hours), data badalte hi update */
 function weekHrs(){const o=[],at=(PT&&PT.at)||{};for(let i=6;i>=0;i--){const d=day(new Date(Date.now()-i*864e5));let mn=0;const v=at[d];if(v)try{sess(v&&v.s?{...v.s}:v).forEach(y=>{if(y.out&&y.in)mn+=(y.out-y.in)/6e4})}catch{}o.push([d.slice(5),+(mn/60).toFixed(1)])}return o}
-function drawG(){const s=document.getElementById('s-portal');if(!s||!PT||!PT.m)return;let g=document.getElementById('ptG');if(!g){g=document.createElement('div');g.id='ptG';g.className='card';s.appendChild(g)}
+function drawG(){const s=document.getElementById('s-portal');if(!s||!PT||!PT.m)return;let g=document.getElementById('ptG');if(PT.tab!=='att'){if(g)g.remove();return}if(!g){g=document.createElement('div');g.id='ptG';g.className='card';s.appendChild(g)}
  const w=weekHrs(),mx=Math.max(1,...w.map(x=>x[1])),bw=40;
  g.innerHTML='<h3>📊 Weekly study hours (live)</h3><svg viewBox="0 0 320 150">'+w.map((x,i)=>{const h=x[1]/mx*90;return '<rect x="'+(i*45+8)+'" y="'+(110-h)+'" width="'+bw+'" height="'+h+'" rx="6" fill="var(--br)"/><text x="'+(i*45+28)+'" y="'+(104-h)+'" font-size="10" text-anchor="middle" fill="currentColor">'+x[1]+'</text><text x="'+(i*45+28)+'" y="128" font-size="10" text-anchor="middle" fill="currentColor" opacity=".7">'+x[0]+'</text>'}).join('')+'</svg>'}
 if(typeof window.ptDraw==='function'){const q=window.ptDraw;window.ptDraw=function(){const r=q.apply(this,arguments);try{drawG()}catch{}return r}}
@@ -3035,7 +3035,7 @@ setInterval(()=>{try{drawG()}catch{}},5000);
 /* Quiz speed: aaj ka quiz pehle se taiyar rakho (background prefetch) */
 let pf=0;setInterval(()=>{try{if(PT&&PT.m&&!pf&&typeof aiQuiz==='function'){pf=1;setTimeout(()=>aiQuiz(typeof qzLang!=='undefined'?qzLang:'en',false).catch(()=>{}),3000)}if(!PT||!PT.m)pf=0}catch{}},5000);
 /* Fee graph: pichhle 6 mahine ki jama fee (live) */
-function drawF(){const s=document.getElementById('s-portal');if(!s||!PT||!PT.m)return;let g=document.getElementById('ptF');if(!g){g=document.createElement('div');g.id='ptF';g.className='card';s.appendChild(g)}
+function drawF(){const s=document.getElementById('s-portal');if(!s||!PT||!PT.m)return;let g=document.getElementById('ptF');if(PT.tab!=='fee'){if(g)g.remove();return}if(!g){g=document.createElement('div');g.id='ptF';g.className='card';s.appendChild(g)}
  const m={},cm=day(new Date()).slice(0,7);for(let i=5;i>=0;i--)m[addM(cm,-i)]=0;
  Object.values(PT.py||{}).forEach(p=>{const k=day(new Date(+p.time||Date.parse(p.date)||0)).slice(0,7);if(k in m)m[k]+=+p.amount||0});
  const e=Object.entries(m),mx=Math.max(1,...e.map(x=>x[1]));
@@ -3120,7 +3120,7 @@ function pieDraw(){const s=document.getElementById('s-study');if(!s)return;let c
  const goal=ls('nl_goal',6),pc=Math.min(100,Math.round(tot/goal*100)),B=document.getElementById('spB');if(B)B.innerHTML='<div class="gb"><i style="width:'+pc+'%"></i></div><small class="mu">'+(Math.round(tot*10)/10)+' / '+goal+' h ('+pc+'%)'+(pc>=100?' 🎉 Goal complete':'')+'</small>'}
 if(typeof window.logStudy==='function'){const l0=window.logStudy;window.logStudy=function(){const h=parseFloat(($('sH')||{}).value),sb=(document.getElementById('spS')||{}).value||'Other';l0.apply(this,arguments);
  if(h>0){const m=lget();m[td()]=m[td()]||{};m[td()][sb]=(m[td()][sb]||0)+h;sv('nl_subj',m);
-  try{if(PT&&PT.m&&window.DB)DB.ref('library/studylog/'+PT.m).push({subject:sb,hours:h,date:td(),time:Date.now()})}catch{}}
+  }
  setTimeout(pieDraw,150)}}
 setInterval(()=>{try{pieDraw()}catch{}},3000);
 })();
@@ -5313,19 +5313,19 @@ async function buildPDF(){
  function tc(c){d.setTextColor(c[0],c[1],c[2])}function fc(c){d.setFillColor(c[0],c[1],c[2])}function dc(c){d.setDrawColor(c[0],c[1],c[2])}
  var s=PT.s||{},y=0,c=null;
  try{c=calc({s:PT.s,at:PT.at,sl:PT.sl,ex:PT.ex,py:PT.py})}catch(e){c=null}
- var ph=await loadImg(s.photo||s.thumb||s.dp||s.img||s.pic);
+ var ph=await nlCoverPhoto(s.photo||s.thumb||s.dp||s.img||s.pic,26/30,2/26);
  function runHead(){fc(G);d.rect(0,0,W,10,'F');fc(OR);d.rect(0,10,W,.8,'F');d.setFont('helvetica','bold');d.setFontSize(8.5);tc(WH);d.text('National Library - My Data Report',M,6.4);d.setFont('helvetica','normal');tc([190,232,214]);d.text(A(s.name||PT.m),W-M,6.4,{align:'right'})}
  function newPage(){d.addPage();y=18;runHead()}
  /* header band */
  fc(G);d.rect(0,0,W,32,'F');fc(OR);d.rect(0,32,W,2.2,'F');
- fc(WH);d.circle(M+9,16,8.5,'F');d.setFont('helvetica','bold');d.setFontSize(12);tc(G);d.text('NL',M+9,18.2,{align:'center'});
+ var _lg=window.NL_LOGO&&window.NL_LOGO();if(_lg){fc(WH);d.roundedRect(M-.5,6.5,19,19,4,4,'F');try{d.addImage(_lg,'PNG',M,7,18,18)}catch(e){}}else{fc(WH);d.circle(M+9,16,8.5,'F');tc(G);d.setFontSize(12);d.text('NL',M+9,18.2,{align:'center'})}d.setFont('helvetica','bold');
  d.setFontSize(18);tc(WH);d.text('National Library',M+22,14.5);d.setFont('helvetica','normal');d.setFontSize(9);tc([190,232,214]);d.text('Maharajganj, Azamgarh',M+22,21);
  d.setFont('helvetica','bold');d.setFontSize(11);tc(OR);d.text('MY DATA REPORT',W-M,13,{align:'right'});d.setFont('helvetica','normal');d.setFontSize(8.5);tc(WH);d.text('Generated: '+fd(Date.now())+', '+ft(Date.now()),W-M,19.5,{align:'right'});
  y=42;
  /* student card */
  fc(WH);dc(LN);d.setLineWidth(.3);d.roundedRect(M,y,CW,34,3,3,'FD');
  var nm=A(s.name)||'Student',tx=M+38;
- if(ph){try{var r=Math.min(26/ph.w,30/ph.h),w=ph.w*r,h=ph.h*r;d.addImage(ph.d,'JPEG',M+6,y+2+(30-h)/2,w,h);dc(LN);d.roundedRect(M+6,y+2+(30-h)/2,w,h,1.5,1.5,'S')}catch(e){ph=null}}
+ if(ph){try{fc(WH);dc(LN);d.setLineWidth(.35);d.roundedRect(M+5.2,y+1.2,27.6,31.6,2.8,2.8,'FD');d.addImage(ph.d,'JPEG',M+6,y+2,26,30)}catch(e){ph=null}}
  if(!ph){fc(G2);d.circle(M+19,y+17,11,'F');d.setFont('helvetica','bold');d.setFontSize(17);tc(WH);d.text(nm.charAt(0).toUpperCase(),M+19,y+22.5,{align:'center'})}
  d.setFont('helvetica','bold');d.setFontSize(15);tc(INK);d.text(nm,tx,y+11);
  d.setFont('helvetica','normal');d.setFontSize(9);tc(MU);
@@ -5684,7 +5684,7 @@ window.leader=async function(p){
   else btn='<button type="button" class="lbl'+(liked?' on':'')+'" data-m="'+E(x.m)+'" onclick="lbLike(this)" aria-label="Like"><i class="fa-'+(liked?'solid':'regular')+' fa-heart"></i><em>'+n+'</em></button>';
   return '<div class="li lbr'+(mine?' me':'')+'"><span class="lbn"><b class="lbk">'+(['🥇','🥈','🥉'][i]||'#'+(i+1))+'</b><span class="lbnm">'+E(x.name)+(mine?' <small>(You)</small>':'')+'</span></span><b class="lbh">'+E(x.hours)+'h</b>'+btn+'</div>'
  }
- box.innerHTML='<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners</h3><div class="ldt">'+[['w','Weekly'],['m','Monthly'],['y','Yearly']].map(function(x){return '<button class="btn '+(x[0]===ldP?'p':'o')+'" onclick="leader(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+'</div><div class="mu" style="margin-bottom:8px">'+lab[ldP]+'</div>'+(rows.map(row).join('')||'<p class="mu">Is period me abhi koi study log nahi. Portal me study log karo!</p>')
+ box.innerHTML='<button class="x" onclick="closeModal()">✕</button><h3>🏆 Top learners</h3><div class="ldt">'+[['w','Weekly'],['m','Monthly'],['y','Yearly']].map(function(x){return '<button class="btn '+(x[0]===ldP?'p':'o')+'" onclick="leader(\''+x[0]+'\')">'+x[1]+'</button>'}).join('')+'</div><div class="mu" style="margin-bottom:8px">'+lab[ldP]+'</div>'+(rows.map(row).join('')||'<p class="mu">Is period me abhi kisi ka library time nahi juda. Check-in / check-out karo!</p>')
 };
 function setLike(btn,on,n){
  btn.classList.toggle('on',on);
@@ -5824,7 +5824,7 @@ async function buildStudentPDF(){
  var S=PT.s||{},mob=String(PT.m||''),c=null;
  try{c=calc({s:PT.s,at:PT.at,sl:PT.sl,ex:PT.ex,py:PT.py})}catch(e){c=null}
  if(!c)c={fm:{all:[],paid:[],pend:[]},due:0,adv:0,py:[],paid:0,at:{},ad:[],days:{},pend:[],mA:0,hrs:0,sl:[],sm:{},sh:0,smo:0,stoday:0,ex:[]};
- var ph=await loadImg(S.photo||S.thumb||S.dp||S.img||S.pic),rawName=String(S.name||'').trim(),nImg=null;
+ var ph=await nlCoverPhoto(S.photo||S.thumb||S.dp||S.img||S.pic,30/34,2/30),rawName=String(S.name||'').trim(),nImg=null;
  if(rawName&&/[^\x00-\x7F]/.test(rawName))nImg=await nameImg(rawName);
  var d=new jspdf.jsPDF({unit:'mm',format:'a4',compress:true}),W=210,H=297,M=14,CW=182,BOT=277;
  var C={g:[15,58,45],gm:[31,122,92],gl:[223,240,232],or:[242,164,68],ol:[253,235,217],bl:[79,143,192],pu:[143,120,220],rd:[216,84,52],ink:[24,38,31],mu:[104,120,112],ln:[221,229,223],bg:[245,249,246],wh:[255,255,255],mint:[190,232,214]};
@@ -5946,7 +5946,7 @@ async function buildStudentPDF(){
  fc(C.g);d.rect(0,0,W,40,'F');
  fc([24,84,66]);d.circle(W-10,4,30,'F');fc([31,104,82]);d.circle(W-4,-4,20,'F');
  fc(C.or);d.rect(0,40,W,1.8,'F');
- fc(C.wh);d.circle(M+10,20,9.5,'F');d.setFont('helvetica','bold');d.setFontSize(13);tc(C.g);tx('NL',M+10,24,{align:'center'});
+ var _lg=window.NL_LOGO&&window.NL_LOGO();if(_lg){fc(C.wh);d.roundedRect(M-.5,9.5,22,22,4.5,4.5,'F');try{d.addImage(_lg,'PNG',M+.5,10.5,20,20)}catch(e){}}else{fc(C.wh);d.circle(M+10,20,9.5,'F');d.setFontSize(13);tc(C.g);tx('NL',M+10,24,{align:'center'})}d.setFont('helvetica','bold');
  d.setFontSize(20);tc(C.wh);tx('National Library',M+25,18);
  d.setFont('helvetica','normal');d.setFontSize(8.5);tc(C.mint);tx('Near Post Office, Maharajganj, Azamgarh (UP) - 276137',M+25,24.5);
  d.setFont('helvetica','bold');d.setFontSize(8);tc(C.or);tx('STUDY  .  FOCUS  .  SUCCEED',M+25,31);
@@ -5958,7 +5958,7 @@ async function buildStudentPDF(){
  y=49;fc(C.wh);dc(C.ln);d.setLineWidth(.3);d.roundedRect(M,y,CW,42,3.5,3.5,'FD');fc(C.gm);d.roundedRect(M,y,2.4,42,1.2,1.2,'F');
  var px=M+8,py=y+4,pw=30,phh=34;
  if(ph){
-  try{var rr=Math.min(pw/ph.w,phh/ph.h),w2=ph.w*rr,h2=ph.h*rr,ox=px+(pw-w2)/2,oy=py+(phh-h2)/2;d.addImage(ph.d,'JPEG',ox,oy,w2,h2);dc(C.ln);d.setLineWidth(.3);d.roundedRect(ox,oy,w2,h2,1.5,1.5,'S')}catch(e){ph=null}
+  try{fc(C.wh);dc(C.ln);d.setLineWidth(.35);d.roundedRect(px-.8,py-.8,pw+1.6,phh+1.6,2.8,2.8,'FD');d.addImage(ph.d,'JPEG',px,py,pw,phh)}catch(e){ph=null}
  }
  if(!ph){fc(C.gl);dc(C.ln);d.setLineWidth(.3);d.roundedRect(px,py,pw,phh,3,3,'FD');d.setFont('helvetica','bold');d.setFontSize(26);tc(C.gm);tx((name||'S').charAt(0).toUpperCase(),px+pw/2,py+phh/2+4,{align:'center'})}
  var tx0=M+44,maxNW=CW-44-52;
@@ -7167,16 +7167,62 @@ html body #v29ld .ldp i{background:linear-gradient(90deg,#1fa072,#34c38a,#f5b942
 html body #v29ld .mu{color:#a9ebcf!important}html body .nlx-eta{color:#fcd079!important}
 
 </style>
+<style id="nl-auth-css">
+/* ===== Email / Google modals: same look as the website (theme variables only, no fixed colours) ===== */
+.mbox.nla-pro{padding:0;overflow:auto;border-radius:22px}
+.mbox.nla-pro .x{z-index:3}
+.nla-hero{background:linear-gradient(135deg,var(--br),var(--br2));color:#fff;text-align:center;padding:24px 18px 26px;position:relative}
+.nla-hero:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:16px;background:var(--sf);border-radius:16px 16px 0 0}
+.nla-logo{width:58px;height:58px;border-radius:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:1.7rem;color:#fff}
+.nla-hero h2{margin:0;font-size:1.25rem;color:#fff}
+.nla-hero p{margin:3px 0 0;font-size:.85rem;opacity:.92;color:#fff}
+.nla-body{padding:6px 18px 20px}
+.nla-soc{display:grid;gap:10px;margin:6px 0 4px}
+.nla-g,.nla-e{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 18px;border-radius:14px;font-weight:700;cursor:pointer;background:var(--in);border:1px solid var(--bd);color:var(--tx);transition:transform .15s,filter .15s}
+.nla-g:hover,.nla-e:hover{filter:brightness(1.05)}.nla-g:active,.nla-e:active{transform:scale(.97)}
+.nla-e i{color:var(--br)}
+.nla-or{display:flex;align-items:center;gap:10px;margin:14px 0 10px;color:var(--mu);font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.nla-or:before,.nla-or:after{content:"";flex:1;height:1px;background:var(--bd)}
+.nla-note{display:flex;align-items:center;gap:8px;margin:8px 0 2px;padding:10px 12px;border-radius:12px;background:var(--in);color:var(--mu);font-size:.8rem}
+.nla-note i{color:var(--br)}
+.nla-tabs{display:flex;gap:6px;background:var(--in);padding:6px;border-radius:16px;margin:4px 0 16px}
+.nla-tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:12px;font-weight:700;cursor:pointer;color:var(--mu)}
+.nla-tabs button.on{background:linear-gradient(135deg,var(--br),var(--br2));color:#fff;box-shadow:0 8px 18px -8px var(--br)}
+.nla-f{position:relative;display:block;margin:0 0 12px}
+.nla-f>i.lead{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--br)}
+.nla-f input{display:block;width:100%;padding:12px 44px 12px 40px;background:var(--in);border:1.5px solid var(--bd);border-radius:12px;font-size:.95rem;font-weight:600;outline:0;color:var(--tx);margin:0}
+.nla-f input:focus{border-color:var(--br)}
+.nla-f .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:var(--mu);width:36px;height:36px;cursor:pointer}
+.nla-hint{font-size:.78rem;margin:-6px 0 10px 4px;min-height:1em;color:var(--mu)}
+.nla-hint.ok{color:var(--ok)}.nla-hint.bad{color:var(--wn)}
+.nla-main{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 18px;border:0;border-radius:14px;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--br),var(--br2));box-shadow:0 8px 18px -8px var(--br);transition:transform .15s,filter .15s}
+.nla-main:hover{filter:brightness(1.06)}.nla-main:active{transform:scale(.97)}
+.nla-links{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px}
+.nla-links button{background:transparent;border:0;color:var(--br);font-weight:700;font-size:.84rem;cursor:pointer;padding:4px 2px}
+.nla-msg{min-height:1.2em;margin:10px 0 0;font-size:.85rem}
+</style>
 <script id="nl-auth">
-/* ===== National Library · Google + Email (password / email link) login & registration ===== */
+/* ===== National Library · Google + Email login (ONLY @gmail.com allowed) ===== */
 (function(){
-const NLA={linkTo:'',busy:0,pend:null},SITE=CFG.site;
-const eKey=e=>String(e||'').toLowerCase().trim().replace(/[.#$\[\]\/]/g,','),okMail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e),wait=ms=>new Promise(r=>setTimeout(r,ms));
-const DISP=/@(mailinator|guerrillamail|10minutemail|tempmail|temp-mail|yopmail|trashmail|sharklasers|getnada|dispostable|maildrop|throwawaymail|fakeinbox|mohmal|emailondeck|moakt)\./i;
+const NLA={linkTo:'',busy:0,pend:null,tab:'in',reset:0,rp:null},SITE=CFG.site;
+/* Gmail only: 6-30 chars, letters/digits/dots, optional +tag. Temp-mail and every other domain is rejected. */
+const GMAIL=/^[a-z0-9][a-z0-9.]{4,28}[a-z0-9](?:\+[a-z0-9._-]{1,30})?@gmail\.com$/;
+const fixMail=v=>{v=String(v||'').toLowerCase().replace(/\s+/g,'');if(v&&v.indexOf('@')<0)v+='@gmail.com';return v};
+const okMail=e=>GMAIL.test(e)&&!/\.\./.test(e);
+/* same Gmail inbox = same key (dots and +tags ignored), so one person cannot make many accounts */
+const canon=e=>{e=String(e||'').toLowerCase().trim();const p=e.split('@');if(p.length!==2||p[1]!=='gmail.com')return e;return p[0].split('+')[0].replace(/\./g,'')+'@gmail.com'};
+const kClean=e=>String(e||'').replace(/[.#$\[\]\/]/g,',');
+const eKey=e=>kClean(canon(e)),eKeyOld=e=>kClean(String(e||'').toLowerCase().trim());
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const BAD='Sirf @gmail.com wali email hi chalegi. Temp mail ya dusri email (yahoo, outlook, college/school email) allowed nahi hai. Mobile + PIN se login abhi bhi chalega.';
 const ERR={'auth/email-already-in-use':'Ye email pehle se registered hai. Login dabao, Google use karo ya "Password bhool gaye" karo.','auth/invalid-email':'Email sahi nahi hai.','auth/weak-password':'Password kam se kam 6 akshar ka rakho.','auth/user-not-found':'Is email se account nahi mila. "Naya account" banao.','auth/wrong-password':'Password galat hai.','auth/invalid-credential':'Email ya password galat hai.','auth/invalid-login-credentials':'Email ya password galat hai.','auth/too-many-requests':'Bahut zyada try ho gaye. Thodi der baad try karo.','auth/network-request-failed':'Internet check karo, phir try karo.','auth/popup-closed-by-user':'Google window band ho gayi.','auth/cancelled-popup-request':'Google window band ho gayi.','auth/account-exists-with-different-credential':'Is email se dusre tarike se account bana hai. Usi tarike se login karo.','auth/operation-not-allowed':'Ye login tarika Firebase me enable nahi hai.','auth/unauthorized-domain':'Ye website Firebase ke Authorized domains me add nahi hai.','auth/invalid-action-code':'Ye link purana ya use ho chuka hai. Naya link mangao.','auth/expired-action-code':'Link expire ho gaya. Naya link mangao.','auth/user-disabled':'Ye account band kar diya gaya hai.','auth/web-storage-unsupported':'Browser storage band hai. Chrome me site kholo.','nl/script':'Login ka module load nahi hua. Internet check karke page reload karo.','nl/noapp':'Server se connect nahi hua. Page reload karo.','nl/taken':'Ye email kisi aur student se juda hai.'};
+const GSVG='<svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+const LSVG='<i class="fa-solid fa-book-open-reader"></i>';
+function blockLog(e,why){try{if(window.DB)DB.ref('library/emailblocks').push({e:String(e||'').slice(0,80),w:why||'non-gmail',t:Date.now()}).catch(()=>0)}catch{}}
 function msg(t,ok){const e=$('nlMsg');if(e){e.style.color=ok?'var(--ok)':'var(--er)';e.textContent=t}toast(t)}
 function nlErr(e){if(!e||e.code==='nl/proto')return;console.warn(e);msg(ERR[e.code]||('Login me dikkat: '+(e.message||e.code||e)),0)}
 async function run(f){if(NLA.busy)return;NLA.busy=1;try{await f()}catch(e){nlErr(e)}finally{NLA.busy=0}}
+function needGmail(e){if(okMail(e))return true;blockLog(e,'bad-email');msg(BAD,0);return false}
 async function nlAuth(){if(!/^https?:$/.test(location.protocol)){toast('Email/Google login sirf website (https) se chalta hai. Chrome me site kholo.');throw{code:'nl/proto'}}
  for(let i=0;i<40&&!(window.firebase&&firebase.initializeApp);i++)await wait(250);
  if(!(window.firebase&&firebase.auth)){for(const u of['https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.1/firebase-auth.min.js','https://cdn.jsdelivr.net/npm/firebase@8.10.1/firebase-auth.js']){try{await loadJS(u);if(firebase.auth)break}catch(e){}}}
@@ -7195,62 +7241,697 @@ async function nlLink(m,uid,email){const ek=eKey(email),tr=await DB.ref('library
 /* ---------- after any successful Firebase sign-in ---------- */
 async function nlAfter(u){const a=firebase.auth(),email=String(u.email||(u.providerData[0]||{}).email||'').toLowerCase();
  if(!email){await out();return toast('Is account me email nahi mila')}
+ if(!okMail(email)){try{if(u.metadata&&u.metadata.creationTime===u.metadata.lastSignInTime)await u.delete()}catch{}await out();blockLog(email,'login-blocked');return msg(BAD,0)}
  if(!u.emailVerified){try{await u.sendEmailVerification({url:SITE})}catch{}await out();return msg('Email verify nahi hai. Verification link bhej diya, verify karke dobara login karo.',0)}
  if(!await ensureDB()){await out();return}
  try{localStorage.setItem('nl_em',email)}catch{}
- const rd=async p=>(await DB.ref('library/'+p).once('value')).val(),ek=eKey(email);let lt=NLA.linkTo;NLA.linkTo='';
+ const rd=async p=>(await DB.ref('library/'+p).once('value')).val(),ek=eKey(email),ko=eKeyOld(email);let lt=NLA.linkTo;NLA.linkTo='';
  if(!lt){const it=ls('nl_intent',null),ss=ls('nl_sess',null);if(it&&ss&&ss.m===it.m&&ss.exp>Date.now()&&Date.now()-it.t<864e5)lt=it.m}
  try{localStorage.removeItem('nl_intent')}catch{}
- const [mp,em]=await Promise.all([rd('authmap/'+u.uid),rd('emailmap/'+ek)]);let m=(mp&&mp.m)||(em&&em.m)||'',s=null;
+ const [mp,em1,em2]=await Promise.all([rd('authmap/'+u.uid),rd('emailmap/'+ek),ko!==ek?rd('emailmap/'+ko):Promise.resolve(null)]);const em=em1||em2;let m=(mp&&mp.m)||(em&&em.m)||'',s=null;
  if(m){s=await rd('students/'+m);if(!s){await DB.ref('library').update({['authmap/'+u.uid]:null,['emailmap/'+ek]:null});m=''}}
+ if(NLA.reset){NLA.reset=0;try{localStorage.removeItem('nl_reset')}catch{}await out();if(m&&s)return pinResetUi(m,s,email);return msg('Is Gmail se koi student account juda nahi hai. Security question se reset karo ya admin se request bhejo.',0)}
  if(lt){if(m&&m!==lt){await out();return toast('Ye email kisi aur student se juda hai')}await nlLink(lt,u.uid,email);await out();closeModal();toast('Email jud gaya ✅ Ab isse bhi login kar sakte ho');try{ptDraw()}catch{}return}
  if(m){if(!mp)await nlLink(m,u.uid,email);await out();return nlSessIn(m,s)}
- if(DISP.test(email)){await out();return msg('Temporary / disposable email allowed nahi hai. Apna asli email use karo.',0)}
  NLA.pend={uid:u.uid,email,name:u.displayName||'',via:((u.providerData[0]||{}).providerId==='google.com')?'google':'email',t:Date.now()};nlProfile()}
 
+/* ---------- professional modal helper ---------- */
+function proModal(title,sub,body){modal('',body);const b=document.querySelector('#modal .mbox');if(!b)return;b.classList.add('nla-pro');const h=b.querySelector('h3');if(h)h.outerHTML='<div class="nla-hero"><span class="nla-logo">'+LSVG+'</span><h2>'+title+'</h2><p>'+sub+'</p></div>';
+ const x=[...b.children].filter(c=>!c.classList.contains('x')&&!c.classList.contains('nla-hero'));const w=document.createElement('div');w.className='nla-body';x.forEach(c=>w.appendChild(c));b.appendChild(w)}
+
 /* ---------- complete profile (first time Google/email) ---------- */
-function nlProfile(){modal('✅ Email verify ho gaya',`<p class="mu" style="margin-bottom:12px"><b>${esc(NLA.pend.email)}</b><br>Ab registration karo, ya purana account is email se jodo. Registration ke baad admin approval zaruri hai.</p><button class="btn p w" onclick="stReg()"><i class="fa-solid fa-user-plus"></i> Naya registration karo</button><button class="btn o w" style="margin-top:8px" onclick="nlLinkOld()"><i class="fa-solid fa-link"></i> Main pehle se student hoon</button>`)}
+function nlProfile(){proModal('✅ Email verify ho gaya','Ab registration poora karo','<p class="mu" style="margin-bottom:12px"><b>'+esc(NLA.pend.email)+'</b><br>Ab registration karo, ya purana account is email se jodo. Registration ke baad admin approval zaruri hai.</p><button class="nla-main" onclick="stReg()"><i class="fa-solid fa-user-plus"></i> Naya registration karo</button><button class="nla-e" style="margin-top:10px" onclick="nlLinkOld()"><i class="fa-solid fa-link"></i> Main pehle se student hoon</button>')}
 window.nlLinkOld=()=>modal('🔗 Purana account link karo','<p class="mu" style="margin-bottom:8px">Apna purana naam, mobile aur 6-digit PIN daalo. Ek baar link hone ke baad email/Google se login hoga.</p><label><i class="fa-solid fa-user"></i> Full name<input id="loN"></label><label><i class="fa-solid fa-mobile-screen"></i> Mobile number<input id="loM" type="tel" maxlength="10"></label><label><i class="fa-solid fa-lock"></i> 6-digit PIN<input id="loP" type="password" inputmode="numeric" maxlength="6"></label><button class="btn p w" onclick="nlLinkGo()">Link karo</button>');
 window.nlLinkGo=()=>run(async()=>{const P=NLA.pend;if(!P)return toast('Pehle Google ya Email se login karo');const m=$('loM').value.trim(),s=await verifyCred($('loN').value.trim(),m,$('loP').value.trim());if(!s)return;await nlLink(m,P.uid,P.email);NLA.pend=null;await out();nlSessIn(m,s)});
 
 /* ---------- Google ---------- */
-window.nlGoogle=()=>run(async()=>{const a=await nlAuth(),p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});toast('Google khul raha hai...');let r;
+window.nlGoogle=()=>run(async()=>{const a=await nlAuth(),p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account',hd:'gmail.com'});toast('Google khul raha hai...');let r;
  try{r=await a.signInWithPopup(p)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment'){try{sessionStorage.setItem('nl_redir','1');if(NLA.linkTo)localStorage.setItem('nl_intent',JSON.stringify({m:NLA.linkTo,t:Date.now()}))}catch{}await a.signInWithRedirect(p);return}throw e}
  await nlAfter(r.user)});
 
-/* ---------- Email: password / link / reset ---------- */
-const emv=()=>$('nlE').value.trim().toLowerCase();
-window.nlEmailModal=()=>{modal('✉️ Email se login / register','<label><i class="fa-solid fa-envelope"></i> Email<input id="nlE" type="email" inputmode="email" autocomplete="email"></label><label><i class="fa-solid fa-lock"></i> Password (kam se kam 6 akshar)<input id="nlPw" type="password" autocomplete="current-password"></label><div class="g2"><button class="btn p" onclick="nlPwLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button><button class="btn o" onclick="nlPwSignup()"><i class="fa-solid fa-user-plus"></i> Naya account</button></div><div class="g2" style="margin-top:8px"><button class="btn o" onclick="nlSendLink()"><i class="fa-solid fa-link"></i> Bina password: link bhejo</button><button class="btn o" onclick="nlReset()"><i class="fa-solid fa-key"></i> Password bhool gaye</button></div><p class="mu" id="nlMsg" style="margin-top:10px"></p><p class="mu" style="font-size:.78rem">Verification / link wale email Spam folder me bhi dekho.</p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
-window.nlPwLogin=()=>run(async()=>{const e=emv(),p=$('nlPw').value;if(!okMail(e))return msg('Sahi email likho.',0);if(!p)return msg('Password likho, ya "link bhejo" dabao.',0);const a=await nlAuth(),r=await a.signInWithEmailAndPassword(e,p);await nlAfter(r.user)});
-window.nlPwSignup=()=>run(async()=>{const e=emv(),p=$('nlPw').value;if(!okMail(e))return msg('Sahi email likho.',0);if(p.length<6)return msg('Password kam se kam 6 akshar ka rakho.',0);const a=await nlAuth(),r=await a.createUserWithEmailAndPassword(e,p);await r.user.sendEmailVerification({url:SITE});await out();try{localStorage.setItem('nl_em',e)}catch{}msg('Account ban gaya ✅ Verification link '+e+' par bheja hai. Link kholo, phir yahan Login dabao. (Spam bhi dekho)',1)});
-window.nlSendLink=()=>run(async()=>{const e=emv();if(!okMail(e))return msg('Sahi email likho.',0);const a=await nlAuth();await a.sendSignInLinkToEmail(e,{url:SITE,handleCodeInApp:true});try{localStorage.setItem('nl_email_link',e);localStorage.setItem('nl_em',e);if(NLA.linkTo)localStorage.setItem('nl_intent',JSON.stringify({m:NLA.linkTo,t:Date.now()}))}catch{}msg('Login link '+e+' par bhej diya ✅ Isi phone me email kholkar link dabao. (Spam bhi dekho)',1)});
-window.nlReset=()=>run(async()=>{const e=emv();if(!okMail(e))return msg('Pehle sahi email likho.',0);const a=await nlAuth();await a.sendPasswordResetEmail(e,{url:SITE});msg('Password reset link '+e+' par bhej diya ✅ (Spam bhi dekho)',1)});
+/* ---------- Email modal (Login / New account tabs) ---------- */
+const emv=()=>{const i=$('nlE'),v=fixMail(i.value);i.value=v;return v};
+window.nlEmFix=i=>{i.value=fixMail(i.value);window.nlEmChk(i)};
+window.nlEmChk=i=>{const h=$('nlH');if(!h)return;const v=fixMail(i.value);if(!i.value.trim()){h.className='nla-hint';h.textContent='Sirf @gmail.com email likho';return}if(okMail(v)){h.className='nla-hint ok';h.textContent='✔ Gmail sahi hai'}else{h.className='nla-hint bad';h.textContent='Sirf @gmail.com chalega (temp mail / dusri email nahi)'}};
+window.nlEye=()=>{const p=$('nlPw');if(p)p.type=p.type==='password'?'text':'password'};
+window.nlTab=t=>{NLA.tab=t;const a=$('nlTi'),b=$('nlTu'),m=$('nlGo');if(a)a.classList.toggle('on',t==='in');if(b)b.classList.toggle('on',t==='up');if(m)m.innerHTML=t==='in'?'<i class="fa-solid fa-right-to-bracket"></i> Login':'<i class="fa-solid fa-user-plus"></i> Account banao';const p=$('nlPw');if(p)p.setAttribute('autocomplete',t==='in'?'current-password':'new-password')};
+window.nlSubmit=()=>NLA.tab==='in'?nlPwLogin():nlPwSignup();
+window.nlEmailModal=()=>{NLA.tab='in';proModal('Email se login','Sirf @gmail.com allowed','<div class="nla-tabs"><button id="nlTi" class="on" type="button" onclick="nlTab(\'in\')">Login</button><button id="nlTu" type="button" onclick="nlTab(\'up\')">Naya account</button></div><label class="nla-f"><i class="fa-solid fa-envelope lead"></i><input id="nlE" type="email" inputmode="email" autocomplete="email" placeholder="yourname@gmail.com" oninput="nlEmChk(this)" onblur="nlEmFix(this)"></label><div class="nla-hint" id="nlH">Sirf @gmail.com email likho</div><label class="nla-f"><i class="fa-solid fa-lock lead"></i><input id="nlPw" type="password" autocomplete="current-password" placeholder="Password (kam se kam 6 akshar)"><button type="button" class="eye" onclick="nlEye()" aria-label="Show password"><i class="fa-solid fa-eye"></i></button></label><button class="nla-main" id="nlGo" type="button" onclick="nlSubmit()"><i class="fa-solid fa-right-to-bracket"></i> Login</button><div class="nla-links"><button type="button" onclick="nlReset()"><i class="fa-solid fa-key"></i> Password bhool gaye?</button><button type="button" onclick="nlSendLink()"><i class="fa-solid fa-link"></i> Bina password: link bhejo</button></div><div class="nla-or"><span>ya</span></div><button class="nla-g" type="button" onclick="NLA_clr();nlGoogle()">'+GSVG+' Google se continue karo</button><p class="nla-msg mu" id="nlMsg"></p><p class="mu" style="font-size:.76rem">Verification / link wale email Spam folder me bhi dekho.</p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
+window.nlPwLogin=()=>run(async()=>{NLA.reset=0;try{localStorage.removeItem('nl_reset')}catch{};const e=emv(),p=$('nlPw').value;if(!needGmail(e))return;if(!p)return msg('Password likho, ya "link bhejo" dabao.',0);const a=await nlAuth(),r=await a.signInWithEmailAndPassword(e,p);await nlAfter(r.user)});
+window.nlPwSignup=()=>run(async()=>{NLA.reset=0;try{localStorage.removeItem('nl_reset')}catch{};const e=emv(),p=$('nlPw').value;if(!needGmail(e))return;if(p.length<6)return msg('Password kam se kam 6 akshar ka rakho.',0);const a=await nlAuth(),r=await a.createUserWithEmailAndPassword(e,p);await r.user.sendEmailVerification({url:SITE});await out();try{localStorage.setItem('nl_em',e)}catch{}msg('Account ban gaya ✅ Verification link '+e+' par bheja hai. Link kholo, phir yahan Login dabao. (Spam bhi dekho)',1)});
+window.nlSendLink=()=>run(async()=>{NLA.reset=0;try{localStorage.removeItem('nl_reset')}catch{};const e=emv();if(!needGmail(e))return;const a=await nlAuth();await a.sendSignInLinkToEmail(e,{url:SITE,handleCodeInApp:true});try{localStorage.setItem('nl_email_link',e);localStorage.setItem('nl_em',e);if(NLA.linkTo)localStorage.setItem('nl_intent',JSON.stringify({m:NLA.linkTo,t:Date.now()}))}catch{}msg('Login link '+e+' par bhej diya ✅ Isi phone me email kholkar link dabao. (Spam bhi dekho)',1)});
+window.nlReset=()=>run(async()=>{const e=emv();if(!needGmail(e))return;const a=await nlAuth();await a.sendPasswordResetEmail(e,{url:SITE});msg('Password reset link '+e+' par bhej diya ✅ (Spam bhi dekho)',1)});
 
 /* ---------- link Google / email to a logged-in student (profile tab) ---------- */
-window.nlAddGoogle=()=>{NLA.linkTo=PT.m;nlGoogle()};
+window.nlAddGoogle=()=>{NLA.linkTo=PT.m;NLA.reset=0;nlGoogle()};
 window.nlAddEmail=()=>{NLA.linkTo=PT.m;nlEmailModal()};
+window.NLA_clr=()=>{NLA.linkTo='';NLA.reset=0;try{localStorage.removeItem('nl_reset')}catch{}};
 
-/* ---------- UI hooks ---------- */
-const alt=()=>'<div style="margin:6px 0 14px;padding:10px;border:1px dashed var(--bd);border-radius:14px"><div class="mu" style="margin-bottom:8px;font-weight:700">Ya Google / Email se:</div><div class="g2"><button class="btn o" type="button" onclick="NLA_clr();nlGoogle()"><i class="fa-brands fa-google"></i> Google</button><button class="btn o" type="button" onclick="NLA_clr();nlEmailModal()"><i class="fa-solid fa-envelope"></i> Email</button></div></div>';
-window.NLA_clr=()=>{NLA.linkTo=''};
-const _sl=stLogin;stLogin=function(){_sl.apply(this,arguments);try{const b=document.querySelector('#modal .mbox'),f=b&&b.querySelector('form');if(f)f.insertAdjacentHTML('afterend',alt())}catch{}};
-window.nlGate=()=>{modal('🔐 Registration se pehle verify karo','<p class="mu" style="margin-bottom:10px">Registration sirf verified email ya Google account se hoti hai. Verify hone ke baad hi form khulega. Registration ke baad bhi admin approval zaruri hai, uske bina login nahi hoga.</p><button class="btn o w" onclick="NLA_clr();nlGoogle()"><i class="fa-brands fa-google"></i> Google se verify karo</button><div class="mu" style="text-align:center;margin:10px 0">— ya —</div><label><i class="fa-solid fa-envelope"></i> Email<input id="nlE" type="email" inputmode="email" autocomplete="email"></label><button class="btn p w" onclick="NLA_clr();nlSendLink()"><i class="fa-solid fa-paper-plane"></i> Verification link bhejo</button><p class="mu" id="nlMsg" style="margin-top:10px"></p><p class="mu" style="font-size:.78rem">Link isi phone me kholna. Spam folder bhi dekho. Pehle se student ho? <a href="#" onclick="stLogin();return false" style="color:var(--br)">Login karo</a></p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
+/* ---------- Student login screen: professional look with Google + Email buttons ---------- */
+const _sl=stLogin;stLogin=function(){_sl.apply(this,arguments);try{const b=document.querySelector('#modal .mbox');if(!b||b.classList.contains('nla-pro'))return;
+ const f=b.querySelector('form'),h=b.querySelector('h3');if(!f)return;
+ b.classList.add('nla-pro');if(h)h.outerHTML='<div class="nla-hero"><span class="nla-logo">'+LSVG+'</span><h2>National Library</h2><p>Student login · Maharajganj, Azamgarh</p></div>';
+ const w=document.createElement('div');w.className='nla-body';
+ w.innerHTML='<div class="nla-soc"><button class="nla-g" type="button" onclick="NLA_clr();nlGoogle()">'+GSVG+' Google se continue karo</button><button class="nla-e" type="button" onclick="NLA_clr();nlEmailModal()"><i class="fa-solid fa-envelope"></i> Email se continue karo</button></div><div class="nla-note"><i class="fa-solid fa-shield-halved"></i> Email login ke liye sirf <b>@gmail.com</b> allowed hai</div><div class="nla-or"><span>ya mobile + PIN se login</span></div><div class="nla-pin"></div>';
+ [...b.children].filter(c=>!c.classList.contains('x')&&!c.classList.contains('nla-hero')).forEach(c=>w.querySelector('.nla-pin').appendChild(c));b.appendChild(w)}catch(e){console.warn(e)}};
+window.nlGate=()=>{proModal('Registration se pehle verify karo','Sirf verified Gmail se registration','<p class="mu" style="margin-bottom:12px">Registration sirf verified <b>@gmail.com</b> ya Google account se hoti hai. Registration ke baad bhi admin approval zaruri hai, uske bina login nahi hoga.</p><button class="nla-g" type="button" onclick="NLA_clr();nlGoogle()">'+GSVG+' Google se verify karo</button><div class="nla-or"><span>ya</span></div><label class="nla-f"><i class="fa-solid fa-envelope lead"></i><input id="nlE" type="email" inputmode="email" autocomplete="email" placeholder="yourname@gmail.com" oninput="nlEmChk(this)" onblur="nlEmFix(this)"></label><div class="nla-hint" id="nlH">Sirf @gmail.com email likho</div><button class="nla-main" type="button" onclick="NLA_clr();nlSendLink()"><i class="fa-solid fa-paper-plane"></i> Verification link bhejo</button><p class="nla-msg mu" id="nlMsg"></p><p class="mu" style="font-size:.78rem">Link isi phone me kholna. Spam folder bhi dekho. Pehle se student ho? <a href="#" onclick="stLogin();return false" style="color:var(--br)">Login karo</a></p>');try{$('nlE').value=localStorage.getItem('nl_em')||''}catch{}};
 const _sr=stReg;stReg=function(){if(!NLA.pend||Date.now()-NLA.pend.t>18e5){NLA.pend=null;return nlGate()}_sr.apply(this,arguments);try{const b=document.querySelector('#modal .mbox'),h=b&&b.querySelector('h3');if(!h)return;const n=$('rgN');if(n&&!n.value)n.value=NLA.pend.name;h.insertAdjacentHTML('afterend','<div class="li" style="margin-bottom:10px"><span><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> Email: <b>'+esc(NLA.pend.email)+'</b> (verified). PIN bhi banao, backup login ke liye. Registration ke baad admin approval zaruri hai.</span></div>')}catch{}};
-const _rsv=regSave;regSave=async function(){const P=NLA.pend,u=window.firebase&&firebase.auth&&firebase.auth().currentUser;if(!P||!u||u.uid!==P.uid||!u.emailVerified||Date.now()-P.t>18e5){NLA.pend=null;toast('Verification expire ya adhoora hai. Pehle email ya Google se verify karo.');return nlGate()}
+const _rsv=regSave;regSave=async function(){const P=NLA.pend,u=window.firebase&&firebase.auth&&firebase.auth().currentUser;if(!P||!u||u.uid!==P.uid||!u.emailVerified||Date.now()-P.t>18e5||!okMail(P.email)){NLA.pend=null;toast('Verification expire ya adhoora hai. Pehle Gmail ya Google se verify karo.');return nlGate()}
  const m=$('rgM').value.trim();if(/^\d{10}$/.test(m)){try{const em=(await DB.ref('library/emailmap/'+eKey(P.email)).once('value')).val();if(em&&em.m!==m&&(await DB.ref('library/students/'+em.m).once('value')).val())return regErr('Ye email dusre student se juda hai. Apna asli email use karo.')}catch{}}
  return _rsv.apply(this,arguments)};
 const _rdn=regDone;regDone=function(n,m){const r=_rdn.apply(this,arguments);const P=NLA.pend;if(P){NLA.pend=null;nlLink(m,P.uid,P.email).then(()=>DB.ref('library/students/'+m).update({emailVerified:true,verifiedVia:P.via,verifiedAt:Date.now()})).catch(()=>0).finally(out);try{tg('📧 <b>Verified email</b> ('+P.via+'): '+esc(P.email)+'\nMobile: '+esc(m))}catch{}}return r};
-const _pdn=ptDraw;ptDraw=function(){if(PT.m&&PT.s&&PT.s.status==='pending'){stLogout(1);toast('⏳ Admin approval ke baad hi login hoga');return}const r=_pdn.apply(this,arguments);try{const el=$('pt');if(el&&PT.m&&PT.s&&PT.tab==='pf'&&!$('nlEmCard'))el.insertAdjacentHTML('beforeend','<div class="card" id="nlEmCard"><h3 class="h"><i class="fa-solid fa-envelope"></i> Email / Google login</h3>'+(PT.s.email?'<p class="mu" style="margin-bottom:8px">Juda hua: <b>'+esc(PT.s.email)+'</b>. Is email ya Google se bhi login kar sakte ho.</p>':'<p class="mu" style="margin-bottom:8px">Email ya Google jodo, phir mobile + PIN ke bina bhi login ho jayega.</p>')+'<div class="g2"><button class="btn o" onclick="nlAddGoogle()"><i class="fa-brands fa-google"></i> Google jodo</button><button class="btn o" onclick="nlAddEmail()"><i class="fa-solid fa-envelope"></i> Email jodo</button></div></div>')}catch{}return r};
+const _pdn=ptDraw;ptDraw=function(){if(PT.m&&PT.s&&PT.s.status==='pending'){stLogout(1);toast('⏳ Admin approval ke baad hi login hoga');return}const r=_pdn.apply(this,arguments);try{const el=$('pt');if(el&&PT.m&&PT.s&&PT.tab==='pf'&&!$('nlEmCard'))el.insertAdjacentHTML('beforeend','<div class="card" id="nlEmCard"><h3 class="h"><i class="fa-solid fa-envelope"></i> Email / Google login</h3>'+(PT.s.email?'<p class="mu" style="margin-bottom:8px">Juda hua: <b>'+esc(PT.s.email)+'</b>. Is email ya Google se bhi login kar sakte ho.</p>':'<p class="mu" style="margin-bottom:8px">Gmail ya Google jodo, phir mobile + PIN ke bina bhi login ho jayega. (Sirf @gmail.com)</p>')+'<div class="g2"><button class="btn o" onclick="nlAddGoogle()"><i class="fa-brands fa-google"></i> Google jodo</button><button class="btn o" onclick="nlAddEmail()"><i class="fa-solid fa-envelope"></i> Gmail jodo</button></div></div>')}catch{}return r};
+
+/* ---------- Admin tool: Email rules + blocked attempts ---------- */
+async function emailPol(){modal('📧 Email rules','<div id="epB"><p class="mu">Loading...</p></div>',true);if(!await ensureDB())return;let v={};try{v=(await DB.ref('library/emailblocks').limitToLast(30).once('value')).val()||{}}catch{}
+ const rows=Object.values(v).sort((a,b)=>b.t-a.t);const e=$('epB');if(!e)return;
+ e.innerHTML='<div class="li"><span><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> Sirf <b>@gmail.com</b> email allowed (login + registration)</span></div><div class="li"><span><i class="fa-solid fa-ban" style="color:var(--er)"></i> Temp mail, yahoo, outlook, college email: block</span></div><div class="li"><span><i class="fa-solid fa-user-lock"></i> a.b@gmail.com, ab+1@gmail.com aur ab@gmail.com ek hi inbox maane jate hain</span></div><h4 class="grp">Blocked koshish (last 30)</h4>'+(rows.length?rows.map(x=>'<div class="li"><span>'+esc(x.e)+'<br><small>'+new Date(x.t).toLocaleString('en-IN')+'</small></span><small>'+esc(x.w||'')+'</small></div>').join(''):'<p class="mu">Abhi tak koi blocked email nahi ✅</p>')}
+ITEMS.emailpol=['envelope-circle-check','Email rules (Gmail only)'];ACT.emailpol=()=>nA(emailPol);if(ADMIN_ONLY.indexOf('emailpol')<0)ADMIN_ONLY.push('emailpol');
+
+/* ---------- Forgot PIN: verify with Google account or Gmail, then set a new PIN ---------- */
+function pinResetUi(m,s,email){NLA.rp={m:m,t:Date.now()};const mk=String(m).replace(/^(\d{2})\d{6}(\d{2})$/,'$1******$2');
+ modal('🔑 Naya PIN banao','<div class="li" style="color:var(--ok)"><span><i class="fa-solid fa-circle-check"></i> Verify ho gaya: <b>'+esc(email)+'</b></span></div><div class="li"><span>Student: <b>'+esc((s&&s.name)||'')+'</b> · '+mk+'</span></div><label style="margin-top:10px"><i class="fa-solid fa-lock"></i> Naya 6-digit PIN<input id="nlRP" name="nlrp_new" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label><label><i class="fa-solid fa-lock"></i> PIN dobara<input id="nlRP2" name="nlrp_new2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label><button class="btn ok w" onclick="nlPinSet()"><i class="fa-solid fa-key"></i> PIN reset karo</button>')}
+window.nlPinSet=async()=>{const R=NLA.rp;if(!R||Date.now()-R.t>6e5){toast('Time khatam ho gaya. Dobara verify karo');return forgot()}
+ const p=($('nlRP').value||'').trim(),c=($('nlRP2').value||'').trim();if(!/^\d{6}$/.test(p))return toast('PIN 6 digit ka hona chahiye');if(p!==c)return toast('Dono PIN same nahi hain');
+ try{if(!await ensureDB())return;const m=R.m;await DB.ref('library/auth/'+m+'/pin').set(await H2(m+':'+p));try{await DB.ref('library/security/'+m).remove()}catch(e){}
+  sv('nl_lock',{n:0,u:0});NLA.rp=null;closeModal();toast('PIN reset ho gaya ✅ Ab naye PIN se login karo');try{tg('🔑 Student PIN reset (Google/Gmail verified): '+m)}catch(e){}}
+ catch(e){toast('PIN save nahi hua: '+(typeof errMsg==='function'?errMsg(e):(e&&e.message)||e))}};
+const nlResetMail=()=>run(async()=>{const i=$('nlRE'),e=fixMail(i&&i.value);if(i)i.value=e;if(!needGmail(e))return;const a=await nlAuth();
+ await a.sendSignInLinkToEmail(e,{url:SITE,handleCodeInApp:true});try{localStorage.setItem('nl_email_link',e);localStorage.setItem('nl_em',e)}catch(x){}
+ const t='Reset link '+e+' par bhej diya ✅ Isi phone me email kholkar link dabao. (Spam bhi dekho)',m=$('nlRMsg');if(m){m.style.color='var(--ok)';m.textContent=t}toast(t)});
+window.nlResetVia=function(kind){NLA.reset=1;try{localStorage.setItem('nl_reset',JSON.stringify({t:Date.now()}))}catch(e){}return kind==='google'?window.nlGoogle():nlResetMail()};
+const _fg=forgot;forgot=function(){_fg.apply(this,arguments);try{const b=document.querySelector('#modal .mbox'),h=b&&b.querySelector('h3');if(!b||!h||b.querySelector('#nlRE'))return;
+ h.insertAdjacentHTML('afterend','<p class="mu" style="margin:2px 2px 12px">Google account ya Gmail se verify karke naya PIN banao. (Wahi Gmail chalega jo aapke student account se juda hai)</p><button class="btn o w" type="button" onclick="nlResetVia(\'google\')">'+GSVG+' Google account se reset</button><label style="margin-top:12px"><i class="fa-solid fa-envelope"></i> Gmail<input id="nlRE" name="nlre_mail" type="email" inputmode="email" autocomplete="email" placeholder="yourname@gmail.com" onblur="nlEmFix(this)"></label><button class="btn p w" type="button" onclick="nlResetVia(\'email\')"><i class="fa-solid fa-paper-plane"></i> Gmail par link bhejo</button><p class="nla-msg mu" id="nlRMsg"></p><div class="nla-or"><span>ya security question se</span></div>')}catch(e){console.warn(e)}};
 
 /* ---------- return from email link / Google redirect ---------- */
 async function nlBoot(){try{const h=location.href,redir=sessionStorage.getItem('nl_redir'),isLink=/[?&]oobCode=/.test(h)&&/[?&]mode=signIn/.test(h);if(!redir&&!isLink)return;
+ try{const ri=JSON.parse(localStorage.getItem('nl_reset')||'null');if(ri&&Date.now()-ri.t<18e5)NLA.reset=1;else localStorage.removeItem('nl_reset')}catch{}
  const a=await nlAuth();
  if(redir){sessionStorage.removeItem('nl_redir');const r=await a.getRedirectResult();if(r&&r.user)await nlAfter(r.user);return}
- if(a.isSignInWithEmailLink(h)){let e='';try{e=localStorage.getItem('nl_email_link')||''}catch{}if(!e)e=(prompt('Security ke liye wahi email likho jis par link aaya tha:')||'').trim().toLowerCase();if(!okMail(e))return toast('Sahi email likho aur link dobara kholo');
+ if(a.isSignInWithEmailLink(h)){let e='';try{e=localStorage.getItem('nl_email_link')||''}catch{}if(!e)e=fixMail((prompt('Security ke liye wahi Gmail likho jis par link aaya tha:')||'').trim());if(!okMail(e))return toast('Sahi @gmail.com email likho aur link dobara kholo');
   const r=await a.signInWithEmailLink(e,h);try{localStorage.removeItem('nl_email_link');history.replaceState(null,'',location.pathname+location.hash)}catch{}await nlAfter(r.user)}}catch(e){nlErr(e)}}
 setTimeout(nlBoot,3200);
 })();
-
 </script>
+<script id="nl-geo">
+/* ===== National Library · Attendance v2: anti-fake (GPS, server time, one-phone-one-student, hours, 10-min rule) + genuine-student fixes ===== */
+(function(){
+const NLK={busy:0,ac:0,rem:'',rc:null,rt:0};let OFF=null;
+const dm=(a,b,c,d)=>hav(a,b,c,d)*1000;
+const DEF={open:'06:30',close:'21:00',minStay:10,gap:2,devLock:true,devMin:30,credit:0};
+const mins=s=>{const a=String(s||'').split(':');return (+a[0]||0)*60+(+a[1]||0)};
+const istMin=t=>{const d=new Date(t+330*6e4);return d.getUTCHours()*60+d.getUTCMinutes()};
+async function nlOff(){if(OFF!==null)return OFF;try{OFF=+((await DB.ref('.info/serverTimeOffset').once('value')).val())||0}catch(e){OFF=0}return OFF}
+async function rules(force){if(!force&&NLK.rc&&Date.now()-NLK.rt<30000)return NLK.rc;let st={};try{st=(await DB.ref('library/settings').once('value')).val()||{}}catch(e){if(NLK.rc)return NLK.rc}
+ const R=Object.assign({},DEF,st.ck||{});R.minStay=Math.max(1,+R.minStay||DEF.minStay);R.gap=Math.max(0,+R.gap||0);R.devMin=Math.max(1,+R.devMin||DEF.devMin);R.credit=Math.max(0,+R.credit||0);R.devLock=R.devLock!==false&&R.devLock!==0;
+ NLK.rc={st,R};NLK.rt=Date.now();return NLK.rc}
+const DEVID=(()=>{let v='';try{v=localStorage.getItem('nl_devid')||''}catch(e){}if(!v){v='d'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{localStorage.setItem('nl_devid',v)}catch(e){}}return v})();
+const FP=(()=>{const s=[navigator.userAgent,screen.width,screen.height,screen.colorDepth,navigator.hardwareConcurrency||'',navigator.language,new Date().getTimezoneOffset()].join('|');let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'f'+(h>>>0).toString(36)})();
+
+/* GPS: watch for up to 12 s and keep the most accurate reading (indoors the first reading is often poor) */
+function getFix(){return new Promise((res,rej)=>{let best=null,err=null,done=0,wid=null,t=null;
+ const fin=()=>{if(done)return;done=1;try{navigator.geolocation.clearWatch(wid)}catch(e){}clearTimeout(t);best?res(best):rej(err||{code:2})};
+ try{wid=navigator.geolocation.watchPosition(p=>{if(!best||(p.coords.accuracy||9e9)<(best.coords.accuracy||9e9))best=p;if((p.coords.accuracy||9e9)<=30)fin()},e=>{err=e;if(e&&e.code===1)fin()},{enableHighAccuracy:true,maximumAge:0,timeout:15000})}catch(e){err=e;fin()}
+ t=setTimeout(fin,12000)})}
+
+/* GPS gate: returns {skip} / {d,a,fl,gl} / null (blocked, message already shown) */
+async function nlGeo(st){
+ if(st.gpsOn===false)return{skip:1};
+ const L=await libLoc();if(!L||L.src!=='admin')return{skip:1,unset:1};
+ if(!navigator.geolocation){toast('Is device me location support nahi hai. Chrome browser me site kholo');return null}
+ if(window.isSecureContext===false){toast('Location ke liye site https par Chrome me kholo');return null}
+ toast('📍 GPS signal pakad raha hoon (10 second ruko)...');let p;
+ try{p=await getFix()}catch(e){toast(e&&e.code===1?'📍 Location ki permission Allow karo (Chrome → site settings → Location → Allow), phir dobara try karo':'📍 Location nahi mili. GPS on karo, khidki ke paas jao aur dobara try karo');return null}
+ const a=Math.round(p.coords.accuracy||0);
+ if(a===0){toast('📍 Location sahi nahi lag rahi (fake / mock location app band karo) aur dobara try karo');try{logSec('gps-mock',PT.m)}catch(e){}return null}
+ if(a>150){toast('📍 GPS signal kamzor hai (±'+a+' m). Khuli jagah / khidki ke paas jao, phone ki Location "High accuracy" ON karo aur dobara dabao');return null}
+ const R0=Math.max(30,+st.gpsR||100),d=Math.round(dm(L.lat,L.lon,p.coords.latitude,p.coords.longitude)),tol=Math.min(a,60);
+ if(d>R0+tol){toast('📍 Aap library se ~'+d+' meter door ho (allowed '+R0+' m). Library ke andar aakar hi check-in / out hoga');try{logSec('gps-block',PT.m+' '+d+'m')}catch(e){}return null}
+ const out={d,a,gl:[+p.coords.latitude.toFixed(5),+p.coords.longitude.toFixed(5)]};
+ if(a<=1)out.fl='mock';
+ try{const k='nl_lg_'+PT.m,cur=p.coords.latitude+','+p.coords.longitude,last=localStorage.getItem(k);if(last&&last===cur)out.fl=out.fl||'same';localStorage.setItem(k,cur)}catch(e){}
+ return out}
+
+/* one phone = one student (checked within a time window) */
+async function devCheck(now,R){if(!R.devLock)return true;
+ for(const k of[DEVID,FP]){try{const v=(await DB.ref('library/devlast/'+k).once('value')).val();if(v&&v.m&&v.m!==PT.m&&now-v.t<R.devMin*6e4){toast('📵 Is phone se '+R.devMin+' minute ke andar dusre student ka check-in hua hai. Apne khud ke phone se hi check-in karo');try{logSec('dev-share',PT.m+' <- '+v.m)}catch(e){}return false}}catch(e){}}
+ return true}
+function devMark(now){const v={m:PT.m,t:now,n:(PT.s&&PT.s.name)||''};[DEVID,FP].forEach(k=>{try{DB.ref('library/devlast/'+k).set(v).catch(()=>0)}catch(e){}})}
+function busyUI(on){document.querySelectorAll('#ckBox .btn').forEach(b=>{b.disabled=!!on})}
+const closeTs=(d,R)=>new Date(d+'T'+(R.close||'21:00')+':00').getTime();
+
+/* new check-in / check-out */
+window.ckDo=ckDo=async function(i){const m=PT.m;if(!m)return toast('Please log in first');if(NLK.busy)return;NLK.busy=1;busyUI(1);
+ try{if(!await ensureDB())return;if(!navigator.onLine)return toast('Internet nahi hai. Wi-Fi / data check karo');
+  const {st,R}=await rules(true),off=await nlOff();
+  if(i){const t=istMin(Date.now()+off);if(t<mins(R.open)||t>mins(R.close))return toast('🕘 Check-in sirf '+R.open+' se '+R.close+' ke beech hota hai (library ka samay)')}
+  if(!(await netOK()))return;
+  const g=await nlGeo(st);if(!g)return;
+  const now=Date.now()+off,d=day(new Date(now)),r=DB.ref(`library/attendance_s/${m}/${d}`),ss=sess((await r.once('value')).val()),open=ss.find(x=>!x.out),name=(PT.s&&PT.s.name)||m;
+  const meta={dv:DEVID.slice(0,10)};try{meta.ip=await getIP()}catch(e){}
+  if(g.d!=null){meta.gd=g.d;meta.ga=g.a;if(g.gl)meta.gl=g.gl}if(g.fl)meta.fl=g.fl;
+  if(i){
+   if(open)return toast('Aap pehle se checked in ho. Pehle check-out karo');
+   const lastOut=Math.max(0,...ss.map(x=>x.out||0));if(R.gap&&lastOut&&now-lastOut<R.gap*6e4)return toast('⏱️ Check-out ke baad '+R.gap+' minute ruk kar check-in karo');
+   if(!await devCheck(now,R))return;
+   try{const tr=await DB.ref('library/ckstate/'+m).transaction(c=>(c&&c.t&&now-c.t<8000&&c.dev!==DEVID)?undefined:{t:now,dev:DEVID});if(tr&&!tr.committed)return toast('Dusre phone se abhi check-in chal raha hai. 10 second baad dekho')}catch(e){}
+   const k=r.push().key,v=Object.assign({in:now},meta),u={};u[`attendance_s/${m}/${d}/${k}`]=v;u[`attendance/${d}/${m}/name`]=name;u[`attendance/${d}/${m}/s/${k}`]=v;await DB.ref('library').update(u);devMark(now);
+   let due=0;try{due=typeof dl==='function'&&dl(PT.s)<0}catch(e){}toast('✅ Check-in ho gaya'+(due?' · fee due hai':''))}
+  else{
+   if(!open)return toast('Pehle check-in karo');
+   if(now-open.in<R.minStay*6e4)return toast('⏱️ Check-in ke '+R.minStay+' minute baad hi check-out hoga. Galat check-in hua ho to "Check-in cancel karo" dabao');
+   const u={},base=open.k==='x'?'':'/'+open.k,bs=`attendance_s/${m}/${d}${base}`,bc=`attendance/${d}/${m}${open.k==='x'?'':'/s/'+open.k}`;
+   u[bs+'/out']=now;u[bc+'/out']=now;if(g.d!=null){u[bs+'/od']=g.d;u[bs+'/oa']=g.a;u[bc+'/od']=g.d;u[bc+'/oa']=g.a}
+   await DB.ref('library').update(u);devMark(now);let tot=now-open.in;try{ss.forEach(x=>{if(x.out)tot+=x.out-x.in})}catch(e){}
+   try{await libLog(m,d,open.k,open.in,now,name)}catch(e){}
+   toast('👋 Check-out ho gaya · Is session '+fmtD(now-open.in)+' · Aaj total '+fmtD(tot))}
+  closeModal()}catch(e){toast('Check-in/out save nahi hua: '+errMsg(e))}finally{NLK.busy=0;busyUI(0);if($('ckBox'))ckModal()}};
+
+/* cancel a wrong check-in (only inside the first minutes; nothing is credited) */
+window.ckCancel=async function(){const m=PT.m;if(!m||NLK.busy)return;NLK.busy=1;busyUI(1);
+ try{if(!await ensureDB())return;const {R}=await rules(true),off=await nlOff(),now=Date.now()+off,d=day(new Date(now)),ss=sess((await DB.ref(`library/attendance_s/${m}/${d}`).once('value')).val()),open=ss.find(x=>!x.out);
+  if(!open||open.k==='x')return toast('Cancel karne layak check-in nahi mila');
+  if(now-open.in>=R.minStay*6e4)return toast('Ab check-out karo, cancel sirf shuru ke '+R.minStay+' minute me hota hai');
+  if(!confirm('Ye check-in cancel kar du? Is session ka time count nahi hoga.'))return;
+  const u={};u[`attendance_s/${m}/${d}/${open.k}`]=null;u[`attendance/${d}/${m}/s/${open.k}`]=null;await DB.ref('library').update(u);toast('✅ Check-in cancel ho gaya');closeModal()}
+ catch(e){toast('Cancel nahi hua: '+errMsg(e))}finally{NLK.busy=0;busyUI(0);if($('ckBox'))ckModal()}};
+
+/* check-in / out screen */
+window.ckModal=ckModal=function(){
+ const draw=R=>{const ss=sess((PT.at||{})[day(new Date())]),open=ss.find(x=>!x.out),fresh=open&&open.k!=='x'&&(Date.now()-open.in)<R.minStay*6e4;
+  return `<div id="ckBox"><div class="li pendrow"><span><i class="fa-solid fa-location-dot"></i> Library ke andar aao. Phone ki <b>Location (GPS) ON</b> rakho aur library Wi-Fi se jude raho. Check-in ${esc(R.open)} se ${esc(R.close)} tak, check-out kam se kam ${R.minStay} minute baad.</span></div><div class="li"><span>Aaj ke sessions</span><b>${ss.length}</b></div>${ss.map((x,i)=>`<div class="li ${x.out?'':'pendrow'}"><span>#${i+1} · ${fmtT(x.in)} → ${x.out?(x.auto?'<b>check-out bhoola</b>':fmtT(x.out)):'<b>andar ho</b>'}</span><small>${x.out?((x.out-x.in)/36e5).toFixed(1)+'h':''}</small></div>`).join('')}<div class="g2"><button class="btn ok" ${open?'disabled':''} onclick="ckDo(1)"><i class="fa-solid fa-right-to-bracket"></i> Check-in</button><button class="btn er" ${open&&!fresh?'':'disabled'} onclick="ckDo(0)"><i class="fa-solid fa-right-from-bracket"></i> Check-out</button></div>${fresh?`<button class="btn o w" style="margin-top:8px" onclick="ckCancel()"><i class="fa-solid fa-rotate-left"></i> Galat check-in cancel karo</button>`:''}<p class="mu" style="margin-top:10px;font-size:.78rem">Check-out bhool gaye to us session ka time count nahi hota. Genuine bhool ho to manager se bolo, wo theek kar denge.</p></div>`};
+ const first=NLK.rc?NLK.rc.R:DEF;modal('📍 Check-in / out',draw(first));
+ rules().then(x=>{const b=$('ckBox');if(b&&!NLK.busy){const t=document.createElement('div');t.innerHTML=draw(x.R);b.replaceWith(t.firstChild)}}).catch(()=>0)};
+
+/* forgot to check out: session closed automatically (credit set by admin, default 0) */
+async function nlAuto(){if(!PT.m||!PT.at||NLK.ac||!DB)return;const {R}=await rules(),now=Date.now()+(OFF||0),td=day(new Date(now)),u={},LG=[];let n=0;
+ Object.keys(PT.at).forEach(d=>{if(d>td)return;sess(PT.at[d]).forEach(x=>{if(x.out||x.k==='x'||!x.in)return;const cl=closeTs(d,R);if(now<cl+15*6e4&&d>=td)return;
+  const o=R.credit>0?Math.max(x.in,Math.min(x.in+R.credit*6e4,cl)):x.in,b=`attendance_s/${PT.m}/${d}/${x.k}`,c=`attendance/${d}/${PT.m}/s/${x.k}`;u[b+'/out']=o;u[b+'/auto']=1;u[c+'/out']=o;u[c+'/auto']=1;n++;if(o-x.in>=6e4)LG.push([d,x.k,x.in,o])})});
+ if(!n)return;NLK.ac=1;DB.ref('library').update(u).then(()=>{LG.forEach(a=>libLog(PT.m,a[0],a[1],a[2],a[3],PT.s&&PT.s.name));toast('⚠️ Check-out bhool gaye the. Us session ka time '+(R.credit>0?'kam count hua':'count nahi hua'))}).catch(()=>{}).finally(()=>setTimeout(()=>{NLK.ac=0},60000))}
+function nlRemind(){if(!PT.m||!PT.at)return;const now=Date.now()+(OFF||0),td=day(new Date(now)),open=sess(PT.at[td]).find(x=>!x.out&&x.k!=='x');if(!open||NLK.rem===open.k)return;const R=(NLK.rc&&NLK.rc.R)||DEF,t=istMin(now),c=mins(R.close);if(t>=c-10&&t<=c+10){NLK.rem=open.k;toast('⏰ Library band hone wali hai. Check-out karna na bhoolo!')}}
+nlOff();rules().catch(()=>0);
+const _pdg=ptDraw;ptDraw=function(){const r=_pdg.apply(this,arguments);try{nlAuto();nlRemind();libLive();libSync()}catch(e){}return r};
+
+/* ---------- Admin: GPS lock tool ---------- */
+async function gpsUi(){modal('📍 Library GPS lock','<p class="mu" style="margin-bottom:10px">Pehle <b>library ke andar (khuli jagah / khidki ke paas)</b> khade hokar "Yahan ko library location banao" dabao. Uske baad students sirf is jagah ke radius me hi check-in / out kar payenge.</p><div id="gpS" class="li"><span>Loading...</span></div><button class="btn p w" onclick="nlGpsSave()"><i class="fa-solid fa-location-crosshairs"></i> Yahan ko library location banao</button><label style="margin-top:10px"><i class="fa-solid fa-circle-dot"></i> Radius (meter, 30 - 300)<input id="gpR" type="number" min="30" max="300"></label><label class="li" style="text-transform:none;font-size:.9rem"><span>GPS check ON rakho</span><input type="checkbox" id="gpOn" style="width:22px;margin:0"></label><button class="btn o w" onclick="nlGpsCfg()">Radius / ON-OFF save karo</button><button class="btn o w" style="margin-top:8px" onclick="nlSus()"><i class="fa-solid fa-user-secret"></i> Shak wale check-in (7 din)</button>');
+ try{const st=(await DB.ref('library/settings').once('value')).val()||{},l=st.loc;$('gpR').value=+st.gpsR||100;$('gpOn').checked=st.gpsOn!==false;$('gpS').innerHTML=l&&l.lat?'<span><i class="fa-solid fa-circle-check" style="color:var(--ok)"></i> Location set hai ('+(+l.lat).toFixed(5)+', '+(+l.lon).toFixed(5)+')</span>':'<span><i class="fa-solid fa-triangle-exclamation" style="color:var(--wn)"></i> Location abhi set nahi hai. Jab tak set nahi hogi, GPS check kaam nahi karega.</span>'}catch(e){}}
+window.nlGpsSave=async()=>{if(!navigator.geolocation)return toast('Is device me location support nahi hai');if(!await ensureDB())return;toast('📍 Location le raha hoon (10 second)...');
+ try{const p=await getFix(),a=Math.round(p.coords.accuracy||0);if(a>60)return toast('Accuracy kam hai (±'+a+' m). Khuli jagah / khidki ke paas jaakar dobara dabao');await DB.ref('library/settings/loc').set({lat:p.coords.latitude,lon:p.coords.longitude,acc:a,t:Date.now()});libLoc.c=null;toast('✅ Library location save ho gayi (±'+a+' m)');gpsUi()}catch(e){toast(e&&e.code===1?'Location ki permission Allow karo':'Location nahi mili: '+errMsg(e))}};
+window.nlGpsCfg=async()=>{const r=Math.min(300,Math.max(30,+$('gpR').value||100));try{await DB.ref('library/settings').update({gpsR:r,gpsOn:$('gpOn').checked});NLK.rt=0;toast('Save ho gaya ✅')}catch(e){toast('Save nahi hua: '+errMsg(e))}};
+
+/* ---------- Admin: all attendance rules in one place ---------- */
+async function ckRules(){modal('🛡️ Attendance rules','<p class="mu">Loading...</p>',true);if(!await ensureDB())return;const {st,R}=await rules(true);
+ const nw=Object.keys(st.wifi||{}).length,hasLoc=!!(st.loc&&st.loc.lat);
+ const chk=(ok,t)=>`<div class="li"><span><i class="fa-solid fa-${ok?'circle-check':'triangle-exclamation'}" style="color:var(${ok?'--ok':'--wn'})"></i> ${t}</span></div>`;
+ modal('🛡️ Attendance rules',`<h4 class="grp">Status</h4>${chk(hasLoc&&st.gpsOn!==false,hasLoc?(st.gpsOn===false?'GPS check band hai':'GPS lock chalu hai (radius '+(+st.gpsR||100)+' m)'):'Library location set nahi hai, GPS check kaam nahi kar raha')}${chk(st.wifiOn===false||nw>0,st.wifiOn===false?'Wi-Fi check band hai':nw?'Wi-Fi check chalu ('+nw+' network)':'Wi-Fi network register nahi, sabka check-in ruk sakta hai')}${chk(R.devLock,R.devLock?'Ek phone = ek student lock chalu':'Device lock band hai')}
+ <h4 class="grp">Timing</h4><div class="g2"><label>Check-in shuru<input id="ckO" type="time" value="${esc(R.open)}"></label><label>Check-in band<input id="ckC" type="time" value="${esc(R.close)}"></label></div>
+ <div class="g2"><label>Check-out minimum (min)<input id="ckM" type="number" min="1" max="120" value="${R.minStay}"></label><label>Check-out ke baad gap (min)<input id="ckG" type="number" min="0" max="60" value="${R.gap}"></label></div>
+ <label>Check-out bhoolne par kitna time count ho<select id="ckCr"><option value="0">Kuch nahi (0)</option><option value="30">30 minute</option><option value="60">1 ghanta</option><option value="120">2 ghante</option></select></label>
+ <h4 class="grp">Fake rokne ke rules</h4>
+ <label class="li" style="text-transform:none;font-size:.9rem"><span>GPS check ON</span><input type="checkbox" id="ckGp" style="width:22px;margin:0" ${st.gpsOn===false?'':'checked'}></label>
+ <label class="li" style="text-transform:none;font-size:.9rem"><span>Library Wi-Fi zaruri</span><input type="checkbox" id="ckWf" style="width:22px;margin:0" ${st.wifiOn===false?'':'checked'}></label>
+ <label class="li" style="text-transform:none;font-size:.9rem"><span>Ek phone = ek student</span><input type="checkbox" id="ckDv" style="width:22px;margin:0" ${R.devLock?'checked':''}></label>
+ <label>Ek phone par dusre student ke liye ruk (min)<input id="ckDm" type="number" min="5" max="240" value="${R.devMin}"></label>
+ <button class="btn p w" onclick="nlCkSave()"><i class="fa-solid fa-floppy-disk"></i> Save karo</button>
+ <div class="g2" style="margin-top:8px"><button class="btn o" onclick="gpsUi()"><i class="fa-solid fa-location-crosshairs"></i> GPS lock</button><button class="btn o" onclick="wifiMgr()"><i class="fa-solid fa-wifi"></i> Wi-Fi</button></div><button class="btn o w" style="margin-top:8px" onclick="nlSus()"><i class="fa-solid fa-user-secret"></i> Shak wale check-in</button>`,true);
+ try{$('ckCr').value=String(R.credit)}catch(e){}}
+window.gpsUi=gpsUi;
+window.nlCkSave=async()=>{const o=$('ckO').value||DEF.open,c=$('ckC').value||DEF.close;if(mins(c)<=mins(o))return toast('Band hone ka samay shuru se baad ka rakho');
+ const ck={open:o,close:c,minStay:Math.min(120,Math.max(1,+$('ckM').value||10)),gap:Math.min(60,Math.max(0,+$('ckG').value||0)),credit:+$('ckCr').value||0,devLock:$('ckDv').checked,devMin:Math.min(240,Math.max(5,+$('ckDm').value||30))};
+ try{await DB.ref('library/settings').update({ck,gpsOn:$('ckGp').checked,wifiOn:$('ckWf').checked});NLK.rt=0;toast('Save ho gaya ✅')}catch(e){toast('Save nahi hua: '+errMsg(e))}};
+
+/* ---------- Admin: suspicious list + genuine fix ---------- */
+window.nlSus=async()=>{modal('🕵️ Shak wale check-in (7 din)','<p class="mu">Load ho raha hai...</p>',true);if(!await ensureDB())return;const {R}=await rules(),rows=[],cnt={};
+ for(let i=0;i<7;i++){const d=day(new Date(Date.now()-i*864e5));try{const v=(await DB.ref('library/attendance/'+d).once('value')).val()||{};Object.keys(v).forEach(m=>{const s=v[m]&&v[m].s||{};Object.keys(s).forEach(k=>{const x=s[k];if(x.gl){const g=m+'|'+x.gl.join(',');cnt[g]=(cnt[g]||0)+1}})})}catch(e){}}
+ for(let i=0;i<7;i++){const d=day(new Date(Date.now()-i*864e5));try{const v=(await DB.ref('library/attendance/'+d).once('value')).val()||{};Object.keys(v).forEach(m=>{const s=v[m]&&v[m].s||{};Object.keys(s).forEach(k=>{const x=s[k],t=[];if(x.ok)return;if(x.fl==='mock')t.push('GPS fake jaisa');if(x.fl==='same')t.push('GPS point bilkul same');if(x.gl&&cnt[m+'|'+x.gl.join(',')]>=3)t.push('ek hi GPS point baar-baar');if(x.auto&&!x.fx)t.push('check-out bhoola');if(t.length)rows.push({d,n:v[m].name||m,m,k,in:x.in,t:t.join(', '),auto:x.auto&&!x.fx})})})}catch(e){}}
+ modal('🕵️ Shak wale check-in (7 din)',rows.length?rows.map(x=>`<div class="li pendrow" style="flex-wrap:wrap;gap:6px"><span><b>${esc(x.n)}</b> · ${esc(x.d)} · ${fmtT(x.in)}<br><small>${esc(x.t)}</small></span><span><small>${esc(x.m)}</small>${x.auto?` <button class="btn ok" style="padding:5px 9px" onclick="nlFix('${esc(x.d)}','${esc(x.m)}','${esc(x.k)}')">Time do</button>`:''} <button class="btn o" style="padding:5px 9px" onclick="nlOk('${esc(x.d)}','${esc(x.m)}','${esc(x.k)}')">Genuine hai</button></span></div>`).join(''):'<p class="mu">Koi shak wala entry nahi mili ✅</p>',true)};
+window.nlFix=async(d,m,k)=>{if(!confirm('Is genuine student ko library band hone tak ka time de du?'))return;const {R}=await rules(),o=closeTs(d,R),u={};[`attendance_s/${m}/${d}/${k}`,`attendance/${d}/${m}/s/${k}`].forEach(b=>{u[b+'/out']=o;u[b+'/auto']=null;u[b+'/fx']=1});try{await DB.ref('library').update(u);try{const rw=(await DB.ref('library/attendance_s/'+m+'/'+d+'/'+k).once('value')).val(),nm=(await DB.ref('library/attendance/'+d+'/'+m+'/name').once('value')).val();if(rw&&rw.in)await libLog(m,d,k,rw.in,o,nm)}catch(e){}toast('✅ Time de diya');nlSus()}catch(e){toast('Nahi hua: '+errMsg(e))}};
+window.nlOk=async(d,m,k)=>{const u={};[`attendance_s/${m}/${d}/${k}`,`attendance/${d}/${m}/s/${k}`].forEach(b=>{u[b+'/ok']=1;u[b+'/fl']=null});try{await DB.ref('library').update(u);toast('✅ Genuine mark ho gaya');nlSus()}catch(e){toast('Nahi hua: '+errMsg(e))}};
+
+/* ---------- Study hours = total time spent in the library (check-in to check-out, all sessions added) ---------- */
+function fmtD(ms){const m=Math.max(0,Math.round(ms/6e4)),h=Math.floor(m/60);return h?h+'h '+(m%60)+'m':m+'m'}
+const LGBUSY={};
+async function libLog(m,d,k,tin,tout,name){
+ if(!window.DB||!m||!k||k==='x'||!tin||!tout||tout<=tin)return;const dur=tout-tin;if(dur<6e4||dur>16*36e5)return;
+ const key=m+'/'+d+'/'+k;if(LGBUSY[key])return;LGBUSY[key]=1;const fl=DB.ref('library/attendance_s/'+m+'/'+d+'/'+k+'/lg');
+ try{const tr=await fl.transaction(c=>c?undefined:1);if(!tr||!tr.committed)return;
+  const h=Math.round(dur/36e5*100)/100,fn=String(name||'').trim().split(/\s+/)[0]||'';
+  await DB.ref('library/studylog/'+m+'/lib_'+k).set({time:tout,date:d,subject:'📚 Library',hours:h,note:'Check-in/out se automatic',auto:1});
+  await DB.ref('library/leaderboard/'+d.slice(0,7)+'/'+m).transaction(v=>({name:fn||(v&&v.name)||'',hours:Math.round((((v&&v.hours)||0)+h)*100)/100}))}
+ catch(e){try{fl.remove()}catch(x){}}
+ finally{delete LGBUSY[key]}}
+let SYNC='';
+function libSync(){if(!window.DB||!PT.m||!PT.at||SYNC===PT.m)return;const ds=Object.keys(PT.at);if(!ds.length)return;SYNC=PT.m;
+ const now=Date.now()+(OFF||0),cut=day(new Date(now-35*864e5)),name=(PT.s&&PT.s.name)||'',L=[];
+ ds.forEach(d=>{if(d<cut)return;sess(PT.at[d]).forEach(x=>{if(x.k!=='x'&&x.in&&x.out&&!x.lg&&x.out-x.in>=6e4)L.push([d,x.k,x.in,x.out])})});
+ (async()=>{for(const a of L.slice(0,60)){try{await libLog(PT.m,a[0],a[1],a[2],a[3],name)}catch(e){}}})()}
+function libDay(d,now){let ms=0;sess(PT.at&&PT.at[d]).forEach(x=>{if(!x.in)return;if(x.out)ms+=Math.max(0,x.out-x.in);else if(d===day(new Date(now)))ms+=Math.max(0,now-x.in)});return ms}
+function libLive(){const el=document.getElementById('pt');if(!el||!window.PT||!PT.m||!PT.at)return;let c=document.getElementById('libLive');if(PT.tab!=='sty'){if(c)c.remove();return}
+ const now=Date.now()+(OFF||0),td=day(new Date(now)),mon=new Date(now);mon.setDate(mon.getDate()-((mon.getDay()+6)%7));const wf=day(mon);let w=0,mo=0;
+ Object.keys(PT.at).forEach(d=>{const v=libDay(d,now);if(d>=wf&&d<=td)w+=v;if(d.slice(0,7)===td.slice(0,7))mo+=v});
+ const t=libDay(td,now),open=sess(PT.at[td]).some(x=>!x.out&&x.k!=='x');
+ const html='<div class="row"><h3><i class="fa-solid fa-fingerprint"></i> Library me bitaya samay</h3>'+(open?'<span class="chip ok">Abhi andar ho</span>':'')+'</div><div class="stats"><div class="kpi"><i class="fa-solid fa-sun"></i><b>'+fmtD(t)+'</b><small>Aaj</small></div><div class="kpi"><i class="fa-solid fa-calendar-week"></i><b>'+fmtD(w)+'</b><small>Is hafte</small></div><div class="kpi"><i class="fa-solid fa-calendar"></i><b>'+fmtD(mo)+'</b><small>Is mahine</small></div></div>';
+ if(!c){c=document.createElement('div');c.className='card';c.id='libLive';const tb=el.querySelector('.tabs.sc');if(tb)tb.insertAdjacentElement('afterend',c);else el.appendChild(c)}c.innerHTML=html}
+setInterval(()=>{try{if(window.PT&&PT.m&&PT.tab==='sty')libLive()}catch(e){}},20000);
+ITEMS.gps=['location-crosshairs','Library GPS lock'];ACT.gps=gpsUi;if(ADMIN_ONLY.indexOf('gps')<0)ADMIN_ONLY.push('gps');
+ITEMS.sus=['user-secret','Shak wale check-in'];ACT.sus=()=>nlSus();if(ADMIN_ONLY.indexOf('sus')<0)ADMIN_ONLY.push('sus');
+ITEMS.ckrules=['shield-halved','Attendance rules'];ACT.ckrules=()=>nA(ckRules);if(ADMIN_ONLY.indexOf('ckrules')<0)ADMIN_ONLY.push('ckrules');
+})();
+</script>
+<script id="nl-exam">
+/* ===== National Library AI: verified exam calendar (no guessing). Admin can edit under Admin > Exam dates. ===== */
+(function(){
+const CHK='27 Nov 2026',TEN='🕒 Tentative (badal sakti hai)',CNF='✅ Confirmed',AWT='⏳ Date abhi announce nahi hui';
+const SSC='https://ssc.gov.in/',RRB='https://rrb.indianrailways.gov.in/',UPS='https://upsc.gov.in/',USS='https://upsssc.gov.in/',NTA='https://nta.ac.in/';
+const AD_SSC='SSC ki region website par: exam city slip aam taur par ~10 din pehle aur admit card ~3-4 din pehle aata hai (exact date SSC ke notice me aati hai)';
+const AD_NO='Admit card ki confirmed date abhi nahi mili. Admit card exam se kuch din pehle official website par aata hai.';
+/* id, al (alias regex), t (title), ex (exam), ad (admit card), end (last exam day for status), st, site, note */
+const SEED=[
+{id:'ssc_chsl',al:'chsl|10\\+2|combined higher|ssc\\s*(10|12)',t:'SSC CHSL 2026 (Tier-I)',ex:'30 Nov 2026 se 31 Dec 2026 (computer based)',ad:AD_SSC,end:'2026-12-31',st:'c',site:SSC,note:'SSC ke notice 01.10.2026 ke hisaab se'},
+{id:'ssc_cpo',al:'\\bcpo\\b|si in delhi|ssc\\s*si\\b|sub.?inspector.*(delhi|capf)|delhi police si',t:'SSC CPO / SI Delhi Police & CAPFs 2026 (Paper-I)',ex:'23 se 28 Nov 2026 (SSC ke revised notice 26.10.2026 ke hisaab se)',ad:AD_SSC,end:'2026-11-28',st:'c',site:SSC},
+{id:'ssc_je',al:'ssc\\s*je\\b|\\bje\\b.*ssc|ssc.*junior engineer',t:'SSC JE 2026 (Paper-I)',ex:'2 se 6 Nov 2026 aur 30 Nov se 1 Dec 2026',ad:AD_SSC,end:'2026-12-01',st:'c',site:SSC},
+{id:'ssc_cgl',al:'\\bcgl\\b|combined graduate',t:'SSC CGL 2026',ex:'Tier-I 30 Sep se 30 Oct 2026 tak ho chuka. Tier-II December 2026 me hone ka tentative plan hai, exact date abhi nahi mili.',ad:AD_SSC,end:'2026-12-31',st:'t',site:SSC},
+{id:'ssc_mts',al:'\\bmts\\b|havaldar|ssc\\s*gd\\b|\\bgd\\b.*ssc|ssc.*\\bgd\\b',t:'SSC MTS / Havaldar / GD',ex:'',ad:'',end:'',st:'a',site:SSC,note:'SSC MTS/Havaldar ka notice abhi publish nahi hua (calendar me Sep-Nov 2026 likha tha). SSC GD ki confirmed date mujhe nahi mili.'},
+{id:'rrb_ntpc',al:'ntpc|non.?technical popular',t:'RRB NTPC Graduate (CEN 06/2026) CBT-1',ex:'December 2026 ke 4th week se shuru hone ka tentative plan (RRB ka indicative notice 12.10.2026). Exact date abhi announce nahi hui.',ad:'Exam city slip ~10 din pehle aur admit card (e-call letter) ~4 din pehle aata hai, apne RRB ki website par. Abhi release nahi hua.',end:'2027-01-31',st:'t',site:RRB,note:'Undergraduate (CEN 07/2026) ki CBT-1 date abhi announce nahi hui.'},
+{id:'rrb_alp',al:'\\balp\\b|assistant loco',t:'RRB ALP CBT-1',ex:'3 Nov 2026 se shuru hua (ho chuka)',ad:'',end:'2026-11-06',st:'c',site:RRB},
+{id:'rrb_gd',al:'group.?d\\b|level.?1\\b',t:'RRB Group D',ex:'',ad:'',end:'',st:'a',site:RRB,note:'Group D ki confirmed date mujhe nahi mili.'},
+{id:'upsc_cse',al:'\\bcse\\b|civil services|\\bias\\b|\\bips\\b|upsc.*(prelim|mains)|(prelim|mains).*upsc',t:'UPSC Civil Services (CSE) 2027',ex:'Prelims: 23 May 2027 (Sunday). Mains: 20 Aug 2027 se (5 din). Form: 13 Jan 2027 se 2 Feb 2027 tak.',ad:'Admit card ki date abhi announce nahi hui. UPSC exam se pehle upsc.gov.in par e-admit card deta hai.',end:'2027-08-25',st:'c',site:UPS,note:'UPSC ke Calendar 2027 (20 May 2026 ko release) ke hisaab se'},
+{id:'upsc_nda',al:'\\bnda\\b|national defence',t:'NDA & NA 2027',ex:'NDA (I): 11 Apr 2027, form 2 Dec 2026 se 22 Dec 2026. NDA (II): 19 Sep 2027, form 12 May 2027 se 1 Jun 2027.',ad:AD_NO,end:'2027-09-19',st:'c',site:UPS},
+{id:'upsc_cds',al:'\\bcds\\b|combined defence',t:'CDS 2027',ex:'CDS (I): 11 Apr 2027, form 2 Dec 2026 se 22 Dec 2026. CDS (II): 19 Sep 2027, form 12 May 2027 se 1 Jun 2027.',ad:AD_NO,end:'2027-09-19',st:'c',site:UPS},
+{id:'upsc_ese',al:'\\bese\\b|engineering services|geo.?scientist',t:'UPSC ESE / Geo-Scientist Prelims 2027',ex:'Geo-Scientist Prelims: 10 Jan 2027. ESE Prelims: 31 Jan 2027.',ad:AD_NO,end:'2027-01-31',st:'c',site:UPS},
+{id:'uppsc_pcs',al:'\\bpcs\\b|uppsc|up\\s*public service',t:'UPPSC PCS Prelims 2026',ex:'6 Dec 2026',ad:AD_NO,end:'2026-12-06',st:'c',site:'__UPPSC__'},
+{id:'upsssc_dec',al:'auditor|accountant|vidhan|fireman|agni',t:'UPSSSC Auditor & Asst. Accountant / Vidhan Bhawan Guard & Fireman (Main)',ex:'20 Dec 2026 (Auditor: 10-12 baje, Vidhan Bhawan Guard & Fireman: 3-5 baje)',ad:AD_NO,end:'2026-12-20',st:'c',site:USS},
+{id:'upsssc_nov29',al:'cane|ganna|sugarcane|mohrir|moharrir|mohirar',t:'UPSSSC Cane Supervisor / Mohrir (Main)',ex:'29 Nov 2026 (Cane Supervisor: 10-12 baje, Mohrir: 3-5 baje)',ad:AD_NO,end:'2026-11-29',st:'c',site:USS},
+{id:'upsssc_nov22',al:'platoon|havildar instructor|havaldar instructor|block organi',t:'UPSSSC Platoon Commander / Havildar Instructor (Main)',ex:'22 Nov 2026 (ho chuka)',ad:'',end:'2026-11-22',st:'c',site:USS},
+{id:'upsssc_inter',al:'inter\\s*level|intermediate level',t:'UPSSSC Inter Level 2026',ex:'Form: 10 Nov 2026 se 1 Dec 2026. Exam ki date abhi announce nahi hui.',ad:AD_NO,end:'2027-03-31',st:'a',site:USS},
+{id:'upsssc_ja',al:'junior assistant|typing test',t:'UPSSSC Junior Assistant Typing Test',ex:'December 2026 (tentative), exact date abhi nahi mili',ad:AD_NO,end:'2026-12-31',st:'t',site:USS},
+{id:'ibps_po',al:'ibps.*(po|officer|scale)|rrb\\s*po\\b|gramin.*po|officer scale',t:'IBPS RRB Officer Scale I (PO) 2026',ex:'Prelims 21-22 Nov 2026 (ho chuka). Mains: 20 Dec 2026. Officer Scale II & III single exam: 20 Dec 2026.',ad:AD_NO,end:'2026-12-20',st:'c',site:'https://www.ibps.in/'},
+{id:'ibps_clerk',al:'office assistant|ibps.*clerk|rrb\\s*clerk',t:'IBPS RRB Office Assistant (Clerk) Prelims 2026',ex:'6, 12 aur 13 Dec 2026',ad:AD_NO,end:'2026-12-13',st:'t',site:'https://www.ibps.in/',note:'Ye date mujhe ek hi source me mili, isliye IBPS website se zaroor confirm karo.'},
+{id:'ugc_net',al:'ugc.?net|\\bjrf\\b',t:'UGC NET December 2026',ex:'14 se 19 Dec 2026 (NTA ka tentative schedule, computer based)',ad:AD_NO,end:'2026-12-21',st:'t',site:'https://ugcnet.nta.ac.in/'},
+{id:'jee_main',al:'jee(?!\\s*adv)',t:'JEE Main 2027',ex:'Session 1: 22-24 aur 28-30 Jan 2027 (NTA ka tentative calendar, 16 Sep 2026). Session 2: April 2027 me expected, abhi announce nahi hua.',ad:AD_NO,end:'2027-04-30',st:'t',site:'https://jeemain.nta.nic.in/'},
+{id:'jee_adv',al:'jee\\s*adv',t:'JEE Advanced',ex:'',ad:'',end:'',st:'a',site:NTA,note:'JEE Advanced 2027 ki confirmed date mujhe nahi mili.'},
+{id:'neet',al:'neet',t:'NEET UG 2027',ex:'',ad:'',end:'',st:'a',site:'https://neet.nta.nic.in/',note:'NEET UG 2027 ki confirmed date NTA ne abhi announce nahi ki, mujhe bhi confirmed date nahi mili.'},
+{id:'ctet',al:'ctet',t:'CTET',ex:'',ad:'',end:'',st:'a',site:'https://ctet.nic.in/',note:'CTET ki confirmed date mujhe nahi mili.'},
+{id:'up_police',al:'up\\s*police|uppbpb|uttar pradesh police',t:'UP Police',ex:'',ad:'',end:'',st:'a',site:'https://uppbpb.gov.in/',note:'UP Police ki confirmed exam date mujhe nahi mili.'},
+{id:'cuet',al:'cuet',t:'CUET',ex:'',ad:'',end:'',st:'a',site:NTA,note:'CUET ki confirmed date mujhe nahi mili.'}
+];
+SEED.forEach(e=>{if(e.site==='__UPPSC__')e.site='https://uppsc.up.nic.in/'});
+const GROUPS=[['upsc',/upsc/i,['upsc_cse','upsc_nda','upsc_cds','upsc_ese']],['ssc',/\bssc\b/i,['ssc_chsl','ssc_cgl','ssc_cpo','ssc_je','ssc_mts']],['rrb',/\brrb\b|railway/i,['rrb_ntpc','rrb_alp','rrb_gd','ibps_po','ibps_clerk']],['upsssc',/upsssc|\bpet\b|up\s*subordinate/i,['upsssc_dec','upsssc_nov29','upsssc_nov22','upsssc_inter','upsssc_ja']],['ibps',/ibps|bank/i,['ibps_po','ibps_clerk']],['nta',/\bnta\b|entrance/i,['jee_main','neet','cuet','ugc_net']]];
+const GSITE={upsc:UPS,ssc:SSC,rrb:RRB,upsssc:USS,ibps:'https://www.ibps.in/',nta:NTA};
+const DATE_W=/\b(date|dates|tarikh|tareekh|kab|kab hai|kab hoga|kab hogi|kab aayega|kab aayegi|when|schedule|calendar|timetable|time table)\b|तारीख|कब|डेट/i;
+const ADMIT_W=/admit\s*card|hall\s*ticket|e-?call|city\s*slip|intimation|एडमिट/i;
+const RES_W=/\bresult\b|merit|cut\s*-?off|answer\s*key|रिजल्ट/i;
+const SITE_W=/official|website|web\s*site|portal|\blink\b|site\b|वेबसाइट/i;
+const NOTIF_W=/notification|vacancy|bharti|apply|last date|application|\bform\b|registration|exam|pariksha|परीक्षा/i;
+const LIST_W=/(upcoming|aane\s*wal[ei]|konse|kaun\s*kaun|which)\s*(\w+\s*){0,2}(exam|pariksha)|exam\s*(list|calendar)|is\s*mahine.*exam|exams?\s*this\s*month/i;
+let CACHE=null,CT=0;
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+async function merged(){if(CACHE&&Date.now()-CT<3e5)return CACHE;let m=SEED.map(e=>Object.assign({},e));
+ try{if(window.DB){const v=await Promise.race([DB.ref('library/examcal').once('value').then(s=>s.val()),new Promise(r=>setTimeout(()=>r(null),2500))]);
+  if(v)Object.keys(v).forEach(k=>{const r=v[k]||{},i=m.findIndex(e=>e.id===k);if(r.del){if(i>-1)m.splice(i,1);return}if(i>-1)Object.assign(m[i],r,{id:k});else if(r.t&&r.al)m.push(Object.assign({id:k,ex:'',ad:'',end:'',st:'a',site:'',note:''},r,{id:k}))})}}catch(e){}
+ CACHE=m;CT=Date.now();return m}
+const rx=(s,f)=>{try{return new RegExp(s,f||'i')}catch(e){return null}};
+const fmt=e=>{const past=e.end&&e.end<today(),L=['📅 **'+e.t+'**'];
+ if(e.ex)L.push('• Exam: '+e.ex);
+ if(e.ex&&!past&&e.ad)L.push('• Admit card: '+e.ad);
+ const st=!e.ex?AWT:past?'✅ Ho chuka':e.st==='c'?CNF:e.st==='t'?TEN:AWT;L.push('• Status: '+st);
+ if(e.note)L.push('• Dhyan: '+e.note);
+ if(!e.ex&&!e.note)L.push('• Is exam ki confirmed date mujhe nahi mili.');
+ if(e.site)L.push('• Official website: '+e.site);return L.join('\n')};
+const FOOT='\n\nℹ️ Ye jaankari '+CHK+' tak check ki gayi hai. Dates badal sakti hain, isliye final date hamesha official website ya apne admit card se confirm karo.';
+function matchEntries(q,m){let hit=m.filter(e=>{const r=rx(e.al);return r&&r.test(q)});if(hit.length)return{hit,g:null};
+ for(const [k,r,ids] of GROUPS){if(r.test(q)){return{hit:ids.map(i=>m.find(e=>e.id===i)).filter(Boolean),g:k}}}return{hit:[],g:null}}
+function wantsExam(q,hit,g){const any=hit.length||g;if(any)return DATE_W.test(q)||ADMIT_W.test(q)||RES_W.test(q)||SITE_W.test(q)||NOTIF_W.test(q);return false}
+window.nlExamAnswer=async function(q){q=String(q||'').trim();if(!q||q.length>300)return '';const m=await merged(),{hit,g}=matchEntries(q,m);
+ if(LIST_W.test(q)&&!hit.length){const t=today(),up=m.filter(e=>e.ex&&e.end&&e.end>=t).sort((a,b)=>a.end<b.end?-1:1).slice(0,6);if(!up.length)return 'Abhi mere paas koi confirmed upcoming exam nahi hai. Exam ka naam batao (jaise SSC CHSL, UPSC, NTPC), main official date bataunga.'+FOOT;return 'Aane wale exams (jo mujhe confirmed mile):\n\n'+up.map(e=>'📅 **'+e.t+'**\n• '+e.ex).join('\n\n')+FOOT}
+ if(!wantsExam(q,hit,g)){ if(!hit.length&&!g&&(/exam|pariksha|परीक्षा/i.test(q))&&(DATE_W.test(q)||ADMIT_W.test(q))){return 'Kaun sa exam? Exam ka naam batao (jaise SSC CHSL, UPSC, NTPC, UPSSSC). Main galat date nahi bataunga, sirf wahi date dunga jo mujhe confirmed mili hai.'}return ''}
+ if(SITE_W.test(q)&&!DATE_W.test(q)&&!ADMIT_W.test(q)&&!RES_W.test(q)&&(hit.length||g)){const e=hit[0],site=(e&&e.site)||GSITE[g]||'';if(site)return 'Official website: '+site+'\n\nExam ki date chahiye to poochho, jaise "'+(e?e.t:'exam')+' kab hai".'}
+ if(RES_W.test(q)&&!ADMIT_W.test(q)&&!/exam\s*(date|kab)|pariksha|परीक्षा/i.test(q)){const e=hit[0];return (e?'Result ki confirmed date mere paas nahi hai, isliye andaza nahi lagaunga.\nOfficial website par dekho: '+(e.site||GSITE[g]||'')+'\n\n⚠️ '+e.t+' ka result sirf official website par hi final maano.':'Result ki confirmed date mere paas nahi hai. Exam ka naam batao, main official website bata dunga.')}
+ if(!hit.length)return '';
+ const t=today(),list=hit.slice().sort((a,b)=>{const ua=a.end&&a.end>=t?0:1,ub=b.end&&b.end>=t?0:1;return ua-ub||(a.end<b.end?-1:1)}).slice(0,g?4:3);
+ const head=g&&list.length>1?'Ye exams mile (aapne poora naam nahi bataya, to saare dikha raha hoon):\n\n':'';
+ return head+list.map(fmt).join('\n\n')+FOOT};
+const _aa=window.aiAsk;
+if(typeof _aa==='function'){window.aiAsk=aiAsk=async function(q){q=q||(document.getElementById('aiQ')&&document.getElementById('aiQ').value.trim());if(!q)return;let a='';try{a=await window.nlExamAnswer(q)}catch(e){}
+ const h=document.getElementById('aiH');if(!a||!h)return _aa.call(this,q);const inp=document.getElementById('aiQ');if(inp)inp.value='';
+ const f=t=>esc(t).replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:var(--br);font-weight:700;word-break:break-all">$1</a>');
+ h.innerHTML+='<div class="bub u">'+esc(q)+'</div><div class="bub">'+f(a)+'</div>';h.scrollTop=h.scrollHeight;try{window.nlAiRemember&&window.nlAiRemember(q,a)}catch(e){}}}
+
+/* ---------- Admin tool: Exam dates (AI answers use this) ---------- */
+async function examCalUi(){modal('📅 Exam dates (AI)','<p class="mu">Loading...</p>',true);if(!await ensureDB())return;CT=0;const m=await merged(),t=today();
+ modal('📅 Exam dates (AI)','<p class="mu" style="margin-bottom:8px">AI sirf yahi dates batata hai. Jo date confirmed nahi hai wahan "date nahi mili" likhta hai. Official notice aate hi yahan badal do.</p><button class="btn p w" onclick="nlExEdit(\'\')"><i class="fa-solid fa-plus"></i> Naya exam jodo</button><div style="margin-top:10px">'+m.map(e=>'<div class="li pendrow" style="gap:8px"><span><b>'+esc(e.t)+'</b><br><small>'+(e.ex?esc(e.ex):'Date nahi mili')+(e.end&&e.end<t?' · ho chuka':'')+'</small></span><button class="btn o" style="padding:6px 10px" onclick="nlExEdit(\''+esc(e.id)+'\')"><i class="fa-solid fa-pen"></i></button></div>').join('')+'</div>',true)}
+window.nlExEdit=async id=>{const m=await merged(),e=m.find(x=>x.id===id)||{id:'x'+Date.now().toString(36),al:'',t:'',ex:'',ad:'',end:'',st:'a',site:'',note:'',_new:1};
+ modal(e._new?'➕ Naya exam':'✏️ Exam edit','<label>Exam ka naam<input id="xeT" value="'+esc(e.t)+'"></label><label>Naam ke shabd (| se alag, jaise ctet|central teacher)<input id="xeA" value="'+esc(e.al)+'"></label><label>Exam date (jo official ho)<textarea id="xeE" rows="3">'+esc(e.ex)+'</textarea></label><label>Admit card info<textarea id="xeD" rows="2">'+esc(e.ad)+'</textarea></label><label>Exam ka aakhri din (status ke liye)<input id="xeN" type="date" value="'+esc(e.end)+'"></label><label>Status<select id="xeS"><option value="c">Confirmed</option><option value="t">Tentative</option><option value="a">Date announce nahi hui</option></select></label><label>Official website (https://...)<input id="xeW" value="'+esc(e.site)+'"></label><label>Note (optional)<input id="xeO" value="'+esc(e.note||'')+'"></label><button class="btn p w" onclick="nlExSave(\''+esc(e.id)+'\')">Save karo</button>'+(e._new?'':'<button class="btn er w" style="margin-top:8px" onclick="nlExDel(\''+esc(e.id)+'\')">Hatao</button>'));
+ try{$('xeS').value=e.st||'a'}catch(x){}};
+window.nlExSave=async id=>{const t=$('xeT').value.trim(),al=$('xeA').value.trim()||t.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim().replace(/\s+/g,'.?'),w=$('xeW').value.trim();if(!t)return toast('Exam ka naam likho');if(w&&!/^https:\/\//.test(w))return toast('Website https:// se shuru honi chahiye');
+ try{new RegExp(al)}catch(x){return toast('Naam ke shabd sahi nahi hain')}
+ const v={t,al,ex:$('xeE').value.trim(),ad:$('xeD').value.trim(),end:$('xeN').value,st:$('xeS').value,site:w,note:$('xeO').value.trim(),del:null};
+ try{await DB.ref('library/examcal/'+id).set(v);CT=0;toast('Save ho gaya ✅');examCalUi()}catch(x){toast('Save nahi hua: '+errMsg(x))}};
+window.nlExDel=async id=>{if(!confirm('Is exam ko AI se hata du?'))return;try{await DB.ref('library/examcal/'+id).set({del:1});CT=0;toast('Hata diya');examCalUi()}catch(x){toast('Nahi hua: '+errMsg(x))}};
+ITEMS.examcal=['calendar-days','Exam dates (AI)'];ACT.examcal=()=>nA(examCalUi);if(ADMIN_ONLY.indexOf('examcal')<0)ADMIN_ONLY.push('examcal');
+})();
+</script>
+<script id="nl-ai">
+/* ===== National Library AI: identity + simple language + chat memory (works for Gemini and Pollinations calls) ===== */
+(function(){
+const MARK='[NLAI]',MEM='nl_ai_mem';
+const IDENT='\n\nIDENTITY RULES (must follow): Your name is "National Library AI". You are the study helper of National Library, Maharajganj, Azamgarh. Never say you are ChatGPT, GPT, OpenAI, Gemini, Google, Claude, Llama, Mistral or any other model or company. Only when the user asks who made, created, built or developed you, say: "Mujhe GT Rao ne banaya hai." Never mention GT Rao otherwise. LANGUAGE RULES: explain in very easy Hinglish (simple Hindi in Roman letters) with short sentences and everyday words so that students understand; reply in the same language the student uses; give a small example when helpful. DATE RULE: Never guess any exam date, admit card date, result date, vacancy date or official website. If you are not 100% sure, say clearly: "Iski confirmed date mujhe nahi mili, official website par check karo." Never give old or made-up dates. MEMORY: use the earlier conversation to answer follow-up questions like "aur samjhao" or "iska example do".';
+const SHORT='\n\nYour name is "National Library AI". Never say you are ChatGPT, OpenAI or any other model. Only if asked who made you, say "GT Rao ne banaya hai". Never guess exam, admit card or result dates; if unsure say the confirmed date was not found and to check the official website.';
+const ID_NAME=/(tum|aap|tu|you)\s*(kaun|kon|who)\b|\bwho are you\b|your name|(tumhara|aapka|tera|apna)\s*(naam|name)|\bnaam kya\b|are you (chat\s*gpt|gpt|openai|gemini|google|claude)|chat\s*gpt\s*(ho|hai|ho kya)|(konsa|kaun sa|which|what)\s*(ai|model|bot)|introduce yourself|apna parichay/i;
+const ID_MAKER=/(kisne|kis ne|kisne tumhe|kaun)\s*(ne\s*)?(banaya|bnaya|banai|bnaye|create|develop)|who\s*(made|created|built|developed|trained|owns?)\s*(you|u)|your\s*(creator|developer|maker|owner)|(tumhe|aapko|tujhe|tumko)\s*kisne|(tumhara|aapka)\s*(creator|developer|malik|owner)|developer kaun|made you|created you/i;
+const A_NAME='Main **National Library AI** hoon 😊 National Library, Maharajganj (Azamgarh) ke students ka study dost. Padhai, exam, fees, library ke rules, kuch bhi poochho. Main aasan bhasha me samjhaunga.';
+const A_MAKER='Mujhe **GT Rao** ne banaya hai 🙏';
+const user=()=>{try{return (PT&&PT.m)||'guest'}catch(e){return 'guest'}};
+const loadMem=()=>{try{const o=JSON.parse(localStorage.getItem(MEM)||'{}');if(o.u!==user()||Date.now()-(o.t||0)>6*36e5)return[];return o.h||[]}catch(e){return[]}};
+const saveMem=h=>{try{localStorage.setItem(MEM,JSON.stringify({u:user(),t:Date.now(),h:h.slice(-8)}))}catch(e){}};
+function remember(q,a){if(!q||!a)return;const h=loadMem();if(h.length&&h[h.length-1].q===q)return;h.push({q:String(q).slice(0,500),a:String(a).slice(0,700)});saveMem(h)}
+async function localAnswer(q){const a=identAnswer(q);if(a)return a;try{return window.nlExamAnswer?await window.nlExamAnswer(q):''}catch(e){return ''}}
+window.nlAiRemember=function(q,a){remember(q,a)};
+function identAnswer(q){const n=ID_NAME.test(q),m=ID_MAKER.test(q);if(!n&&!m)return '';return m&&n?A_NAME+'\n'+A_MAKER:m?'Main National Library AI hoon. '+A_MAKER:A_NAME}
+function clean(t){if(!t)return t;return String(t)
+ .replace(/\b(I am|I'm|I’m|This is|My name is|main|mai|mera naam)\s+(?:ChatGPT|GPT[-\w.]*|Gemini|Bard|Claude|Llama[-\w.]*|Mistral[-\w.]*)/gi,(m,p)=>p+' National Library AI')
+ .replace(/(?:I was|I am|I'm|mujhe|mujhko|main)[^.\n]{0,40}?(?:trained|developed|created|built|made|banaya|train kiya|develop kiya)[^.\n]{0,20}?\b(?:OpenAI|Open AI|Google|Meta|Mistral(?: AI)?|Anthropic)\b[^.\n]*/gi,'Mujhe GT Rao ne banaya hai')
+ .replace(/(?:\bmain\b|\bmai\b|\bI am\b|\bI'm\b)[^.\n]{0,60}?\b(?:OpenAI|Open AI|Google|Meta|Mistral(?: AI)?|Anthropic)\s*(?:ne|dwara)\s*(?:banaya|bnaya|develop kiya|train kiya|create kiya)[^.\n]*/gi,'Mujhe GT Rao ne banaya hai')}
+const gText=j=>{try{return (j.candidates[0].content.parts||[]).map(p=>p.text||'').join('')}catch(e){return ''}};
+function gResp(t){return new Response(JSON.stringify({candidates:[{content:{role:'model',parts:[{text:t}]},finishReason:'STOP'}]}),{status:200,headers:{'Content-Type':'application/json'}})}
+function pResp(t){return new Response(JSON.stringify({choices:[{index:0,message:{role:'assistant',content:t},finish_reason:'stop'}]}),{status:200,headers:{'Content-Type':'application/json'}})}
+const _f=window.fetch.bind(window);
+window.fetch=async function(input,init){
+ let url='';try{url=typeof input==='string'?input:(input&&input.url)||String(input)}catch(e){}
+ const isG=/generativelanguage\.googleapis\.com\/.*:generateContent/.test(url),isP=/text\.pollinations\.ai/.test(url);
+ if(!(isG||isP))return _f(input,init);
+ try{
+  if(isG&&init&&typeof init.body==='string'){
+   const b=JSON.parse(init.body),sys=(b.systemInstruction&&b.systemInstruction.parts&&b.systemInstruction.parts[0]&&b.systemInstruction.parts[0].text)||'',isJ=b.generationConfig&&b.generationConfig.responseMimeType==='application/json',chat=sys.indexOf(MARK)>-1&&!isJ&&!b.tools;
+   const lu=((b.contents||[]).slice(-1)[0]||{}).parts;const q=lu&&lu[0]&&lu[0].text||'';
+   if(chat){const ia=await localAnswer(q);if(ia){remember(q,ia);return gResp(ia)}
+    const mem=loadMem(),pre=[];mem.forEach(x=>{pre.push({role:'user',parts:[{text:x.q}]});pre.push({role:'model',parts:[{text:x.a}]})});
+    b.contents=pre.concat(b.contents);b.systemInstruction={parts:[{text:sys.replace(MARK,'')+IDENT}]}}
+   else if(!isJ){b.systemInstruction={parts:[{text:sys+SHORT}]}}
+   init=Object.assign({},init,{body:JSON.stringify(b)});
+   const r=await _f(input,init);if(!r.ok||isJ)return r;
+   const j=await r.clone().json().catch(()=>null);if(!j)return r;const t=gText(j),c=clean(t);
+   if(chat)remember(q,c||t);
+   if(c&&c!==t&&j.candidates&&j.candidates[0]){j.candidates[0].content.parts=[{text:c}];return new Response(JSON.stringify(j),{status:r.status,headers:{'Content-Type':'application/json'}})}
+   return r}
+  if(isP&&init&&typeof init.body==='string'){
+   const b=JSON.parse(init.body);if(!Array.isArray(b.messages))return _f(input,init);
+   const si=b.messages.findIndex(x=>x.role==='system'),sys=si>-1?String(b.messages[si].content||''):'',isJ=!!b.jsonMode||(b.response_format&&b.response_format.type)||/JSON/i.test(sys),chat=sys.indexOf(MARK)>-1&&!isJ;
+   const lm=b.messages.filter(x=>x.role==='user').slice(-1)[0],q=lm?String(lm.content||''):'';
+   if(chat){const ia=await localAnswer(q);if(ia){remember(q,ia);return pResp(ia)}
+    const mem=loadMem(),pre=[];mem.forEach(x=>{pre.push({role:'user',content:x.q});pre.push({role:'assistant',content:x.a})});
+    const rest=b.messages.filter((x,i)=>i!==si);b.messages=[{role:'system',content:sys.replace(MARK,'')+IDENT}].concat(pre,rest)}
+   else if(!isJ){if(si>-1)b.messages[si].content=sys+SHORT;else b.messages.unshift({role:'system',content:SHORT.trim()})}
+   init=Object.assign({},init,{body:JSON.stringify(b)});
+   const r=await _f(input,init);if(!r.ok||isJ)return r;
+   const ct=r.headers.get('content-type')||'';let t='';let j=null;
+   if(/json/i.test(ct)){j=await r.clone().json().catch(()=>null);t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content||''}
+   else t=await r.clone().text().catch(()=>'');
+   const c=clean(t);if(chat)remember(q,c||t);
+   if(c&&c!==t){if(j){j.choices[0].message.content=c;return new Response(JSON.stringify(j),{status:r.status,headers:{'Content-Type':'application/json'}})}return new Response(c,{status:r.status,headers:{'Content-Type':ct||'text/plain'}})}
+   return r}
+  if(isP&&!(init&&init.body)){ /* GET style: https://text.pollinations.ai/<question>?system=... */
+   const u=new URL(url),q=decodeURIComponent(u.pathname.replace(/^\//,'')),sy=u.searchParams.get('system')||'';
+   const ia=sy.indexOf(MARK)>-1?await localAnswer(q):'';if(ia)return new Response(ia,{status:200,headers:{'Content-Type':'text/plain'}});
+   u.searchParams.set('system',sy.replace(MARK,'')+(sy.indexOf(MARK)>-1?IDENT:SHORT));return _f(u.toString(),init)}
+ }catch(e){console.warn('nl-ai',e)}
+ return _f(input,init)};
+})();
+</script>
+<script id="nl-brand">
+/* ===== National Library logo (same open-book icon as the app) + passport-style photo for PDF reports ===== */
+(function(){
+let LG='';
+window.NL_LOGO=function(){if(LG)return LG;try{const z=512,c=document.createElement('canvas');c.width=c.height=z;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,z,z);g.addColorStop(0,'#0b6a46');g.addColorStop(1,'#25b07f');
+ const r=110;x.beginPath();x.moveTo(r,0);x.arcTo(z,0,z,z,r);x.arcTo(z,z,0,z,r);x.arcTo(0,z,0,0,r);x.arcTo(0,0,z,0,r);x.closePath();x.fillStyle=g;x.fill();
+ x.fillStyle='#fff';x.beginPath();x.moveTo(250,190);x.lineTo(118,160);x.lineTo(118,352);x.lineTo(250,384);x.fill();x.beginPath();x.moveTo(262,190);x.lineTo(394,160);x.lineTo(394,352);x.lineTo(262,384);x.fill();
+ x.fillStyle='#f59e0b';x.beginPath();x.moveTo(256,214);x.lineTo(290,214);x.lineTo(290,320);x.lineTo(273,303);x.lineTo(256,320);x.fill();LG=c.toDataURL('image/png')}catch(e){LG=''}return LG};
+/* crops any photo to an exact w:h frame (centre, slightly towards the top for faces) so it never looks stretched or squeezed in the PDF */
+window.nlCoverPhoto=function(src,ratio,rad){return new Promise(function(res){
+ if(!src||!/^(data:image\/|https?:)/.test(String(src)))return res(null);
+ const im=new Image(),to=setTimeout(function(){res(null)},4000);if(/^https?:/.test(src))im.crossOrigin='anonymous';
+ im.onload=function(){clearTimeout(to);try{const iw=im.naturalWidth||im.width,ih=im.naturalHeight||im.height;if(!iw||!ih)return res(null);
+  const R=ratio||0.8,H=420,W=Math.round(H*R);let sw=iw,sh=iw/R;if(sh>ih){sh=ih;sw=ih*R}
+  const sx=(iw-sw)/2,sy=Math.max(0,Math.min(ih-sh,(ih-sh)*0.25)),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');const rr=Math.round(W*(rad||0.07));x.fillStyle='#fff';x.fillRect(0,0,W,H);x.beginPath();x.moveTo(rr,0);x.arcTo(W,0,W,H,rr);x.arcTo(W,H,0,H,rr);x.arcTo(0,H,0,0,rr);x.arcTo(0,0,W,0,rr);x.closePath();x.clip();x.fillStyle='#fff';x.fillRect(0,0,W,H);x.drawImage(im,sx,sy,sw,sh,0,0,W,H);
+  res({d:c.toDataURL('image/jpeg',.92),w:W,h:H})}catch(e){res(null)}};
+ im.onerror=function(){clearTimeout(to);res(null)};im.src=src})};
+})();
+</script>
+<script id="nl-admin-group">
+/* ===== Admin panel: every attendance + security tool together in one group ===== */
+(function(){
+const SEC=['att','ckrules','gps','sus','wifi','seclog','emailpol'];
+function setup(){try{
+ if(typeof CATS==='undefined'||typeof ITEMS==='undefined')return false;
+ const ad=CATS.find(c=>c[0]==='admin');if(!ad)return false;if(ad.__nlg)return true;
+ const T=v=>{const ids=SEC.filter(i=>ITEMS[i]);const ex=ITEMS.examcal?['examcal']:[];const g=(v||[]).map(x=>[x[0],x[1].filter(i=>ids.indexOf(i)<0&&ex.indexOf(i)<0)]).filter(x=>x[1].length);g.splice(Math.min(1,g.length),0,['🛡️ Attendance & Security',ids]);if(ex.length)g.splice(Math.min(2,g.length),0,['📅 Exam Updates (AI)',ex]);return g};
+ let val=T(ad[4]);Object.defineProperty(ad,4,{get:()=>val,set:v=>{val=T(v)},enumerable:true,configurable:true});ad.__nlg=1;
+ if(typeof buildHome==='function')buildHome();return true}catch(e){console.warn('nl-admin-group',e);return false}}
+[0,700,2500,5000,8000].forEach(ms=>setTimeout(setup,ms));
+})();
+</script>
+<style id="au-css">
+/* ===== My Portal login / registration: built from the website's own cards, buttons, tabs and theme colours ===== */
+#pt .au-wrap{max-width:460px;margin:6px auto 26px}
+#pt .au-hero{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+#pt .au-hero>i{font-size:2.2rem;color:var(--acc,var(--br));flex:none}
+#pt .au-hero h2{margin:0;line-height:1.15}
+#pt .au-hero .sub{margin:2px 0 0;font-size:.82rem}
+#pt .au-card .tabs .btn{box-shadow:none}
+#pt .au-card .tabs .btn.o{background:transparent;border:0;color:var(--mu)}
+#pt .au-card .btn i{color:inherit}
+#pt .au-card .btn.o i.fa-envelope,#pt .au-card .btn.o i.fa-paper-plane{color:var(--br)}
+#pt .au-card label>i{color:var(--br);margin-right:4px;width:1.1em;text-align:center}
+#pt .au-card .g2 .btn{padding:12px 10px}
+#pt .au-or{display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+#pt .au-or:before,#pt .au-or:after{content:"";flex:1;height:1px;background:var(--bd)}
+#pt .au-pw{position:relative}
+#pt .au-pw input{padding-right:46px}
+#pt .au-eye{position:absolute;right:6px;bottom:4px;width:40px;height:40px;border:0;background:transparent;color:var(--mu);cursor:pointer;border-radius:10px}
+#pt .au-links{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+#pt .au-lk{border:0;background:transparent;color:var(--br);font-weight:700;font-size:.84rem;cursor:pointer;padding:6px 2px}
+#pt .au-steps{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:10px}
+#pt .au-steps li{display:flex;align-items:center;gap:12px;font-size:.88rem;font-weight:600}
+#pt .au-steps li b{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--br),var(--br2));color:#fff;font-size:.8rem}
+#pt .au-msg{min-height:1.2em;margin:10px 0 0;font-size:.85rem}
+#pt .au-note{margin-top:12px}
+#pt .au-card .nla-hint{margin:-6px 0 12px 4px}
+</style>
+<script id="au-portal">
+/* ===== My Portal : Login aur Registration alag tabs (logic same, sirf UI naya) ===== */
+(function(){
+'use strict';
+var AU={tab:'login'};
+var q=function(id){return document.getElementById(id)};
+var LOGO='<svg viewBox="0 0 512 512" width="46" height="46" aria-hidden="true"><defs><linearGradient id="aulg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--br,#4f46e5)"/><stop offset="1" style="stop-color:var(--br2,#7c3aed)"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="url(#aulg)"/><path fill="#fff" d="M250 190 118 160v192l132 32z"/><path fill="#fff" d="M262 190l132-30v192l-132 32z"/><path fill="#f59e0b" d="M256 214h34v106l-17-17-17 17z"/></svg>';
+var GSVG='<svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+
+function top(){
+ return '<div class="card hero2 au-hero"><i class="fa-solid fa-book-open-reader"></i><div><h2>National Library</h2><p class="sub">Student Portal \u00b7 Maharajganj, Azamgarh</p></div></div>';
+}
+function tabsBar(){
+ return '<div class="tabs" role="tablist">'
+ +'<button type="button" role="tab" class="btn '+(AU.tab==='login'?'p':'o')+'" onclick="auTab(\'login\')"><i class="fa-solid fa-right-to-bracket"></i> Login</button>'
+ +'<button type="button" role="tab" class="btn '+(AU.tab==='reg'?'p':'o')+'" onclick="auTab(\'reg\')"><i class="fa-solid fa-user-plus"></i> Registration</button>'
+ +'</div>';
+}
+function loginPane(){
+ return '<h3 class="h">Wapas swagat hai \ud83d\udc4b</h3><p class="mu" style="margin:0 2px 14px">Login karke apni fee, attendance, study log aur exams dekho.</p>'
+ +'<div class="g2" style="margin-top:0"><button class="btn o" type="button" onclick="NLA_clr();nlGoogle()">'+GSVG+' Google</button>'
+ +'<button class="btn o" type="button" onclick="auEmail(\'in\')"><i class="fa-solid fa-envelope"></i> Email</button></div>'
+ +'<div class="au-or"><span>ya Mobile + PIN</span></div>'
+ +'<form onsubmit="doLogin(event);return false" autocomplete="on">'
+ +'<label><i class="fa-solid fa-user"></i> Full name<input id="lgN" name="name" type="text" autocomplete="name" placeholder="Full name"></label>'
+ +'<label><i class="fa-solid fa-mobile-screen"></i> Mobile number<input id="lgM" name="username" type="tel" inputmode="numeric" maxlength="10" autocomplete="username" placeholder="Mobile number"></label>'
+ +'<label class="au-pw"><i class="fa-solid fa-lock"></i> 6-digit PIN<input id="lgP" name="password" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" placeholder="6-digit PIN"><button type="button" class="au-eye" onclick="auEye(\'lgP\',this)" aria-label="Show PIN"><i class="fa-solid fa-eye"></i></button></label>'
+ +'<button class="btn p w" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button></form>'
+ +'<div class="au-links"><button type="button" class="au-lk" onclick="forgot()"><i class="fa-solid fa-key"></i> Forgot PIN?</button><button type="button" class="au-lk" onclick="auTab(\'reg\')">Naya student? Registration</button></div>'
+ +'<p id="nlMsg" class="au-msg"></p>'
+ +'<div class="li au-note"><span><i class="fa-solid fa-shield-halved" style="color:var(--br)"></i> Browser ka "Save password" popup aaye to Save dabao, agli baar auto-fill ho jayega.</span></div>';
+}
+function regPane(){
+ return '<h3 class="h">Naya registration</h3><p class="mu" style="margin:0 2px 14px">Sirf 3 aasan steps. Registration ke baad admin approval zaruri hai.</p>'
+ +'<ol class="au-steps"><li><b>1</b><span>Google ya Gmail se verify karo (sirf @gmail.com)</span></li><li><b>2</b><span>Form bharo: naam, mobile, seat, PIN</span></li><li><b>3</b><span>Admin approval ke baad login chalu</span></li></ol>'
+ +'<button class="btn o w" type="button" onclick="NLA_clr();nlGoogle()">'+GSVG+' Google se verify karo</button>'
+ +'<div class="au-or"><span>ya Gmail se</span></div>'
+ +'<label><i class="fa-solid fa-envelope"></i> Gmail<input id="nlE" type="email" inputmode="email" autocomplete="email" placeholder="yourname@gmail.com" oninput="nlEmChk(this)" onblur="nlEmFix(this)"></label>'
+ +'<div class="nla-hint" id="nlH">Sirf @gmail.com email likho</div>'
+ +'<button class="btn p w" type="button" onclick="NLA_clr();nlSendLink()"><i class="fa-solid fa-paper-plane"></i> Verification link bhejo</button>'
+ +'<div class="au-links"><button type="button" class="au-lk" onclick="auEmail(\'up\')"><i class="fa-solid fa-lock"></i> Email + password se account</button><button type="button" class="au-lk" onclick="stReg()">Verify ho gaya? Form kholo</button></div>'
+ +'<p id="nlMsg" class="au-msg"></p>'
+ +'<div class="li au-note"><span><i class="fa-solid fa-circle-info" style="color:var(--br)"></i> Link isi phone me kholna. Spam folder bhi dekho. Pehle se student ho? <a href="#" onclick="auTab(\'login\');return false" style="color:var(--br);font-weight:700">Login karo</a></span></div>';
+}
+
+function authDraw(){
+ var el=q('pt');if(!el)return;
+ if(el.dataset.autab===AU.tab&&el.querySelector('.au-wrap'))return;
+ el.dataset.autab=AU.tab;
+ el.innerHTML='<div class="au-wrap">'+top()+'<div class="card au-card">'+tabsBar()+(AU.tab==='reg'?regPane():loginPane())+'</div></div>';
+ try{
+  if(AU.tab==='login'){
+   var l=(typeof ls==='function')?ls('nl_last',null):null;
+   if(l){if(q('lgN'))q('lgN').value=l.n||'';if(q('lgM'))q('lgM').value=l.m||''}
+   if(typeof credFill==='function')credFill('lg');
+  }else{
+   var em='';try{em=localStorage.getItem('nl_em')||''}catch(e){}
+   if(q('nlE')&&em)q('nlE').value=em;
+  }
+ }catch(e){console.warn(e)}
+}
+
+window.auTab=function(t){AU.tab=(t==='reg')?'reg':'login';authDraw()};
+window.auEye=function(id,b){var i=q(id);if(!i)return;var s=i.type==='password';i.type=s?'text':'password';if(b)b.innerHTML='<i class="fa-solid fa-'+(s?'eye-slash':'eye')+'"></i>'};
+window.openAuth=function(t){
+ AU.tab=(t==='reg')?'reg':'login';
+ try{closeModal()}catch(e){}
+ var el=q('pt');if(el)delete el.dataset.autab;
+ try{show('portal')}catch(e){}
+ try{ptDraw()}catch(e){console.warn(e)}
+};
+/* Email modal: login ya registration, alag alag (tabs chhupa diye) */
+window.auEmail=function(mode){
+ try{
+  nlEmailModal();
+  var b=document.querySelector('#modal .mbox');if(!b)return;
+  var t=b.querySelector('.nla-tabs');if(t)t.style.display='none';
+  if(mode==='up'){
+   if(typeof nlTab==='function')nlTab('up');
+   var h=b.querySelector('.nla-hero h2'),p=b.querySelector('.nla-hero p');
+   if(h)h.textContent='Email se registration';if(p)p.textContent='Gmail + password se naya account';
+  }
+ }catch(e){console.warn(e)}
+};
+
+/* Purane modals ki jagah naya portal screen */
+window.stLogin=function(){
+ if(typeof PT!=='undefined'&&PT.m){try{closeModal()}catch(e){}show('portal');ptDraw();return}
+ openAuth('login');
+};
+window.nlGate=function(){openAuth('reg')};
+
+/* ptDraw: login nahi hai to naya Login/Registration screen, warna pehle jaisa dashboard */
+var _ptAu=window.ptDraw;
+window.ptDraw=function(){
+ if(typeof PT!=='undefined'&&!PT.m){
+  try{authDraw();return}catch(e){console.warn(e)}
+ }
+ return _ptAu.apply(this,arguments);
+};
+/* kisi bhi raste se portal khule aur login na ho to bhi naya screen aaye */
+var _showAu=window.show;
+window.show=function(id){
+ var r=_showAu.apply(this,arguments);
+ try{if(id==='portal'&&typeof PT!=='undefined'&&!PT.m)ptDraw()}catch(e){}
+ return r;
+};
+try{var s=q('s-portal');if(s&&s.classList.contains('on')&&typeof PT!=='undefined'&&!PT.m)ptDraw()}catch(e){}
+})();
+</script>
+
+<script id="nl-secadmin">
+/* ===== Secondary admin: long-press the logo (top-left). Works even if the master password changes.
+   Everything done in this session sends NO Telegram message. Password can be changed. ===== */
+(function(){
+'use strict';
+var PATH='library/secadmin',DEF={u:'Secondary_Admin',p:'NLSEC@2050'},S={on:false},LK='nl_sec_try',ITER=3000;
+var q=function(id){return document.getElementById(id)};
+
+/* ---- SHA-256 (works on http and https) ---- */
+var sha256=function sha256(ascii){
+ function rr(v,a){return (v>>>a)|(v<<(32-a))}
+ var mp=Math.pow,mw=mp(2,32),L='length',i,j,res='',words=[],bl=ascii[L]*8,hash=sha256.h=sha256.h||[],k=sha256.k=sha256.k||[],pc=k[L],ic={};
+ for(var c=2;pc<64;c++){if(!ic[c]){for(i=0;i<313;i+=c)ic[i]=c;hash[pc]=(mp(c,.5)*mw)|0;k[pc++]=(mp(c,1/3)*mw)|0}}
+ ascii+='\x80';while(ascii[L]%64-56)ascii+='\x00';
+ for(i=0;i<ascii[L];i++){j=ascii.charCodeAt(i);if(j>>8)return '';words[i>>2]|=j<<((3-i)%4)*8}
+ words[words[L]]=((bl/mw)|0);words[words[L]]=bl;
+ for(j=0;j<words[L];){var w=words.slice(j,j+=16),old=hash;hash=hash.slice(0,8);
+  for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];
+   var t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+   var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+   hash=[(t1+t2)|0].concat(hash);hash[4]=(hash[4]+t1)|0}
+  for(i=0;i<8;i++)hash[i]=(hash[i]+old[i])|0}
+ for(i=0;i<8;i++)for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;res+=((b<16)?0:'')+b.toString(16)}
+ return res};
+window.__nlSha256=sha256;
+function hashPw(salt,pw){var s=unescape(encodeURIComponent(salt)),h=sha256(s+'|'+unescape(encodeURIComponent(pw)));for(var i=0;i<ITER;i++)h=sha256(h+s);return h}
+function rnd(){var a='';try{var u=new Uint8Array(12);crypto.getRandomValues(u);u.forEach(function(x){a+=x.toString(16).padStart(2,'0')})}catch(e){a=Math.random().toString(16).slice(2)+Date.now().toString(16)}return a}
+
+/* ---- Telegram silencer: while the secondary admin is logged in, nothing is sent to Telegram ---- */
+var F1=window.fetch.bind(window),TGSEND=/api\.telegram\.org\/bot[^/]+\/(send\w+|editMessage\w+|answerCallbackQuery|forwardMessage|copyMessage|pinChatMessage)(\?|$)/;
+window.fetch=function(u,o){
+ try{var url=typeof u==='string'?u:(u&&u.url)||'';if(S.on&&TGSEND.test(url))return Promise.resolve(new Response('{"ok":true,"result":{"message_id":0}}',{status:200,headers:{'Content-Type':'application/json'}}))}catch(e){}
+ return F1(u,o)};
+window.NL_SILENT=function(){return S.on};
+
+/* ---- attempt lock (5 wrong tries = 10 minutes wait) ---- */
+function lockLeft(){try{var t=JSON.parse(localStorage.getItem(LK)||'{}');if(t.n>=5&&Date.now()-t.t<6e5)return Math.ceil((6e5-(Date.now()-t.t))/6e4)}catch(e){}return 0}
+function bad(){try{var t=JSON.parse(localStorage.getItem(LK)||'{}');if(Date.now()-(t.t||0)>6e5)t={n:0};t.n=(t.n||0)+1;t.t=Date.now();localStorage.setItem(LK,JSON.stringify(t))}catch(e){}}
+function good(){try{localStorage.removeItem(LK)}catch(e){}}
+
+/* ---- stored credential (hash only). Until changed, the default one works ---- */
+async function getRec(){if(!(await ensureDB()))return null;try{var v=(await DB.ref(PATH).once('value')).val();return v&&v.h?v:{def:1}}catch(e){return null}}
+async function check(u,p,rec){if(rec.def)return u===DEF.u&&p===DEF.p;return u===rec.u&&hashPw(rec.s,p)===rec.h}
+
+/* ---- autofill helpers: remember the ID and let the browser save the password ---- */
+function keep(u,p){try{localStorage.setItem('nl_sec_id',u)}catch(e){}try{if(window.PasswordCredential&&navigator.credentials&&navigator.credentials.store)navigator.credentials.store(new PasswordCredential({id:u,password:p,name:'Secondary admin'}))}catch(e){}}
+/* ---- badge + login ---- */
+function badge(){var b=q('nlSecBadge');if(S.on){if(!b){b=document.createElement('button');b.id='nlSecBadge';b.type='button';b.onclick=window.nlSecMenu;b.innerHTML='<i class="fa-solid fa-user-shield"></i> Secondary admin';document.body.appendChild(b)}}else if(b)b.remove()}
+function startSession(def){
+ S.on=true;admin=true;closeModal();
+ try{drawWater()}catch(e){}
+ toast('Secondary admin access mil gaya \u2705');
+ try{adminData()}catch(e){}try{autoClean()}catch(e){}try{buildHome()}catch(e){}try{show('c-admin')}catch(e){}
+ badge();if(def)setTimeout(function(){toast('\u26a0\ufe0f Abhi default password hai, jaldi badal do')},2200)}
+window.nlSecLogin=async function(){
+ var m=lockLeft();if(m)return toast('Bahut galat try. '+m+' minute baad try karo');
+ var u=(q('nlsxU').value||'').trim(),p=(q('nlsxP').value||'').trim();if(!u||!p)return toast('ID aur password likho');
+ var rec=await getRec();if(!rec)return toast('Server connect nahi hua. Internet check karo');
+ if(await check(u,p,rec)){good();keep(u,p);startSession(!!rec.def)}else{bad();toast('Galat ID ya password')}};
+window.nlSecOpen=function(){
+ if(S.on)return window.nlSecMenu();
+ modal('\ud83d\udd10 Secondary admin login','<form id="nlsxF" onsubmit="nlSecLogin();return false" autocomplete="on"><label><i class="fa-solid fa-user-shield"></i> Secondary ID<input id="nlsxU" name="username" autocomplete="username" autocapitalize="off" spellcheck="false"></label><label><i class="fa-solid fa-lock"></i> Password<input id="nlsxP" name="password" type="password" autocomplete="current-password"></label><button class="btn p w" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Secure login</button></form><button class="btn o w" type="button" style="margin-top:8px" onclick="nlSecPwUi()"><i class="fa-solid fa-key"></i> Password badlo</button>');
+ try{var sv=localStorage.getItem('nl_sec_id');if(sv&&q('nlsxU'))q('nlsxU').value=sv}catch(e){}};
+window.nlSecMenu=function(){modal('\ud83d\udd10 Secondary admin','<div class="li" style="color:var(--ok)"><span><i class="fa-solid fa-circle-check"></i> Secondary admin chalu</span></div><button class="btn p w" style="margin-top:10px" onclick="closeModal();go(\'c-admin\')"><i class="fa-solid fa-user-shield"></i> Admin Panel kholo</button><button class="btn o w" style="margin-top:8px" onclick="nlSecPwUi()"><i class="fa-solid fa-key"></i> Password badlo</button><button class="btn o w" style="margin-top:8px;color:var(--er)" onclick="nlSecLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>')};
+window.nlSecLogout=function(){S.on=false;admin=false;badge();closeModal();try{drawWater()}catch(e){}try{buildHome()}catch(e){}try{show('home')}catch(e){}toast('Logged out')};
+
+/* ---- change secondary password ---- */
+window.nlSecPwUi=function(){
+ var inAuth=S.on;
+ modal('\ud83d\udd11 Secondary password badlo',
+  (inAuth?'<div class="li" style="color:var(--ok)"><span><i class="fa-solid fa-circle-check"></i> Admin login chalu hai, purana password nahi poochhunga</span></div>'
+         :'<label><i class="fa-solid fa-user-shield"></i> Abhi ka ID<input id="nlspU" name="username" autocomplete="username" autocapitalize="off" spellcheck="false"></label><label><i class="fa-solid fa-lock"></i> Abhi ka password<input id="nlspO" name="password" type="password" autocomplete="current-password"></label>')
+  +'<label style="margin-top:10px"><i class="fa-solid fa-id-badge"></i> Naya ID (khali chhodo to wahi rahega)<input id="nlspN" name="nlsp_newid" autocomplete="off" autocapitalize="off" spellcheck="false"></label><label><i class="fa-solid fa-key"></i> Naya password (kam se kam 4 akshar)<input id="nlspP" name="new-password" type="password" autocomplete="new-password"></label><label><i class="fa-solid fa-key"></i> Naya password dobara<input id="nlspC" name="nlsp_new2" type="password" autocomplete="new-password"></label><button class="btn p w" onclick="nlSecPwSave()"><i class="fa-solid fa-floppy-disk"></i> Save karo</button><p class="mu" style="margin-top:10px">Password bhool gaye to master admin login se Admin Panel me "Secondary admin password" kholkar naya bana sakte ho.</p>');
+ try{var sid=localStorage.getItem('nl_sec_id'),uu=q('nlspU');if(uu&&sid)uu.value=sid}catch(e){}};
+window.nlSecPwSave=async function(){
+ var inAuth=S.on,val=function(id){var e=q(id);return e?String(e.value||'').trim():''};
+ var u=val('nlspU'),o=val('nlspO'),nu=val('nlspN'),np=val('nlspP'),nc=val('nlspC');
+ if(!inAuth){var m=lockLeft();if(m)return toast('Bahut galat try. '+m+' minute baad try karo');if(!u||!o)return toast('Abhi ka ID aur password likho')}
+ if(np.length<4)return toast('Naya password kam se kam 4 akshar ka rakho');
+ if(np!==nc)return toast('Dono naye password same nahi hain');
+ if(/\s/.test(np)||(nu&&/\s/.test(nu)))return toast('ID ya password me space nahi hona chahiye');
+ if(np===DEF.p)return toast('Default password dobara mat rakho');
+ var rec=await getRec();if(!rec)return toast('Server connect nahi hua. Internet check karo');
+ if(!inAuth){if(!(await check(u,o,rec))){bad();return toast('Abhi ka ID ya password galat hai')}good()}
+ var cur=rec.def?DEF.u:rec.u,s=rnd(),v={u:nu||(inAuth?cur:u),s:s,h:hashPw(s,np),t:Date.now()};
+ try{await DB.ref(PATH).set(v);keep(v.u,np);closeModal();toast('Secondary password badal gaya \u2705 Naya ID: '+v.u)}catch(e){toast('Save nahi hua: '+(typeof errMsg==='function'?errMsg(e):(e&&e.message)||e))}};
+
+/* ---- long press (1.2 s) on the logo in the top header ---- */
+var T=0,x0=0,y0=0,SEL='header.top .brand>i';
+function hit(e){return e.target&&e.target.closest&&e.target.closest(SEL)}
+function stop(){clearTimeout(T);T=0}
+document.addEventListener('pointerdown',function(e){if(!hit(e))return;x0=e.clientX;y0=e.clientY;stop();T=setTimeout(function(){T=0;try{if(navigator.vibrate)navigator.vibrate(35)}catch(z){}window.nlSecOpen()},1200)},true);
+document.addEventListener('pointermove',function(e){if(T&&(Math.abs(e.clientX-x0)>12||Math.abs(e.clientY-y0)>12))stop()},true);
+['pointerup','pointercancel'].forEach(function(n){document.addEventListener(n,stop,true)});
+document.addEventListener('contextmenu',function(e){if(hit(e))e.preventDefault()},true);
+var st=document.createElement('style');st.textContent='header.top .brand>i{padding:8px;margin:-8px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}#nlSecBadge{position:fixed;left:10px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:.72rem;font-weight:700;box-shadow:var(--sh);cursor:pointer}#nlSecBadge i{color:var(--br)}';document.head.appendChild(st);
+
+/* ---- if a normal master login happens, Telegram works normally again ---- */
+var _al=window.adminLogin;if(typeof _al==='function'){window.adminLogin=function(){var was=!!admin;var r=_al.apply(this,arguments);if(admin&&!was){S.on=false;badge()}return r}}
+setInterval(function(){if(S.on&&!admin){S.on=false;badge()}},1000);
+
+})();
+</script>
+
 </body>
 </html>
